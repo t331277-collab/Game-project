@@ -1,7 +1,2 @@
-<<<<<<< Updated upstream
 m_EditorVersion: 6000.2.6f2
 m_EditorVersionWithRevision: 6000.2.6f2 (4a4dcaec6541)
-=======
-m_EditorVersion: UnknownUnityVersion
-m_EditorVersionWithRevision: UnknownUnityVersion
->>>>>>> Stashed changes
