@@ -489,7 +489,6 @@ GameObject:
   - component: {fileID: 668250221}
   - component: {fileID: 668250220}
   - component: {fileID: 668250219}
-  - component: {fileID: 668250223}
   m_Layer: 0
   m_Name: enemy
   m_TagString: Untagged
@@ -643,20 +642,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 182.863, z: 0}
---- !u!114 &668250223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 668250218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2fa2b63d2a0bf74baae0c13a8e8caaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::enemy
-  speed: 5
-  enemyRigidbody: {fileID: 0}
 --- !u!1 &1775203673
 GameObject:
   m_ObjectHideFlags: 0
@@ -669,6 +654,7 @@ GameObject:
   - component: {fileID: 1775203676}
   - component: {fileID: 1775203675}
   - component: {fileID: 1775203674}
+  - component: {fileID: 1775203678}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -733,8 +719,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.5414773
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
@@ -748,7 +734,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!212 &1775203676
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -822,6 +808,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1775203678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775203673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29378e04047fbd4285b005f69462f14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
