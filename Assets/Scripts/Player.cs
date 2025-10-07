@@ -4,9 +4,9 @@ public class Player : MonoBehaviour
 {
 
     Rigidbody2D rig; 
-    public float moveSpeed;
-    public float maxSpeed;
-    public float jumpPower;
+    public float moveSpeed = 3f;
+    public float maxSpeed = 3f;
+    public float jumpPower = 3f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
