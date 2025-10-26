@@ -115,4 +115,9 @@ public class KinematicMover2D : MonoBehaviour
         dashStartTime = Time.time;
         dashEndTime = dashStartTime + Mathf.Max(0.01f, dashTime);
     }
+
+    public void KnockBack()
+    {
+        isDashing = true;
+    }
 }

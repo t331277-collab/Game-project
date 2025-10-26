@@ -11,9 +11,13 @@ public class KillZone : MonoBehaviour
     
     private BoxCollider2D zoneCollider;
 
+
     void Start()
     {
         zoneCollider = GetComponent<BoxCollider2D>();
+
+ 
+        
     }
 
     public float GetKnockbackDistance()
@@ -51,6 +55,7 @@ public class KillZone : MonoBehaviour
                 if (Input.GetKeyDown(key))
                 {
                     currentEnemy.ProcessHit(key);
+                    
                     break;
                 }
             }
