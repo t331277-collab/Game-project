@@ -151,10 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ea7ee258a5d1648a4fe4d22106f231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  speed: 5
-  normalizeInput: 1
-  faceMoveDirection: 0
-  rotateSpeed: 720
+  moveSpeed: 3
+  maxSpeed: 3
+  jumpPower: 3
 --- !u!50 &111103436
 Rigidbody2D:
   serializedVersion: 5

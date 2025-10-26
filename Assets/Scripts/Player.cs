@@ -1,59 +1,41 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+[RequireComponent(typeof(Rigidbody2D))]
+public class KinematicMover2D : MonoBehaviour
 {
+    [Header("Move")]
+    public float speed = 5f;                 // 유닛/초
+    public bool normalizeInput = true;       // 대각선 속도 보정
 
-    Rigidbody2D rig; 
-    public float moveSpeed = 3f;
-    public float maxSpeed = 3f;
-    public float jumpPower = 3f;
+    [Header("Rotate (옵션)")]
+    public bool faceMoveDirection = false;   // 이동 방향으로 회전할지
+    public float rotateSpeed = 720f;         // 도/초
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    Rigidbody2D rb;
+
+    void Awake()
     {
-        rig = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
+        rb.bodyType = RigidbodyType2D.Kinematic;      // Static 금지, Kinematic으로!
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
     }
 
-    // Update is called once per frame
-    void Update()
-   {
-      // 왼쪽 화살표를 누르고 있는 경우
-      if (Input.GetKey(KeyCode.LeftArrow))
-      {         
-         // 물체에 왼쪽 방향으로 물리적 힘을 가해줍니다. 즉, 왼쪽으로 이동 시킵니다.
-         rig.AddForce(Vector2.left * moveSpeed, ForceMode2D.Impulse);
+    void FixedUpdate()
+    {
+        Vector2 input = new Vector2(
+            Input.GetAxisRaw("Horizontal"),
+            Input.GetAxisRaw("Vertical")
+        );
+        if (normalizeInput) input = input.normalized;
 
-         // velocity 는 물체의 속도입니다. 일정 속도에 도달하면 더 이상 빨라지지 않게합니다.
-         rig.linearVelocity = new Vector2(Mathf.Max(rig.linearVelocity.x, -maxSpeed), rig.linearVelocity.y);
+        Vector2 next = rb.position + input * speed * Time.fixedDeltaTime;
+        rb.MovePosition(next);
 
-         // scale 값을 이용해 캐릭터가 이동 방향을 바라보게 합니다.
-         transform.localScale = new Vector3(-1f, 1f, 1f);
-      }
-      else if (Input.GetKey(KeyCode.RightArrow)) // 오른쪽 화살표를 누르고 있는 경우
-      {         
-         rig.AddForce(Vector2.right * moveSpeed, ForceMode2D.Impulse);
-         rig.linearVelocity = new Vector2(Mathf.Min(rig.linearVelocity.x, maxSpeed), rig.linearVelocity.y);
-         transform.localScale = new Vector3(1f, 1f, 1f);
-      }
-      else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)) // 이동 키를 뗀 경우
-      {
-         // x 속도를 줄여 이동 방향으로 아주 살짝만 움직이고 거의 바로 멈추게 합니다.
-         rig.linearVelocity = new Vector3(rig.linearVelocity.normalized.x, rig.linearVelocity.y);
-      }
-
-      // 스페이스바를 누르면 점프합니다.
-      if (Input.GetKeyDown(KeyCode.Space))
-      {  
-         if (IsGrounded())
-            rig.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-      }
-   }
-
-   // 캐릭터가 땅을 밟고 있는지 체크
-   bool IsGrounded()
-   {
-      // 캐릭터를 중심으로 아래 방향으로 ray 를 쏘아 그 곳에 Layer 타입이 Ground 인 객체가 있는지 검사합니다.
-      var ray = Physics2D.Raycast(transform.position, Vector2.down, 1f, 1 << LayerMask.NameToLayer("Ground"));
-      return ray.collider != null;
-   }
+        if (faceMoveDirection && input.sqrMagnitude > 0.0001f)
+        {
+            float target = Mathf.Atan2(input.y, input.x) * Mathf.Rad2Deg;
+            float newZ = Mathf.MoveTowardsAngle(rb.rotation, target, rotateSpeed * Time.fixedDeltaTime);
+            rb.MoveRotation(newZ);
+        }
+    }
 }
