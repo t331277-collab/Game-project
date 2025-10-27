@@ -11,7 +11,10 @@ public class Enemy : MonoBehaviour
 
     private int currentSequenceIndex = 0;
     private Transform playerTransform;
-    private KillZone killZoneRef; 
+    private KillZone killZoneRef;
+
+    public Player player;
+    
 
     void Start()
     {
@@ -20,6 +23,7 @@ public class Enemy : MonoBehaviour
         if (playerObject != null)
         {
             playerTransform = playerObject.transform;
+            player = playerObject.GetComponent<Player>();
         }
     }
 
@@ -58,7 +62,11 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            
             Debug.Log("실패! 플레이어 공격! (" + killSequence[currentSequenceIndex] + " 실패)");
+            //이 공간에 넉백 함수 호출
+            player.KnockBack();
+
         }
 
         currentSequenceIndex++;
@@ -67,6 +75,7 @@ public class Enemy : MonoBehaviour
         {
             if (success) Debug.Log("몬스터 사살!");
             else Debug.Log("모든 공격 기회 소진. 몬스터 소멸.");
+
             
             Destroy(gameObject);
         }
@@ -111,6 +120,8 @@ public class Enemy : MonoBehaviour
             else
             {
                 Debug.Log("플레이어 즉시 공격! (킬존 참조 없음)");
+                
+
                 Destroy(gameObject);
             }
         }
