@@ -7,6 +7,7 @@ TagManager:
   - Enemy_Z
   - Enemy_ZXC
   - Enemy
+  - Ground
   layers:
   - Default
   - TransparentFX
