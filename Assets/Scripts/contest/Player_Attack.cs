@@ -28,11 +28,15 @@ public class Player_Attack : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.Z))
             {
-                animator.SetTrigger("Attack");
+                //animator.SetTrigger("Attack");
                 Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
 
                 foreach (Collider2D collider in collider2Ds)
                 {
+                    if(collider.tag == "Enemy")
+                    {
+                        collider.GetComponent<enemy>().TakeDamage();
+                    }
                     Debug.Log(collider.tag);
                 
                 }
