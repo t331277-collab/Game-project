@@ -14,8 +14,16 @@ public class enemy : MonoBehaviour
         
     }
 
-    public void TakeDamage()
+    public void TakeDamageZ()
     {
-        Debug.Log("Attacked!");
+        Debug.Log("Attacked! Z!");
+    }
+    public void TakeDamageX()
+    {
+        Debug.Log("Attacked! X!");
+    }
+    public void TakeDamageC()
+    {
+        Debug.Log("Attacked! C!");
     }
 }

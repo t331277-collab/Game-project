@@ -35,7 +35,7 @@ public class Player_Attack : MonoBehaviour
                 {
                     if(collider.tag == "Enemy")
                     {
-                        collider.GetComponent<enemy>().TakeDamage();
+                        collider.GetComponent<enemy>().TakeDamageZ();
                     }
                     Debug.Log(collider.tag);
                 
@@ -43,9 +43,39 @@ public class Player_Attack : MonoBehaviour
 
                 curTime = coolTime;
             }
-                //АјАн  
+            else if (Input.GetKey(KeyCode.X))
+            {
+                Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
 
-            //Debug.Log("Z");
+                foreach (Collider2D collider in collider2Ds)
+                {
+                    if (collider.tag == "Enemy")
+                    {
+                        collider.GetComponent<enemy>().TakeDamageX();
+                    }
+                    Debug.Log(collider.tag);
+
+                }
+
+                curTime = coolTime;
+            }
+            else if (Input.GetKey(KeyCode.C))
+            {
+                Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+                foreach (Collider2D collider in collider2Ds)
+                {
+                    if (collider.tag == "Enemy")
+                    {
+                        collider.GetComponent<enemy>().TakeDamageC();
+                    }
+                    Debug.Log(collider.tag);
+
+                }
+
+                curTime = coolTime;
+            }
+
         }
         else
         {
