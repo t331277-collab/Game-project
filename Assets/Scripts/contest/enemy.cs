@@ -294,4 +294,20 @@ public class Enemy : MonoBehaviour
         // '현재 상태(currentState)'가 '그로기(Groggy)'와 같으면 true(참)를, 아니면 false(거짓)를 반환(return)합니다.
         return currentState == State.Groggy;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("This is Player");
+
+            if (collision.collider.TryGetComponent<Player_Health>(out var playerHealth))
+            {
+                // 단순 데미지 + 기본 노크백
+                playerHealth.Player_TakeDamaged();
+
+                
+            }
+        }
+    }
 }
