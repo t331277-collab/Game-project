@@ -34,7 +34,7 @@ public class Player_Attack : MonoBehaviour
     float lastDir = 1f;
     Vector2 baseLocal;
 
-    // [수정!] Update 함수가 'A'키(처형)와 'Z/X/C'키(그로기)를 구분합니다.
+    // [수정!] Update 함수가 'S'키(처형)와 'Z/X/C'키(그로기)를 구분합니다.
     void Update()
     {
         //히트박스도 player 기준으로 대칭 이동
@@ -51,10 +51,10 @@ public class Player_Attack : MonoBehaviour
         if (curTime <= 0)
         {
             // [기획 변경] 'A'키(처형) 입력을 먼저 확인합니다.
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.S))
             {
                 // 디버그 로그로 A키 입력을 확인합니다.
-                Debug.Log("--- A 키 감지! PerformExecution() 호출! ---");
+                Debug.Log("--- S 키 감지! PerformExecution() 호출! ---");
                 // '처형' 전용 함수를 호출합니다.
                 PerformExecution();
                 // 쿨타임 초기화
