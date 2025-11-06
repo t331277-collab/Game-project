@@ -295,10 +295,5 @@ public class Enemy : MonoBehaviour
         return currentState == State.Groggy;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.collider.gameObject.CompareTag("Player")) 
-        { 
-            Debug.Log("This is Player"); 
-        }
-    }
+    
 }

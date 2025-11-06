@@ -768,10 +768,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Health
   health: 3
-  knockbackForce: 5
-  knockupForce: 0
+  knockbackForce: 3
+  knockupForce: 0.5
   stunDuration: 0.5
-  stunLockDelay: 0.08
+  pauseWhileStunned: []
 --- !u!1 &1192120228
 GameObject:
   m_ObjectHideFlags: 0
