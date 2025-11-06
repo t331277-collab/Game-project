@@ -305,6 +305,7 @@ MonoBehaviour:
   knockbackForce: 100
   knockbackMultiplier: 1
   knockbackDuration: 0.2
+  groggyDuration: 3
 --- !u!1 &719065831
 GameObject:
   m_ObjectHideFlags: 0

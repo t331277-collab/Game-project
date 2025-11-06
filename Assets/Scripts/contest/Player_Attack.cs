@@ -18,6 +18,8 @@ public class Player_Attack : MonoBehaviour
         animator = GetComponent<Animator>();
         // 이 오브젝트의 Rigidbody2D 부품을 찾아서 'rgd' 변수에 넣습니다.
         rgd = GetComponent<Rigidbody2D>();
+
+        baseLocal = pos.localPosition;
     }
 
     // 현재 남은 쿨타임을 저장할 비공개 변수입니다.
@@ -29,9 +31,22 @@ public class Player_Attack : MonoBehaviour
     // [인스펙터 노출] 공격 범위(히트박스)의 가로/세로 크기입니다.
     public Vector2 boxSize;
 
+    float lastDir = 1f;
+    Vector2 baseLocal;
+
     // [수정!] Update 함수가 'A'키(처형)와 'Z/X/C'키(그로기)를 구분합니다.
     void Update()
     {
+        //히트박스도 player 기준으로 대칭 이동
+        float inputX = Input.GetAxisRaw("Horizontal");
+
+        if (inputX != 0f)
+        {
+            lastDir = Mathf.Sign(inputX);
+        }
+
+        pos.localPosition = new Vector2(Mathf.Abs(baseLocal.x) * lastDir , baseLocal.y);
+
         // 쿨타임이 0 이하일 때 (공격 가능)
         if (curTime <= 0)
         {

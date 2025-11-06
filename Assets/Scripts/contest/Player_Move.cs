@@ -15,19 +15,33 @@ public class Player_Move : MonoBehaviour
     // 이 오브젝트의 Rigidbody2D(물리 부품)를 담을 비공개 변수입니다.
     private Rigidbody2D rgd;
 
+    // 이 오브젝트의 SpriteRenderer를 담을 비공개 변수입니다.
+    private SpriteRenderer spriteRenderer;
+
     
     // Start() 함수보다 먼저, 게임 시작 전 딱 한 번 호출됩니다.
     void Awake()
     {
         // 이 오브젝트에 붙어있는 Rigidbody2D 부품을 찾아서 'rgd' 변수에 넣어둡니다.
         rgd = GetComponent<Rigidbody2D>();
+
+
+        // 이 오브젝트에 붙어있는  SpriteRenderer부품을 찾아서 'spriteRenderer' 변수에 넣어둡니다.
+        spriteRenderer = GetComponent<SpriteRenderer>();   
     }
+
 
     // 매 프레임마다 호출됩니다.
     void Update()
     {
         // 매 프레임 'Jump()' 함수를 호출해서 스페이스바 입력을 감시합니다.
         Jump();
+
+        //방향 전환
+        if(Input.GetButtonDown("Horizontal")) {
+            spriteRenderer.flipX = Input.GetAxisRaw("Horizontal") == -1;
+        
+        }
     }
 
     // 물리 업데이트 주기에 맞춰 (기본 0.02초마다) 고정적으로 호출됩니다.
