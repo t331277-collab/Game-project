@@ -594,7 +594,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 7.81, y: 8.87}
+    oldSize: {x: 24.40625, y: 27.71875}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -770,8 +770,6 @@ MonoBehaviour:
   health: 3
   knockbackForce: 5
   knockupForce: 0
-  stunDuration: 0.5
-  stunLockDelay: 0.08
 --- !u!1 &1192120228
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +909,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 30
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
