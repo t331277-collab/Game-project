@@ -299,15 +299,21 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //만약 충돌한게 Player 이다
         if(collision.gameObject.tag == "Player")
         {
+            //시간 카운트 시작
             player_Move.KBCounter = player_Move.KBToalTime;
+
+            //충돌지점 계산
             if(collision.transform.position.x <= transform.position.x)
             {
+                //오른쪽에서 충돌
                 player_Move.KnockFromRight = true;
             }
             if (collision.transform.position.x > transform.position.x)
             {
+                //왼쪽에서 충돌
                 player_Move.KnockFromRight = false;
             }
 
