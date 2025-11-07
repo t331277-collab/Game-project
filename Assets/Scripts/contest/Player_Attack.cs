@@ -54,7 +54,7 @@ public class Player_Attack : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.S))
             {
                 // 디버그 로그로 A키 입력을 확인합니다.
-                Debug.Log("--- S 키 감지! PerformExecution() 호출! ---");
+                Debug.Log("--- A 키 감지! PerformExecution() 호출! ---");
                 // '처형' 전용 함수를 호출합니다.
                 PerformExecution();
                 // 쿨타임 초기화
