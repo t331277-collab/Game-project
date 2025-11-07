@@ -659,7 +659,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 5
@@ -763,9 +763,9 @@ MonoBehaviour:
   speed: 30
   jump: 10
   isJump: 0
-  KBForce: 6
+  KBForce: 20
   KBCounter: 0
-  KBToalTime: 0.8
+  KBToalTime: 0.1
   KnockFromRight: 0
 --- !u!114 &1013947265
 MonoBehaviour:

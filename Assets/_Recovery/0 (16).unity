@@ -763,10 +763,10 @@ MonoBehaviour:
   speed: 30
   jump: 10
   isJump: 0
-  KBForce: 6
-  KBCounter: 0
-  KBToalTime: 0.8
-  KnockFromRight: 0
+  KBForce: 10
+  KBCounter: 0.2
+  KBToalTime: 0
+  KnockFromRight: 1
 --- !u!114 &1013947265
 MonoBehaviour:
   m_ObjectHideFlags: 0

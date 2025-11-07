@@ -64,6 +64,8 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rgd;
     // 이 오브젝트의 SpriteRenderer(이미지) 부품을 담을 비공개 변수입니다. (좌우 반전용)
     private SpriteRenderer spriteRenderer;
+    // Player_Move 에 접근하는 변수입니다.
+    public Player_Move player_Move;
 
     // 게임 시작 시 한 번 호출됩니다.
     void Start()
@@ -295,5 +297,23 @@ public class Enemy : MonoBehaviour
         return currentState == State.Groggy;
     }
 
-    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag == "Player")
+        {
+            player_Move.KBCounter = player_Move.KBToalTime;
+            if(collision.transform.position.x <= transform.position.x)
+            {
+                player_Move.KnockFromRight = true;
+            }
+            if (collision.transform.position.x > transform.position.x)
+            {
+                player_Move.KnockFromRight = false;
+            }
+
+            Debug.Log("Player와 충돌");
+        }
+    }
+
+
 }
