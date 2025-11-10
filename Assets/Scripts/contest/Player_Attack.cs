@@ -84,12 +84,39 @@ public class Player_Attack : MonoBehaviour
                 PerformAttack(KeyCode.C);
                 curTime = coolTime;
             }
+            //SoundSkill 구현
+            else if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                Debug.Log("leftshift");
+                SoundSkill();
+            }
         }
         // 쿨타임이 0보다 클 때 (쿨타임 도는 중)
         else
         {
             // 쿨타임을 감소시킵니다.
             curTime -= Time.deltaTime;
+        }
+
+        
+        
+    }
+
+    void SoundSkill()
+    {
+        Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+        // 맞은 모든 대상을 하나씩 검사
+        foreach (Collider2D collider in collider2Ds)
+        {
+            // 태그가 "Enemy"인지 확인
+            if (collider.CompareTag("Enemy"))
+            {
+                // Enemy 스크립트를 가져옴
+                Enemy enemyScript = collider.GetComponent<Enemy>();
+
+                enemyScript.SoundSkillDamaged();
+            }
         }
     }
 

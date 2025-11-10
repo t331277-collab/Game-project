@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
@@ -93,6 +94,12 @@ public class Enemy : MonoBehaviour
             case State.Attacking:
                 rgd.linearVelocity = Vector2.zero;
                 break;
+        }
+
+        IEnumerator SkillDelay()
+        {
+            Time.timeScale = 0.1f;
+            yield return new WaitForSecondsRealtime(0.5f);
         }
     }
 
@@ -240,4 +247,17 @@ public class Enemy : MonoBehaviour
     { 
         return currentState == State.Groggy; 
     }
+
+    public void SoundSkillDamaged()
+    {
+        Debug.Log("Skill!");
+        
+        for(int i = 0; i < killSequence.Count; i++)
+        {
+            
+            Debug.Log(killSequence[i]);
+        }
+    }
+
+    
 }
