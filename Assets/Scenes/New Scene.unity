@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f33e1f14429cb4882a4e973c33cddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Bumper
+  Sounddelay: 1
+  Delaytime: 0.1
   patrolSpeed: 2
   patrolDistance: 5
   chaseSpeed: 4
@@ -579,7 +581,7 @@ Transform:
   m_GameObject: {fileID: 1013947259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -19.25, y: -14.13, z: 0}
+  m_LocalPosition: {x: -19.25, y: -14.8, z: 0}
   m_LocalScale: {x: 0.42778572, y: 0.42881125, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

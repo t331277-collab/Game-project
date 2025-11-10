@@ -10,6 +10,10 @@ public class Enemy : MonoBehaviour
     protected enum State { Patrolling, Chasing, KnockedBack, Groggy, Attacking }
     protected State currentState;
 
+    [Header("SoundSkill")]
+    public float Sounddelay = 1.0f;
+    public float Delaytime = 0.1f;
+
     // --- AI 순찰(Patrol) 변수 ---
     [Header("AI - Patrol")]
     public float patrolSpeed = 2f;
@@ -96,12 +100,10 @@ public class Enemy : MonoBehaviour
                 break;
         }
 
-        IEnumerator SkillDelay()
-        {
-            Time.timeScale = 0.1f;
-            yield return new WaitForSecondsRealtime(0.5f);
-        }
+        
     }
+    
+    
 
     // --- AI 공통 함수들 ---
 
@@ -250,14 +252,28 @@ public class Enemy : MonoBehaviour
 
     public void SoundSkillDamaged()
     {
-        Debug.Log("Skill!");
-        
-        for(int i = 0; i < killSequence.Count; i++)
-        {
-            
-            Debug.Log(killSequence[i]);
-        }
+        StartCoroutine(SoundSkillDamagedCo());
     }
 
-    
+    private IEnumerator SoundSkillDamagedCo()
+    {
+        Time.timeScale = Delaytime;
+
+        Debug.Log("Skill!");
+
+        Debug.Log(killSequence[0]);
+        yield return new WaitForSecondsRealtime(Sounddelay);
+
+        Debug.Log(killSequence[1]);
+        yield return new WaitForSecondsRealtime(Sounddelay);
+
+        Debug.Log(killSequence[2]);
+        yield return new WaitForSecondsRealtime(Sounddelay);
+
+        Time.timeScale = 1f;
+    }
+
+
+
+
 }
