@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour
 {
+    //호출하고 삭제하기 쉬운 싱글톤 형식 즉 SoundManager가 호출되면 음악을 재생할때 생성되고 음악이 끝나면 파괴됨
     public static SoundManager instance;
     private void Awake()
     {
