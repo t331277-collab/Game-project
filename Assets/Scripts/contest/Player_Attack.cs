@@ -11,6 +11,10 @@ public class Player_Attack : MonoBehaviour
     // Animator(애니메이션) 부품을 담을 변수입니다.
     Animator animator;
 
+    public AudioClip cilp1;
+    public AudioClip cilp2;
+    public AudioClip cilp3;
+
     // Start() 함수는 게임 시작 시 첫 프레임 업데이트 직전에 한 번 호출됩니다.
     void Start()
     {
@@ -63,6 +67,7 @@ public class Player_Attack : MonoBehaviour
             // 'A'키가 안 눌렸을 때만 Z, X, C키(그로기 공격)를 확인합니다.
             else if (Input.GetKeyDown(KeyCode.Z))
             {
+                SoundManager.instance.SFXPlay("Chord_a1", cilp1);
                 // 디버그 로그로 Z키 입력을 확인합니다.
                 Debug.Log("--- Z 키 감지! PerformAttack(Z) 호출! ---");
                 // '일반 공격(그로기)' 함수를 Z키 정보와 함께 호출합니다.
@@ -72,6 +77,7 @@ public class Player_Attack : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
+                SoundManager.instance.SFXPlay("Chord_a1", cilp2);
                 // 디버그 로그로 X키 입력을 확인합니다.
                 Debug.Log("--- X 키 감지! PerformAttack(X) 호출! ---");
                 PerformAttack(KeyCode.X);
@@ -79,6 +85,7 @@ public class Player_Attack : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
+                SoundManager.instance.SFXPlay("Chord_a1", cilp3);
                 // 디버그 로그로 C키 입력을 확인합니다.
                 Debug.Log("--- C 키 감지! PerformAttack(C) 호출! ---");
                 PerformAttack(KeyCode.C);
