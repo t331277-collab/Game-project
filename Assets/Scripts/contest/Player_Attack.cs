@@ -11,6 +11,7 @@ public class Player_Attack : MonoBehaviour
     // Animator(애니메이션) 부품을 담을 변수입니다.
     Animator animator;
 
+    [Header("Sound")]
     public AudioClip cilp1;
     public AudioClip cilp2;
     public AudioClip cilp3;

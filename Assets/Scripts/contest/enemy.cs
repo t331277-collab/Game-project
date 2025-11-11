@@ -10,6 +10,11 @@ public class Enemy : MonoBehaviour
     protected enum State { Patrolling, Chasing, KnockedBack, Groggy, Attacking }
     protected State currentState;
 
+    [Header("Sound")]
+    public AudioClip cilp1;
+    public AudioClip cilp2;
+    public AudioClip cilp3;
+
     [Header("SoundSkill")]
     public float Sounddelay = 1.0f;
     public float Delaytime = 0.1f;
@@ -262,12 +267,15 @@ public class Enemy : MonoBehaviour
         Debug.Log("Skill!");
 
         Debug.Log(killSequence[0]);
+        SoundManager.instance.SFXPlay("Chord_a1", cilp1);
         yield return new WaitForSecondsRealtime(Sounddelay);
 
         Debug.Log(killSequence[1]);
+        SoundManager.instance.SFXPlay("Chord_a1", cilp2);
         yield return new WaitForSecondsRealtime(Sounddelay);
 
         Debug.Log(killSequence[2]);
+        SoundManager.instance.SFXPlay("Chord_a1", cilp3);
         yield return new WaitForSecondsRealtime(Sounddelay);
 
         Time.timeScale = 1f;
