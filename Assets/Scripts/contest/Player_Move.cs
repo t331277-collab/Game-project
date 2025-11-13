@@ -49,7 +49,17 @@ public class Player_Move : MonoBehaviour
     // 매 프레임마다 호출됩니다.
     void Update()
     {
-        
+        float inputX = Input.GetAxisRaw("Horizontal");
+
+        // 움직이는 방향이 있을 때만 방향 업데이트
+        if (inputX > 0f)
+        {
+            spriteRenderer.flipX = false; // 오른쪽 바라봄
+        }
+        else if (inputX < 0f)
+        {
+            spriteRenderer.flipX = true;  // 왼쪽 바라봄
+        }
     }
 
     // 물리 업데이트 주기에 맞춰 (기본 0.02초마다) 고정적으로 호출됩니다.
@@ -60,12 +70,7 @@ public class Player_Move : MonoBehaviour
 
         if(KBCounter <= 0)
         {
-            //방향 전환
-            if (Input.GetButtonDown("Horizontal"))
-            {
-                spriteRenderer.flipX = Input.GetAxisRaw("Horizontal") == -1;
-
-            }
+            
 
             // 키보드 좌우 방향키 (A, D) 입력을 받습니다. (왼쪽 -1, 없음 0, 오른쪽 1)
             float inputX = Input.GetAxisRaw("Horizontal");
