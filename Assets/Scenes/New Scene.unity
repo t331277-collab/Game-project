@@ -136,6 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f33e1f14429cb4882a4e973c33cddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Bumper
+  cilp1: {fileID: 8300000, guid: 8d432efaca67dc048bf3b883c8fbaa69, type: 3}
+  cilp2: {fileID: 8300000, guid: 065ad7c0010b2d641826ed1a5a923393, type: 3}
+  cilp3: {fileID: 8300000, guid: c79e8d43197f6ee4da2fb4ae558c773d, type: 3}
   Sounddelay: 1
   Delaytime: 0.1
   patrolSpeed: 2
@@ -635,7 +638,7 @@ Animator:
   m_GameObject: {fileID: 1013947259}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e79f8af83ef34e543b1d73b2830fa162, type: 2}
+  m_Controller: {fileID: 9100000, guid: ce06a0177c6ba5e48b7046c2e4d78a38, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -178,6 +178,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1147e5324ce56d6478c2a3262ce6fff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::enemy
+  cilp1: {fileID: 8300000, guid: 8d432efaca67dc048bf3b883c8fbaa69, type: 3}
+  cilp2: {fileID: 8300000, guid: 065ad7c0010b2d641826ed1a5a923393, type: 3}
+  cilp3: {fileID: 8300000, guid: c79e8d43197f6ee4da2fb4ae558c773d, type: 3}
+  Sounddelay: 1
+  Delaytime: 0.1
   patrolSpeed: 2
   patrolDistance: 5
   chaseSpeed: 4
@@ -187,4 +192,3 @@ MonoBehaviour:
   knockbackMultiplier: 1
   knockbackDuration: 0.2
   groggyDuration: 3
-  player_Move: {fileID: 0}
