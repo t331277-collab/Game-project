@@ -1,56 +1,69 @@
-using UnityEngine; // À¯´ÏÆ¼ ¿£Áø API
+using UnityEngine;
 
-public class Player_Health : MonoBehaviour // ÇÃ·¹ÀÌ¾î Ã¼·Â ¹× ÇÇ°İ ¹İÀÀ Ã³¸®
+public class Player_Health : MonoBehaviour
 {
     [Header("Health")]
-    public float health = 3.0f; // ÇöÀç Ã¼·Â
+    public float health = 3.0f; 
 
-    [Header("Knockback")]
-    [SerializeField] float knockbackForce = 2.0f; // ¼öÆò ³Ë¹é ¼¼±â
-    [SerializeField] float knockupForce = 0.5f;   // À§·Î »ìÂ¦ Æ¨±è(0ÀÌ¸é ºñÈ°¼º)
+    // [ì‚­ì œ!] ì´ ìŠ¤í¬ë¦½íŠ¸ëŠ” ë„‰ë°± 'í˜'ì„ ì§ì ‘ ê´€ë¦¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+    // [SerializeField] float knockbackForce = 2.0f; 
+    // [SerializeField] float knockupForce = 0.5f;   
 
-    Rigidbody2D rgd; // Ä³½ÌµÈ Rigidbody2D
+    Rigidbody2D rgd; 
 
-    void Awake() // ¿ÀºêÁ§Æ®°¡ È°¼ºÈ­µÉ ¶§ 1È¸ È£Ãâ
+    // [ì¶”ê°€!] Player_Move ìŠ¤í¬ë¦½íŠ¸(ì‹œìŠ¤í…œ A)ì— ì ‘ê·¼í•˜ê¸° ìœ„í•œ ë³€ìˆ˜
+    private Player_Move playerMove;
+
+    void Awake() 
     {
-        rgd = GetComponent<Rigidbody2D>(); // µ¿ÀÏ ¿ÀºêÁ§Æ®ÀÇ Rigidbody2D °¡Á®¿À±â
+        rgd = GetComponent<Rigidbody2D>(); 
+        
+        // [ì¶”ê°€!] Player_Move ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì°¾ì•„ì„œ ë³€ìˆ˜ì— ì €ì¥
+        playerMove = GetComponent<Player_Move>();
     }
 
-    // °¡ÇØÀÚ(¶Ç´Â Ãæµ¹Á¡) ±âÁØ ¹İ´ë ¹æÇâÀ¸·Î ³Ë¹é
-    public void Player_TakeDamaged(Vector2 fromWorldPos) // °¡ÇØÀÚ/Á¢Á¡ ¿ùµå ÁÂÇ¥
+    // [ìˆ˜ì •!] ì´ í•¨ìˆ˜ëŠ” ì´ì œ 'ì‹œìŠ¤í…œ A' (KBCounter)ë¥¼ í™œì„±í™”ì‹œí‚µë‹ˆë‹¤.
+    public void Player_TakeDamaged(Vector2 fromWorldPos) 
     {
-        health -= 1f; // Ã¼·Â 1 °¨¼Ò
+        // 1. ì²´ë ¥ 1 ê°ì†Œ
+        health -= 1f;
 
-        // ¹Ğ¾î³¾ ¹æÇâ = (ÇÃ·¹ÀÌ¾î - °¡ÇØÀÚ) Á¤±ÔÈ­
-        Vector2 dir = ((Vector2)transform.position - fromWorldPos).normalized;
+        // 2. Player_Move ìŠ¤í¬ë¦½íŠ¸ê°€ ìˆëŠ”ì§€ í™•ì¸ (ì˜¤ë¥˜ ë°©ì§€)
+        if (playerMove == null)
+        {
+            Debug.LogError("Player_Healthê°€ Player_Move ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤!");
+            return;
+        }
 
-        // °ÅÀÇ °°Àº À§Ä¡¸é ¾ÈÀüÇÏ°Ô 'µÚÂÊ(¹Ù¶óº¸´Â ¹İ´ë)'À¸·Î ´ëÃ¼
-        if (dir.sqrMagnitude < 0.0001f)
-            dir = -transform.right;
+        // 3. [í•µì‹¬!] Player_Moveì˜ ë„‰ë°± íƒ€ì´ë¨¸ë¥¼ í™œì„±í™”
+        playerMove.KBCounter = playerMove.KBToalTime;
 
-        // ±âÁ¸ X ¼Óµµ Á¦°Å(³Ë¹é ±ò²û), Y´Â À¯Áö(Áß·Â/Á¡ÇÁ º¸Á¸)
-        rgd.linearVelocity = new Vector2(0f, rgd.linearVelocity.y);
-
-        // ÀÓÆŞ½º º¤ÅÍ = µÚ ¹æÇâ + À§ ¹æÇâ(¿É¼Ç)
-        Vector2 impulse = dir * knockbackForce + Vector2.up * knockupForce;
-
-        // ÀÓÆŞ½º Àû¿ë(ÇÑ ¹ø¿¡ Æ¨±âµí ¹Ğ±â)
-        rgd.AddForce(impulse, ForceMode2D.Impulse);
-        //rgd.AddForce(Vector2.left * 100f, ForceMode2D.Impulse);
+        // 4. [í•µì‹¬!] ë„‰ë°± ë°©í–¥ ê³„ì‚° ë° 'Player_Move' ë³€ìˆ˜ì— ì €ì¥
+        // (í”Œë ˆì´ì–´ Xìœ„ì¹˜ - ê³µê²©ì Xìœ„ì¹˜)
+        if (transform.position.x <= fromWorldPos.x)
+        {
+            // ê³µê²©ìê°€ ì˜¤ë¥¸ìª½ì— ìˆìŒ -> ì™¼ìª½ìœ¼ë¡œ ë„‰ë°±
+            playerMove.KnockFromRight = true; 
+        }
+        else
+        {
+            // ê³µê²©ìê°€ ì™¼ìª½ì— ìˆìŒ -> ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë„‰ë°±
+            playerMove.KnockFromRight = false;
+        }
+        
+        // [ì‚­ì œ!] ì‹œìŠ¤í…œ B (AddForce) ì½”ë“œëŠ” ëª¨ë‘ ì‚­ì œí•©ë‹ˆë‹¤.
     }
 
-    // ºñ-Æ®¸®°Å Ãæµ¹ Äİ¹é
+    // [ìˆ˜ì •!] ì´ í•¨ìˆ˜ëŠ” ë¹„ì›Œë‘¡ë‹ˆë‹¤.
+    // ëª¬ìŠ¤í„°ì™€ì˜ ì¶©ëŒ ì²˜ë¦¬ëŠ” 'Enemy_Bumper.cs'ê°€ ì „ë‹´í•´ì•¼ 
+    // ë„‰ë°±ì´ ë‘ ë²ˆ ì¤‘ë³µìœ¼ë¡œ ì‹¤í–‰ë˜ëŠ” ê²ƒì„ ë§‰ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.CompareTag("Enemy")) // Enemy ÅÂ±×¿Í Ãæµ¹ ½Ã
+        /*
+        if (collision.collider.CompareTag("Enemy")) 
         {
-            Vector2 hitPoint = collision.GetContact(0).point; // Ã¹ ¹øÂ° Á¢ÃË ÁöÁ¡
-            Player_TakeDamaged(hitPoint); // Á¢Á¡ ±âÁØ ¹İ´ë ¹æÇâÀ¸·Î ³Ë¹é ¹× µ¥¹ÌÁö
-
-            // ´ë¾È: °¡ÇØÀÚ Äİ¶óÀÌ´õÀÇ Áß½É ±âÁØÀ¸·Î ³Ë¹é
-            // Player_TakeDamaged(collision.collider.bounds.center);
-
-            Debug.Log("Collider Enemy");
+            // ì´ ì½”ë“œëŠ” Enemy_Bumper.csê°€ ëŒ€ì‹  ì²˜ë¦¬í•¨
         }
+        */
     }
 }

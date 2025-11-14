@@ -1,91 +1,129 @@
 using UnityEngine;
 
-// [핵심!] MonoBehaviour가 아닌 'Enemy' (부모 스크립트)를 상속받습니다.
-public class Enemy_Attacker : Enemy
+// [핵심] 'Enemy' (부모)를 상속받아 모든 기본 기능(AI, 콤보, 넉백 등)을 물려받습니다.
+public class Enemy_Warrior : Enemy
 {
-    // --- 'Attacker' 전용 변수들 ---
-    [Header("Attacker Config")]
-    public float attackRange = 2f;      // 이 범위 안에 들어오면 멈춰서 공격
-    public float attackDuration = 1.0f; // 공격 모션(멈춤)이 지속되는 시간
-    public Transform attackPos;         // Player_Attack처럼 공격 히트박스 위치
-    public Vector2 attackBoxSize;       // 공격 히트박스 크기
-    private float attackTimer;          // 공격 시간(쿨타임) 재는 타이머
+    // --- Warrior 전용 변수들 ---
+    [Header("Warrior Config")]
+    public float attackRange = 2f;      // 이 범위 안에 들어오면 '공격 준비' 시작
+
+    // [추가!] 공격 딜레이 (플레이어가 보고 피할 수 있는 시간)
+    public float attackDelay = 1.0f;    
+
+    // [추가!] 공격 판정이 활성화되는 시간 (0.5초)
+    public float attackActiveTime = 0.5f; 
+
+    // [복원!] 딜레이 후 실제 공격 판정이 생길 위치
+    public Transform attackPos;         
+    // [복원!] 딜레이 후 실제 공격 판정의 크기
+    public Vector2 attackBoxSize;       
     
-    // [핵심!] 부모(Enemy.cs)의 'FixedUpdate' 함수를 덮어씁니다.
+    private float attackTimer;          // 공격 딜레이 / 활성 시간을 잴 타이머
+    
+    // [추가!] 딜레이가 끝나고 공격을 '이미 실행했는지' 확인하는 스위치
+    private bool hasAttackedThisCycle = false;
+
+    // -------------------------------------------------------------------------
+
+    // [수정!] 부모(Enemy.cs)의 'FixedUpdate' 함수를 덮어씁니다.
     protected override void FixedUpdate()
     {
-        // 'base.FixedUpdate()'를 호출하여, 부모의 FixedUpdate 로직
-        // (Patrol, KnockBack, Groggy 상태 처리)을 그대로 실행합니다.
+        // 1. 부모(Enemy)의 기본 뇌를 먼저 실행합니다. (순찰, 그로기, 넉백 처리 등)
         base.FixedUpdate();
 
-        // [추가!] 'Attacking' 상태일 때의 로직을 여기에 추가합니다.
+        // 2. Warrior만의 추가 로직: '공격 중' (즉, 딜레이 중)일 때의 행동
         if (currentState == State.Attacking)
         {
-            // (부모는 멈추기만 했지만, 여기서는 타이머까지 돌립니다)
+            // 공격 중에는 멈춤
+            rgd.linearVelocity = Vector2.zero;
+            
+            // 딜레이/공격 타이머를 감소시킴
             attackTimer -= Time.fixedDeltaTime;
-            if (attackTimer <= 0)
+
+            // [핵심 1] 딜레이가 끝나고, 아직 공격을 실행하지 않았다면
+            if (attackTimer <= 0 && !hasAttackedThisCycle)
             {
-                // 공격 시간(1초)이 끝나면 다시 추격
+                // [공격!]
+                PerformAttack(); // (실제 히트박스 판정 실행)
+
+                // "공격 실행했음" 스위치를 켬
+                hasAttackedThisCycle = true;
+                
+                // 타이머를 '공격 활성화 시간(0.5초)'으로 재설정
+                attackTimer = attackActiveTime; 
+            }
+            // [핵심 2] 공격 활성화 시간(0.5초)마저 다 지났다면
+            else if (attackTimer <= 0 && hasAttackedThisCycle)
+            {
+                // 공격 사이클 완전 종료
+                // 다시 '추격' 상태로 돌아가서 플레이어를 쫓음
                 currentState = State.Chasing; 
             }
         }
     }
 
-    // [핵심!] 부모(Enemy.cs)의 'PerformChaseLogic' 함수를 덮어씁니다.
-    // 'Bumper'는 그냥 추격하지만, 'Attacker'는 멈춰서 공격합니다.
+    // [수정!] 'PerformChaseLogic' (추격 뇌)를 덮어씁니다.
     protected override void PerformChaseLogic()
     {
         if (playerTransform == null) return;
 
-        // 플레이어와의 거리를 잽니다.
         float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
 
-        // 1. 만약 공격 범위 안이고, 넉백/그로기 중이 아니라면
-        if (distanceToPlayer <= attackRange &&
-            currentState != State.KnockedBack && currentState != State.Groggy)
+        // 1. [수정!] 공격 범위 안이고, "공격 중(딜레이 포함)"이 아닐 때만
+        if (distanceToPlayer <= attackRange && currentState == State.Chasing)
         {
-            // [공격!]
-            currentState = State.Attacking;     // 1. 상태를 '공격 중'으로 변경
-            attackTimer = attackDuration;       // 2. 공격 타이머(1초) 시작
-            PerformAttack();                    // 3. 실제 공격(히트박스) 실행
+            // [공격 준비!]
+            currentState = State.Attacking;     // 1. 상태를 '공격 중'으로 변경 (이동 멈춤)
+            
+            // 2. 타이머를 '공격 딜레이(1초)'로 설정
+            attackTimer = attackDelay;          
+            
+            // 3. "아직 공격 안했음" 스위치를 켬
+            hasAttackedThisCycle = false;       
+
+            // (이때는 PerformAttack()을 호출하지 않고 딜레이만 시작!)
         }
-        // 2. 공격 범위 밖이라면
-        else
+        // 2. 공격 범위 밖이거나, 공격/넉백/그로기 중일 때
+        else if (currentState == State.Chasing) // (공격 중일 땐 멈춰야 하므로)
         {
             // [추격!]
-            // 'base.PerformChaseLogic()'를 호출하여 부모의 "그냥 추격" 기능을 실행합니다.
-            base.PerformChaseLogic(); 
+            base.PerformChaseLogic(); // 부모의 "그냥 추격" 기능 실행
         }
     }
 
-    // [추가!] 'Attacker' 전용 공격(히트박스) 함수
+    // [복원!] 딜레이가 끝난 후 호출되는, 실제 공격(히트박스) 함수
     private void PerformAttack()
     {
-        Debug.Log("Attacker 몬스터 공격!");
+        Debug.Log("Attacker 몬스터 공격! (히트박스 활성화!)");
         
-        // 1. 몬스터의 공격 히트박스 생성
+        // 1. 설정된 위치(attackPos)에 네모난 '그물'을 던집니다.
         Collider2D[] hitPlayers = Physics2D.OverlapBoxAll(attackPos.position, attackBoxSize, 0);
 
         foreach (Collider2D playerCollider in hitPlayers)
         {
-            // 2. "Player" 태그를 가진 콜라이더를 찾음
+            // 2. 그물에 걸린 게 'Player'라면
             if (playerCollider.CompareTag("Player"))
             {
-                // 3. 플레이어의 Player_Health 스크립트를 찾음
+                // 3. 플레이어의 체력 스크립트를 가져와서
                 Player_Health playerHealth = playerCollider.GetComponent<Player_Health>();
                 if (playerHealth != null)
                 {
-                    // 4. 플레이어의 Player_TakeDamaged 함수를 호출 (넉백 방향 계산을 위해 내 위치 전달)
+                    // 4. 데미지를 주고 넉백시킵니다. 
                     playerHealth.Player_TakeDamaged(transform.position);
-                    break;
+                    break; 
                 }
             }
         }
     }
 
-    // [추가!] 공격 범위를 씬에서 노란색 네모로 볼 수 있게 함
+    // [복원!] 씬 화면에서 공격 범위를 빨간 네모로 보여줍니다.
     private void OnDrawGizmos()
     {
+        // 씬에서 공격 '범위'를 보기 쉽게 노란색 원으로 표시
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        
+        // 씬에서 공격 '히트박스'를 빨간색 네모로 표시
         if (attackPos != null)
         {
             Gizmos.color = Color.red;
