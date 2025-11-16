@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Sound")]
     public AudioClip countThree;    // 3초 카운트 사운드
+    public AudioClip Main_BGM;    // Main_BGM start
 
     private void Awake()
     {
@@ -20,6 +21,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //노래를 잠시 멈춤
+    public void PauseMain_BGM()
+    {
+        Debug.Log("Stop");
+        SoundManager.instance.PauseBGM();
+    }
+
+    //노래 다시 시작
+    public void ResumeMain_BGM()
+    {
+        Debug.Log("Resume");
+        SoundManager.instance.ResumeBGM();
+    }
+
     // Ingame_UI에서 호출할 함수
     public void StartGame()
     {
@@ -28,6 +43,10 @@ public class GameManager : MonoBehaviour
 
     private System.Collections.IEnumerator StartGameRoutine()
     {
+        //약간의 텀
+
+        yield return new WaitForSecondsRealtime(0.5f);
+
         // 1) 카운트 사운드 재생
         if (countThree != null)
         {
@@ -39,5 +58,6 @@ public class GameManager : MonoBehaviour
         // 2) 카운트 끝난 뒤 게임 시작
         Time.timeScale = 1f;
         Debug.Log("Game Start!!");
+        SoundManager.instance.PlayBGM(Main_BGM);
     }
 }

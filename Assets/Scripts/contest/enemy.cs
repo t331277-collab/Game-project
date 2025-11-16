@@ -285,6 +285,9 @@ public class Enemy : MonoBehaviour
 
         //모든 음악재생이 끝났으니 시간의 흐름을 원래대로 되돌림
         Time.timeScale = 1f;
+
+        //그리고 음악 다시 재생
+        GameManager.Instance.ResumeMain_BGM();
     }
 
 

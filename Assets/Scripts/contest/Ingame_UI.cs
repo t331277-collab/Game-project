@@ -16,8 +16,24 @@ public class Ingame_UI : MonoBehaviour
         Time.timeScale = 0f;
     }
 
+    public void OnClickStopListenMusic()
+    {
+        SoundManager.instance.StopBGM();
+
+        isMusicPlaying = false;
+
+        if (listenMusicButton != null)
+            listenMusicButton.interactable = true;
+    }
+
     public void OnClickGameStartButton()
     {
+        if(isMusicPlaying)
+        {
+            SoundManager.instance.StopBGM();
+        }
+        
+
         GameManager.Instance.StartGame();
 
         gameObject.SetActive(false);
@@ -39,7 +55,7 @@ public class Ingame_UI : MonoBehaviour
         if (listenMusicButton != null)
             listenMusicButton.interactable = false;
 
-        SoundManager.instance.SFXPlay("Chord_a1", tutorial_bgm);
+        SoundManager.instance.PlayBGM(tutorial_bgm);
 
         // 노래 길이만큼 기다렸다가 다시 활성화
         StartCoroutine(EnableListenButtonAfterMusic());
@@ -47,6 +63,9 @@ public class Ingame_UI : MonoBehaviour
 
     private System.Collections.IEnumerator EnableListenButtonAfterMusic()
     {
+
+        
+
         if (tutorial_bgm != null)
         {
             // ★ timeScale의 영향을 안 받는 실시간 대기

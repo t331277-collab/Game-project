@@ -55,7 +55,7 @@ public class Player_Attack : MonoBehaviour
         // 쿨타임이 0 이하일 때 (공격 가능)
         if (curTime <= 0)
         {
-            // [기획 변경] 'A'키(처형) 입력을 먼저 확인합니다.
+            // [기획 변경] 'S'키(처형) 입력을 먼저 확인합니다.
             if (Input.GetKeyDown(KeyCode.S))
             {
                 // 디버그 로그로 A키 입력을 확인합니다.
@@ -93,8 +93,10 @@ public class Player_Attack : MonoBehaviour
                 curTime = coolTime;
             }
             //SoundSkill 구현
+            // GamaeManager 의 Instance 함수를 호출해서 노래를 잠시 멈춤
             else if (Input.GetKeyDown(KeyCode.LeftShift))
             {
+                GameManager.Instance.PauseMain_BGM();
                 Debug.Log("leftshift");
                 SoundSkill();
             }
@@ -126,6 +128,8 @@ public class Player_Attack : MonoBehaviour
                 enemyScript.SoundSkillDamaged();
             }
         }
+
+        
     }
 
     // [수정!] Z, X, C 키를 눌렀을 때 호출되는 '일반 공격 (그로기)' 함수입니다.
