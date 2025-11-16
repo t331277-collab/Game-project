@@ -4,51 +4,17 @@ public class SoundManager : MonoBehaviour
 {
     //호출하고 삭제하기 쉬운 싱글톤 형식 즉 SoundManager가 호출되면 음악을 재생할때 생성되고 음악이 끝나면 파괴됨
     public static SoundManager instance;
-
-    //bgm 전용
-    private AudioSource bgmSource;
     private void Awake()
     {
         if(instance == null)
         {
             instance = this;
             DontDestroyOnLoad(instance);
-
-            bgmSource = gameObject.AddComponent<AudioSource>();
-            bgmSource.loop= true;
         }
         else
         {
             Destroy(gameObject);
         }
-    }
-
-    public void OnPlayerConnected(AudioClip clip, float volume = 1f, bool loop = true)
-    {
-        if(clip== null) { return; }
-
-        bgmSource.clip = clip;
-        bgmSource.volume = volume;
-        bgmSource.loop = loop;
-        bgmSource.Play();
-    }
-
-    public void StopBGM()
-    {
-        if(bgmSource!=null && bgmSource.isPlaying) 
-        {
-            bgmSource.Stop();
-        }
-    }
-
-    public void PauseBGM()
-    {
-        if (bgmSource != null) bgmSource.Pause();
-    }
-
-    public void ResumeBGM()
-    {
-        if (bgmSource != null) bgmSource.UnPause();
     }
 
     public void SFXPlay(string sfxName, AudioClip clip)
