@@ -1998,6 +1998,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4bbdda84ce05343b25d3ee22d271b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  Hit: 0
+  Perfect: 0.1
+  Good: 0.2
+  Normal: 0.3
+  beatInterval: 1.059
+  firstBeatTime: 1.059
   countThree: {fileID: 8300000, guid: ecfe360c9f670f54397ab373034a67b6, type: 3}
   Main_BGM: {fileID: 8300000, guid: 63304410331d5a64da21533243479846, type: 3}
 --- !u!4 &1649282197

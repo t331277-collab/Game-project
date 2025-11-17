@@ -68,6 +68,7 @@ public class Player_Attack : MonoBehaviour
             // 'A'키가 안 눌렸을 때만 Z, X, C키(그로기 공격)를 확인합니다.
             else if (Input.GetKeyDown(KeyCode.Z))
             {
+                GameManager.Instance.Hit_ZXC();
                 SoundManager.instance.SFXPlay("Chord_a1", cilp1);
                 // 디버그 로그로 Z키 입력을 확인합니다.
                 Debug.Log("--- Z 키 감지! PerformAttack(Z) 호출! ---");
@@ -78,6 +79,7 @@ public class Player_Attack : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.X))
             {
+                GameManager.Instance.Hit_ZXC();
                 SoundManager.instance.SFXPlay("Chord_a1", cilp2);
                 // 디버그 로그로 X키 입력을 확인합니다.
                 Debug.Log("--- X 키 감지! PerformAttack(X) 호출! ---");
@@ -86,6 +88,7 @@ public class Player_Attack : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
+                GameManager.Instance.Hit_ZXC();
                 SoundManager.instance.SFXPlay("Chord_a1", cilp3);
                 // 디버그 로그로 C키 입력을 확인합니다.
                 Debug.Log("--- C 키 감지! PerformAttack(C) 호출! ---");
