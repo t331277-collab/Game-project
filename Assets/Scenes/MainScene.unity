@@ -2050,6 +2050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4296afdd20035004c96460086904d143, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  mainMixer: {fileID: 24100000, guid: cf05a75fc89753b4bbfff345ca335485, type: 2}
 --- !u!4 &1655868387
 Transform:
   m_ObjectHideFlags: 0
