@@ -119,4 +119,21 @@ public class SoundManager : MonoBehaviour
         audioSource.Play();
         Destroy(go, clip.length);
     }
+
+    public void StopSFX(string sfxName)
+    {
+        string objName = sfxName + "Sound";
+        GameObject sfxObj = GameObject.Find(objName);
+
+        if (sfxObj != null)
+        {
+            AudioSource src = sfxObj.GetComponent<AudioSource>();
+            if (src != null)
+            {
+                src.Stop();          // 소리 멈추고
+            }
+
+            Destroy(sfxObj);         // GameObject 삭제
+        }
+    }
 }

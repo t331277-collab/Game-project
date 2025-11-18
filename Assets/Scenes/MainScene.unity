@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df16a989ca3bdb4ab3fb480d51a52ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ingame_UI
-  tutorial_bgm: {fileID: 8300000, guid: 63304410331d5a64da21533243479846, type: 3}
+  tutorial_bgm: {fileID: 8300000, guid: 44ca67fb69fd7be4da4f8d7969b1bbfb, type: 3}
   listenMusicButton: {fileID: 1447253822}
 --- !u!1 &666973523
 GameObject:
@@ -968,7 +968,7 @@ MonoBehaviour:
   cilp1: {fileID: 8300000, guid: 8d432efaca67dc048bf3b883c8fbaa69, type: 3}
   cilp2: {fileID: 8300000, guid: 065ad7c0010b2d641826ed1a5a923393, type: 3}
   cilp3: {fileID: 8300000, guid: c79e8d43197f6ee4da2fb4ae558c773d, type: 3}
-  coolTime: 0.7
+  coolTime: 0.3
   pos: {fileID: 1192120229}
   boxSize: {x: 9.75, y: 11.92}
 --- !u!95 &1013947266
@@ -1400,6 +1400,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
+      propertyPath: cassete_start_end
+      value: 
+      objectReference: {fileID: 8300000, guid: 18635f14be9604d4ba4852b692972119, type: 3}
     - target: {fileID: 7367258260276748968, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: m_Name
       value: Warrior (1)
@@ -2002,10 +2006,10 @@ MonoBehaviour:
   Perfect: 0.1
   Good: 0.2
   Normal: 0.3
-  beatInterval: 1.059
-  firstBeatTime: 1.059
+  beatInterval: 0.3529
+  firstBeatTime: 0
   countThree: {fileID: 8300000, guid: ecfe360c9f670f54397ab373034a67b6, type: 3}
-  Main_BGM: {fileID: 8300000, guid: 63304410331d5a64da21533243479846, type: 3}
+  Main_BGM: {fileID: 8300000, guid: 44ca67fb69fd7be4da4f8d7969b1bbfb, type: 3}
 --- !u!4 &1649282197
 Transform:
   m_ObjectHideFlags: 0

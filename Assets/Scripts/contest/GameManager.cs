@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public float firstBeatTime = 1.05f; // 첫 비트가 오는 시간 (SongTime 기준)
 
     double songStartDspTime;  // 곡이 시작한 dspTime
+    double PausedspTime;
 
     // 3카운트 후 BGM이 시작할 때를 0초로 잡는 노래 시간
     public double SongTime => AudioSettings.dspTime - songStartDspTime;
@@ -125,6 +126,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Stop");
         SoundManager.instance.PauseBGM();
+        //정지한 시간을 저장
+        PausedspTime = SongTime;
     }
 
     // 노래 다시 시작
@@ -132,6 +135,9 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Resume");
         SoundManager.instance.ResumeBGM();
+
+        //다시 재생시 원래 시간대로 흘러감
+        songStartDspTime = AudioSettings.dspTime - PausedspTime;
     }
 
     // Ingame_UI에서 호출할 함수

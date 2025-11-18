@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour
     public AudioClip cilp2; //chord_a2
     public AudioClip cilp3; //chord_a3
 
+    public AudioClip cassete_start_end; //카세트 딸깍~ 소리
+
     [Header("SoundSkill")]
     public float Sounddelay = 1.0f;
     public float Delaytime = 0.1f;
@@ -267,6 +269,9 @@ public class Enemy : MonoBehaviour
         //시간의 흐름을 Delaytime으로 조정
         Time.timeScale = Delaytime;
 
+        SoundManager.instance.SFXPlay("cassete_start", cassete_start_end);
+        yield return new WaitForSecondsRealtime(Sounddelay);
+
         Debug.Log("Skill!");
 
         //현재 enemy의 killSequence[0] 는 Z 임 따라서 Z 에 맞는 음악 재생
@@ -285,6 +290,9 @@ public class Enemy : MonoBehaviour
 
         //모든 음악재생이 끝났으니 시간의 흐름을 원래대로 되돌림
         Time.timeScale = 1f;
+
+        SoundManager.instance.SFXPlay("cassete_end", cassete_start_end);
+        yield return new WaitForSecondsRealtime(Sounddelay);
 
         //그리고 음악 다시 재생
         GameManager.Instance.ResumeMain_BGM();
