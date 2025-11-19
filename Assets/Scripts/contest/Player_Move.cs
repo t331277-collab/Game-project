@@ -6,7 +6,10 @@ public class Player_Move : MonoBehaviour
 
 
 {
+    //하강 중력 변수
+    public float fallMultiplier = 2.5f;     // 내려갈 때 중력 강화 배율
     
+
     // [인스펙터 노출] 플레이어의 좌우 이동 속도를 5.0f로 기본 설정합니다.
     public float speed = 5.0f;
     // [인스펙터 노출] 플레이어의 점프 힘을 7.0f로 기본 설정합니다.
@@ -87,16 +90,25 @@ public class Player_Move : MonoBehaviour
 
             // 매 프레임 'Jump()' 함수를 호출해서 스페이스바 입력을 감시합니다.
             Jump();
+
+            if (rgd.linearVelocity.y < 0) // 떨어지는 중
+            {
+                rgd.linearVelocity += Vector2.up * Physics2D.gravity.y // 중력배율
+                                      * (fallMultiplier - 1f)
+                                      * Time.fixedDeltaTime;
+            }
+
+
         }
         else
         {
             if(KnockFromRight == true)
             {
-                rgd.linearVelocity = new Vector2(-KBForce, KBForce * 0.5f); // x, y 벡터 고치면 원하는 방향으로 날아가게 변경 가능
+                rgd.linearVelocity = new Vector2(-KBForce, KBForce * 0.2f); // x, y 벡터 고치면 원하는 방향으로 날아가게 변경 가능
             }
             if (KnockFromRight == false)
             {
-                rgd.linearVelocity = new Vector2(KBForce, KBForce * 0.5f);
+                rgd.linearVelocity = new Vector2(KBForce, KBForce * 0.2f);
             }
 
             KBCounter -= Time.deltaTime;
@@ -108,29 +120,25 @@ public class Player_Move : MonoBehaviour
         
     }
 
-    
+
 
     // 점프 기능을 담당하는 함수입니다.
     void Jump()
     {
-        // 만약 스페이스바가 "눌리는 그 순간"이라면,
-        if (Input.GetKeyDown(KeyCode.Space))
+        // 스페이스를 막 눌렀고, 땅에 있을 때만 점프
+        if (Input.GetKeyDown(KeyCode.Space) && !isJump)
         {
-            
-            // 그리고 "isJump가 false가 아니라면" (즉, !isJump = 땅에 있다면!)
-            if (!isJump)
-            {
-                // 유니티 콘솔 창에 "jump"라고 테스트 로그를 찍습니다.
-                Debug.Log("jump");
-                // "현재 점프 중" 상태(true)로 바꿔서 공중에서 또 점프하는 것을 막습니다.
-                isJump = true;
-                // 'rgd'에 '위쪽(Vector2.up) * 점프힘' 만큼 '순간적인 힘(Impulse)'을 가합니다. (점프!)
-                rgd.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
-            }
+            Debug.Log("jump");
+            isJump = true;
+
+            // 현재 x 속도는 유지하고, y 속도만 '점프 속도'로 덮어쓰기
+            Vector2 v = rgd.linearVelocity;
+            v.y = jump;          // 이 값을 조절해서 점프 높이/시간을 세밀하게 조정
+            rgd.linearVelocity = v;
         }
     }
 
-    
+
     // 이 오브젝트의 콜라이더가 다른 콜라이더(Collision2D other)와 "부딪히는 순간" 실행됩니다.
     private void OnCollisionEnter2D(Collision2D other)
     {
