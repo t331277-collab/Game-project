@@ -12,17 +12,17 @@ public class GameManager : MonoBehaviour
     public float Normal = 0.10f;  // 100ms
 
     [Header("Beat Settings")]
-    public float beatInterval = 1.05f; // ºñÆ® °£°İ (1.05ÃÊ¸¶´Ù ³ëÆ®/¹Ú)
-    public float firstBeatTime = 1.05f; // Ã¹ ºñÆ®°¡ ¿À´Â ½Ã°£ (SongTime ±âÁØ)
+    public float beatInterval = 1.05f; // ë¹„íŠ¸ ê°„ê²© (1.05ì´ˆë§ˆë‹¤ ë…¸íŠ¸/ë°•)
+    public float firstBeatTime = 1.05f; // ì²« ë¹„íŠ¸ê°€ ì˜¤ëŠ” ì‹œê°„ (SongTime ê¸°ì¤€)
 
-    double songStartDspTime;  // °îÀÌ ½ÃÀÛÇÑ dspTime
+    double songStartDspTime;  // ê³¡ì´ ì‹œì‘í•œ dspTime
     double PausedspTime;
 
-    // 3Ä«¿îÆ® ÈÄ BGMÀÌ ½ÃÀÛÇÒ ¶§¸¦ 0ÃÊ·Î Àâ´Â ³ë·¡ ½Ã°£
+    // 3ì¹´ìš´íŠ¸ í›„ BGMì´ ì‹œì‘í•  ë•Œë¥¼ 0ì´ˆë¡œ ì¡ëŠ” ë…¸ë˜ ì‹œê°„
     public double SongTime => AudioSettings.dspTime - songStartDspTime;
 
     [Header("Sound")]
-    public AudioClip countThree;    // 3ÃÊ Ä«¿îÆ® »ç¿îµå
+    public AudioClip countThree;    // 3ì´ˆ ì¹´ìš´íŠ¸ ì‚¬ìš´ë“œ
     public AudioClip Main_BGM;      // Main_BGM start
 
     private void Awake()
@@ -40,41 +40,41 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        // ÇöÀç °æ°úµÈ ½Ã°£ Ãâ·Â
+        // í˜„ì¬ ê²½ê³¼ëœ ì‹œê°„ ì¶œë ¥
         // Debug.Log($"SongTime = {SongTime:F3}");
 
-        if (!Hit) return;  // Hit ¾Æ´Ï¸é ¹Ù·Î ¸®ÅÏ
+        if (!Hit) return;  // Hit ì•„ë‹ˆë©´ ë°”ë¡œ ë¦¬í„´
 
-        Hit = false;       // ÇÑ ¹ø¸¸ ÆÇÁ¤ÇÏ°í ÃÊ±âÈ­
+        Hit = false;       // í•œ ë²ˆë§Œ íŒì •í•˜ê³  ì´ˆê¸°í™”
 
         JudgeHit(SongTime);
     }
 
     
-    /// SongTime(³ë·¡ ÁøÇà ½Ã°£) ±âÁØÀ¸·Î °¡Àå °¡±î¿î ºñÆ®¸¦ Ã£°í
-    /// ±× ¿ÀÂ÷·Î Perfect / Good / Normal / Bad ÆÇÁ¤
+    /// SongTime(ë…¸ë˜ ì§„í–‰ ì‹œê°„) ê¸°ì¤€ìœ¼ë¡œ ê°€ì¥ ê°€ê¹Œìš´ ë¹„íŠ¸ë¥¼ ì°¾ê³ 
+    /// ê·¸ ì˜¤ì°¨ë¡œ Perfect / Good / Normal / Bad íŒì •
     
     void JudgeHit(double songTime)
     {
         double t = songTime;
 
-        // Ã¹ ºñÆ® ±âÁØÀ¸·Î ÇöÀç ½Ã°£ÀÌ ¾î´À Á¤µµ ¶³¾îÁ® ÀÖ´ÂÁö
+        // ì²« ë¹„íŠ¸ ê¸°ì¤€ìœ¼ë¡œ í˜„ì¬ ì‹œê°„ì´ ì–´ëŠ ì •ë„ ë–¨ì–´ì ¸ ìˆëŠ”ì§€
         double local = t - firstBeatTime;
 
-        // ¾ÆÁ÷ Ã¹ ºñÆ®µµ ¿À±â Àü¿¡ ³Ê¹« ºü¸£°Ô ÃÆÀ¸¸é Bad Ã³¸®
+        // ì•„ì§ ì²« ë¹„íŠ¸ë„ ì˜¤ê¸° ì „ì— ë„ˆë¬´ ë¹ ë¥´ê²Œ ì³¤ìœ¼ë©´ Bad ì²˜ë¦¬
         if (local < -Normal)
         {
             Debug.Log($"Bad (too early), SongTime={t:F3}");
             return;
         }
 
-        // °¡Àå °¡±î¿î ºñÆ® ÀÎµ¦½º °è»ê (0, 1, 2, 3, ...)
+        // ê°€ì¥ ê°€ê¹Œìš´ ë¹„íŠ¸ ì¸ë±ìŠ¤ ê³„ì‚° (0, 1, 2, 3, ...)
         int beatIndex = Mathf.RoundToInt((float)(local / beatInterval));
 
-        // ±× ºñÆ®°¡ ½ÇÁ¦·Î ¹ß»ıÇÏ´Â ½Ã°£
+        // ê·¸ ë¹„íŠ¸ê°€ ì‹¤ì œë¡œ ë°œìƒí•˜ëŠ” ì‹œê°„
         double nearestBeatTime = firstBeatTime + beatIndex * beatInterval;
 
-        // ÇöÀç ½Ã°£°ú ºñÆ® ½Ã°£ÀÇ Â÷ÀÌ (¾ç¼ö: ´Ê°Ô, À½¼ö: ºü¸£°Ô)
+        // í˜„ì¬ ì‹œê°„ê³¼ ë¹„íŠ¸ ì‹œê°„ì˜ ì°¨ì´ (ì–‘ìˆ˜: ëŠ¦ê²Œ, ìŒìˆ˜: ë¹ ë¥´ê²Œ)
         double delta = t - nearestBeatTime;
         double absDelta = System.Math.Abs(delta);
 
@@ -115,32 +115,32 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Å°/¹öÆ°¿¡¼­ ÀÌ ÇÔ¼ö¸¦ È£ÃâÇØÁÖ¸é µÊ
+    // í‚¤/ë²„íŠ¼ì—ì„œ ì´ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•´ì£¼ë©´ ë¨
     public void Hit_ZXC()
     {
         Hit = true;
     }
 
-    // ³ë·¡¸¦ Àá½Ã ¸ØÃã
+    // ë…¸ë˜ë¥¼ ì ì‹œ ë©ˆì¶¤
     public void PauseMain_BGM()
     {
         Debug.Log("Stop");
         SoundManager.instance.PauseBGM();
-        //Á¤ÁöÇÑ ½Ã°£À» ÀúÀå
+        //ì •ì§€í•œ ì‹œê°„ì„ ì €ì¥
         PausedspTime = SongTime;
     }
 
-    // ³ë·¡ ´Ù½Ã ½ÃÀÛ
+    // ë…¸ë˜ ë‹¤ì‹œ ì‹œì‘
     public void ResumeMain_BGM()
     {
         Debug.Log("Resume");
         SoundManager.instance.ResumeBGM();
 
-        //´Ù½Ã Àç»ı½Ã ¿ø·¡ ½Ã°£´ë·Î Èê·¯°¨
+        //ë‹¤ì‹œ ì¬ìƒì‹œ ì›ë˜ ì‹œê°„ëŒ€ë¡œ í˜ëŸ¬ê°
         songStartDspTime = AudioSettings.dspTime - PausedspTime;
     }
 
-    // Ingame_UI¿¡¼­ È£ÃâÇÒ ÇÔ¼ö
+    // Ingame_UIì—ì„œ í˜¸ì¶œí•  í•¨ìˆ˜
     public void StartGame()
     {
         StartCoroutine(StartGameRoutine());
@@ -148,17 +148,17 @@ public class GameManager : MonoBehaviour
 
     private System.Collections.IEnumerator StartGameRoutine()
     {
-        // ¾à°£ÀÇ ÅÒ
+        // ì•½ê°„ì˜ í…€
         yield return new WaitForSecondsRealtime(0.5f);
 
-        // 1) Ä«¿îÆ® »ç¿îµå Àç»ı
+        // 1) ì¹´ìš´íŠ¸ ì‚¬ìš´ë“œ ì¬ìƒ
         if (countThree != null)
         {
             SoundManager.instance.SFXPlay("Count3", countThree);
             yield return new WaitForSecondsRealtime(countThree.length);
         }
 
-        // 2) Ä«¿îÆ® ³¡³­ µÚ °ÔÀÓ ½ÃÀÛ
+        // 2) ì¹´ìš´íŠ¸ ëë‚œ ë’¤ ê²Œì„ ì‹œì‘
         Time.timeScale = 1f;
         Debug.Log("Game Start!!");
 

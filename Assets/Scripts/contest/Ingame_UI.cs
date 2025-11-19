@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;   // ¡Ú ¹öÆ° Á¦¾î¿ë
+using UnityEngine.UI;   // â˜… ë²„íŠ¼ ì œì–´ìš©
 
 public class Ingame_UI : MonoBehaviour
 {
@@ -7,9 +7,9 @@ public class Ingame_UI : MonoBehaviour
     public AudioClip tutorial_bgm;
 
     [Header("UI")]
-    [SerializeField] private Button listenMusicButton; // À½¾Ç ¹öÆ° (ÀÎ½ºÆåÅÍ¿¡ ¿¬°á)
+    [SerializeField] private Button listenMusicButton; // ìŒì•… ë²„íŠ¼ (ì¸ìŠ¤í™í„°ì— ì—°ê²°)
 
-    private bool isMusicPlaying = false; // Áö±İ À½¾Ç Àç»ı ÁßÀÎÁö?
+    private bool isMusicPlaying = false; // ì§€ê¸ˆ ìŒì•… ì¬ìƒ ì¤‘ì¸ì§€?
 
     private void Awake()
     {
@@ -41,23 +41,23 @@ public class Ingame_UI : MonoBehaviour
 
     public void OnClickListen_Music()
     {
-        // ÀÌ¹Ì Àç»ı ÁßÀÌ¸é ¹«½Ã
+        // ì´ë¯¸ ì¬ìƒ ì¤‘ì´ë©´ ë¬´ì‹œ
         if (isMusicPlaying)
         {
-            Debug.Log("ÀÌ¹Ì À½¾Ç Àç»ı Áß!");
+            Debug.Log("ì´ë¯¸ ìŒì•… ì¬ìƒ ì¤‘!");
             return;
         }
 
         Debug.Log("Play Music");
         isMusicPlaying = true;
 
-        // ¹öÆ° ºñÈ°¼ºÈ­ (Å¬¸¯ ¸ø ÇÏ°Ô)
+        // ë²„íŠ¼ ë¹„í™œì„±í™” (í´ë¦­ ëª» í•˜ê²Œ)
         if (listenMusicButton != null)
             listenMusicButton.interactable = false;
 
         SoundManager.instance.PlayBGM(tutorial_bgm);
 
-        // ³ë·¡ ±æÀÌ¸¸Å­ ±â´Ù·È´Ù°¡ ´Ù½Ã È°¼ºÈ­
+        // ë…¸ë˜ ê¸¸ì´ë§Œí¼ ê¸°ë‹¤ë ¸ë‹¤ê°€ ë‹¤ì‹œ í™œì„±í™”
         StartCoroutine(EnableListenButtonAfterMusic());
     }
 
@@ -68,12 +68,12 @@ public class Ingame_UI : MonoBehaviour
 
         if (tutorial_bgm != null)
         {
-            // ¡Ú timeScaleÀÇ ¿µÇâÀ» ¾È ¹Ş´Â ½Ç½Ã°£ ´ë±â
+            // â˜… timeScaleì˜ ì˜í–¥ì„ ì•ˆ ë°›ëŠ” ì‹¤ì‹œê°„ ëŒ€ê¸°
             yield return new WaitForSecondsRealtime(tutorial_bgm.length);
         }
         else
         {
-            // È¤½Ã clipÀÌ ºñ¾îÀÖÀ¸¸é ¾ÈÀüÇÏ°Ô 1ÃÊ Á¤µµ¸¸
+            // í˜¹ì‹œ clipì´ ë¹„ì–´ìˆìœ¼ë©´ ì•ˆì „í•˜ê²Œ 1ì´ˆ ì •ë„ë§Œ
             yield return new WaitForSecondsRealtime(1f);
         }
 
