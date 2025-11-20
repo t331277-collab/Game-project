@@ -15,6 +15,7 @@ public class Player_Attack : MonoBehaviour
     public AudioClip cilp1;
     public AudioClip cilp2;
     public AudioClip cilp3;
+    public AudioClip execution;
 
     // Start() 함수는 게임 시작 시 첫 프레임 업데이트 직전에 한 번 호출됩니다.
     void Start()
@@ -58,6 +59,7 @@ public class Player_Attack : MonoBehaviour
             // [기획 변경] 'S'키(처형) 입력을 먼저 확인합니다.
             if (Input.GetKeyDown(KeyCode.S))
             {
+                SoundManager.instance.SFXPlay("Chord_a1", execution);
                 // 디버그 로그로 A키 입력을 확인합니다.
                 Debug.Log("--- A 키 감지! PerformExecution() 호출! ---");
                 // '처형' 전용 함수를 호출합니다.
