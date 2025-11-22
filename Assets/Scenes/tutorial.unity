@@ -970,13 +970,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b03ef8535b79848a0ba18f2cc40e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Attack
-  cilp1: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
-  cilp2: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
-  cilp3: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
-  execution: {fileID: 8300000, guid: bdb807a4f4859c7448ffeeb7c0bdf63d, type: 3}
   coolTime: 0.1
   pos: {fileID: 1192120229}
   boxSize: {x: 9.75, y: 11.92}
+  cilp1: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
+  cilp2: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
+  cilp3: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
+  Groggy_State: 0
+  playerTransform: {fileID: 1013947263}
+  isSkillActive: 0
 --- !u!95 &1013947266
 Animator:
   serializedVersion: 7
@@ -1404,6 +1406,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 293774802650967577, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974558312104585025, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
@@ -2021,6 +2027,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   Hit: 0
+  MusicTimer: {fileID: 0}
+  gameTimer: 0
   Perfect: 0.1
   Good: 0.2
   Normal: 0.3

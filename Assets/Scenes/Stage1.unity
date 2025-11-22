@@ -2899,13 +2899,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b03ef8535b79848a0ba18f2cc40e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Attack
-  cilp1: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
-  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
-  cilp3: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
-  execution: {fileID: 8300000, guid: bed64b4186690964eaec9ebcc957f295, type: 3}
   coolTime: 0.1
   pos: {fileID: 752880744}
   boxSize: {x: 9.75, y: 11.92}
+  cilp1: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
+  cilp3: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+  groggySound: {fileID: 0}
+  executionSound: {fileID: 8300000, guid: 24fa63e280ca5de468e3979feaa8f0be, type: 3}
+  Groggy_State: 0
+  playerTransform: {fileID: 1714837324}
+  isSkillActive: 0
 --- !u!114 &1714837320
 MonoBehaviour:
   m_ObjectHideFlags: 0
