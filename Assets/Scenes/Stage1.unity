@@ -306,15 +306,15 @@ PrefabInstance:
     - target: {fileID: 3512729544311455418, guid: 72641364dd827404484eea56d0415ee1, type: 3}
       propertyPath: cilp1
       value: 
-      objectReference: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
+      objectReference: {fileID: 8300000, guid: c447f08a8204f6d499ba6ccb9d096f6d, type: 3}
     - target: {fileID: 3512729544311455418, guid: 72641364dd827404484eea56d0415ee1, type: 3}
       propertyPath: cilp2
       value: 
-      objectReference: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
+      objectReference: {fileID: 8300000, guid: b2d559c0b5804bf49a61c8b6a7b70f36, type: 3}
     - target: {fileID: 3512729544311455418, guid: 72641364dd827404484eea56d0415ee1, type: 3}
       propertyPath: cilp3
       value: 
-      objectReference: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
+      objectReference: {fileID: 8300000, guid: 77af189fa65a5184ea9c9cf495195aef, type: 3}
     - target: {fileID: 3512729544311455418, guid: 72641364dd827404484eea56d0415ee1, type: 3}
       propertyPath: cassete_start_end
       value: 
@@ -1141,8 +1141,8 @@ MonoBehaviour:
   Normal: 0.3
   beatInterval: 0.3529
   firstBeatTime: 0
-  countThree: {fileID: 8300000, guid: ecfe360c9f670f54397ab373034a67b6, type: 3}
-  Main_BGM: {fileID: 8300000, guid: 20d1d737d6ee6894c8a476d5cc71f449, type: 3}
+  countThree: {fileID: 8300000, guid: 2191002079598414e9ffd6ba2145b854, type: 3}
+  Main_BGM: {fileID: 8300000, guid: 743b35fb4fc17864ba3f20ee2a8b5215, type: 3}
 --- !u!4 &1074574715
 Transform:
   m_ObjectHideFlags: 0
@@ -1413,7 +1413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df16a989ca3bdb4ab3fb480d51a52ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ingame_UI
-  tutorial_bgm: {fileID: 8300000, guid: 20d1d737d6ee6894c8a476d5cc71f449, type: 3}
+  tutorial_bgm: {fileID: 8300000, guid: 743b35fb4fc17864ba3f20ee2a8b5215, type: 3}
   listenMusicButton: {fileID: 538574750}
 --- !u!114 &1275117531
 MonoBehaviour:
@@ -1717,15 +1717,15 @@ PrefabInstance:
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp1
       value: 
-      objectReference: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
+      objectReference: {fileID: 8300000, guid: 77af189fa65a5184ea9c9cf495195aef, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp2
       value: 
-      objectReference: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
+      objectReference: {fileID: 8300000, guid: b2d559c0b5804bf49a61c8b6a7b70f36, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp3
       value: 
-      objectReference: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
+      objectReference: {fileID: 8300000, guid: c447f08a8204f6d499ba6ccb9d096f6d, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cassete_start_end
       value: 
@@ -1926,15 +1926,15 @@ PrefabInstance:
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp1
       value: 
-      objectReference: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
+      objectReference: {fileID: 8300000, guid: 77af189fa65a5184ea9c9cf495195aef, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp2
       value: 
-      objectReference: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
+      objectReference: {fileID: 8300000, guid: b2d559c0b5804bf49a61c8b6a7b70f36, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cilp3
       value: 
-      objectReference: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
+      objectReference: {fileID: 8300000, guid: c447f08a8204f6d499ba6ccb9d096f6d, type: 3}
     - target: {fileID: 5378776597298201899, guid: 05132c39f7a23ee40b84ccc269e7bbde, type: 3}
       propertyPath: cassete_start_end
       value: 
@@ -2199,10 +2199,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41b03ef8535b79848a0ba18f2cc40e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Attack
-  cilp1: {fileID: 8300000, guid: 4de35f2e9378aaf4cbe524ff213091d7, type: 3}
-  cilp2: {fileID: 8300000, guid: 2cf2c59ad961316408d3aebce2b31b23, type: 3}
-  cilp3: {fileID: 8300000, guid: 8feaf064bfe524b4dabfbdb0e1a275d9, type: 3}
-  execution: {fileID: 8300000, guid: bdb807a4f4859c7448ffeeb7c0bdf63d, type: 3}
+  cilp1: {fileID: 8300000, guid: c447f08a8204f6d499ba6ccb9d096f6d, type: 3}
+  cilp2: {fileID: 8300000, guid: b2d559c0b5804bf49a61c8b6a7b70f36, type: 3}
+  cilp3: {fileID: 8300000, guid: 77af189fa65a5184ea9c9cf495195aef, type: 3}
+  execution: {fileID: 8300000, guid: bed64b4186690964eaec9ebcc957f295, type: 3}
   coolTime: 0.1
   pos: {fileID: 752880744}
   boxSize: {x: 9.75, y: 11.92}
