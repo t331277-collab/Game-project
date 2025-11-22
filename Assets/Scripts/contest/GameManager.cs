@@ -1,10 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
     public bool Hit = false;
+
+
+    public Slider MusicTimer;
+    public float gameTimer;
+
+    private bool stopTimer;
+
 
     [Header("Judge Window (seconds)")]
     public float Perfect = 0.03f;  // 30ms
@@ -36,10 +44,26 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        MusicTimer.maxValue = Main_BGM.length;
+        MusicTimer.value = 0f;
     }
 
     private void Update()
     {
+        if (!stopTimer)
+        {
+            // Clamp(값, 최소, 최대) -> 값이 최소 최대 안에 존재하도록 조절
+            MusicTimer.value = Mathf.Clamp((float)SongTime, 0f, MusicTimer.maxValue);
+        }
+
+        if(MusicTimer.value == MusicTimer.maxValue)
+        {
+            Debug.Log("Game End");
+            Time.timeScale= 0f;
+            SoundManager.instance.StopBGM();
+        }
+
         // 현재 경과된 시간 출력
         // Debug.Log($"SongTime = {SongTime:F3}");
 
@@ -48,6 +72,10 @@ public class GameManager : MonoBehaviour
         Hit = false;       // 한 번만 판정하고 초기화
 
         JudgeHit(SongTime);
+
+        //뮤직 타이머 객체가 존재하고 stopTimer 가 false 가 아닐때
+
+        
     }
 
     
@@ -128,6 +156,8 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.PauseBGM();
         //정지한 시간을 저장
         PausedspTime = SongTime;
+
+        stopTimer = true;
     }
 
     // 노래 다시 시작
@@ -138,6 +168,8 @@ public class GameManager : MonoBehaviour
 
         //다시 재생시 원래 시간대로 흘러감
         songStartDspTime = AudioSettings.dspTime - PausedspTime;
+
+        stopTimer = false;
     }
 
     // Ingame_UI에서 호출할 함수
@@ -165,5 +197,7 @@ public class GameManager : MonoBehaviour
         SoundManager.instance.PlayBGM(Main_BGM);
        
         songStartDspTime = AudioSettings.dspTime;
+
+        stopTimer = false;
     }
 }
