@@ -60,8 +60,8 @@ Transform:
   m_GameObject: {fileID: 7367258260276748968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.19, y: -14.11, z: 0}
-  m_LocalScale: {x: 5.532888, y: 11.755755, z: 1}
+  m_LocalPosition: {x: -23.36, y: -19.8, z: 0}
+  m_LocalScale: {x: 1.2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4714652541634103066}
@@ -210,21 +210,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a37f78ede8568b46a12b4a3877ad578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Attacker
-  cilp1: {fileID: 8300000, guid: c79e8d43197f6ee4da2fb4ae558c773d, type: 3}
-  cilp2: {fileID: 8300000, guid: 065ad7c0010b2d641826ed1a5a923393, type: 3}
-  cilp3: {fileID: 8300000, guid: 8d432efaca67dc048bf3b883c8fbaa69, type: 3}
+  cilp1: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
+  cilp3: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+  cassete_start_end: {fileID: 8300000, guid: 18635f14be9604d4ba4852b692972119, type: 3}
   Sounddelay: 1
-  Delaytime: 0.1
   patrolSpeed: 2
-  patrolDistance: 5
+  patrolDistance: 3
   chaseSpeed: 4
-  detectionRange: 10
+  detectionRange: 3
   killSequence: 63000000780000007a000000
-  knockbackForce: 150
+  knockbackForce: 100
   knockbackMultiplier: 1
   knockbackDuration: 0.2
   groggyDuration: 3
-  attackRange: 8.5
+  attackRange: 1.5
   attackDelay: 1
   attackActiveTime: 0.5
   attackPos: {fileID: 4714652541634103066}

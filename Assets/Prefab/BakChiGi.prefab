@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 4053873997369197741}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.9628, y: -13.8791, z: 0}
-  m_LocalScale: {x: 5.532888, y: 11.755755, z: 1}
+  m_LocalPosition: {x: -18.04, y: -19.8, z: 0}
+  m_LocalScale: {x: 1.2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6876748, g: 0.9150943, b: 0.34100214, a: 1}
+  m_Color: {r: 0, g: 0.22473258, b: 0.9716981, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -178,17 +178,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f33e1f14429cb4882a4e973c33cddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Bumper
-  cilp1: {fileID: 0}
-  cilp2: {fileID: 0}
-  cilp3: {fileID: 0}
+  cilp1: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
+  cilp3: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+  cassete_start_end: {fileID: 8300000, guid: 18635f14be9604d4ba4852b692972119, type: 3}
   Sounddelay: 1
-  Delaytime: 0.1
   patrolSpeed: 2
-  patrolDistance: 5
-  chaseSpeed: 4
-  detectionRange: 10
-  killSequence: 
-  knockbackForce: 150
+  patrolDistance: 3
+  chaseSpeed: 3
+  detectionRange: 3
+  killSequence: 7a0000007800000063000000
+  knockbackForce: 100
   knockbackMultiplier: 1
   knockbackDuration: 0.2
   groggyDuration: 3

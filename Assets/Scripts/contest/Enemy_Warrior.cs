@@ -31,6 +31,24 @@ public class Enemy_Warrior : Enemy
         // 1. 부모(Enemy)의 기본 뇌를 먼저 실행합니다. (순찰, 그로기, 넉백 처리 등)
         base.FixedUpdate();
 
+        // --- [핵심 추가!] 공격 히트박스 위치 동기화 ---
+        // 부모(Enemy)가 가진 spriteRenderer 컴포넌트와 내 attackPos가 모두 있을 때만 실행
+        if (spriteRenderer != null && attackPos != null)
+        {
+            // 부모가 설정한 flipX 상태를 확인합니다.
+            if (spriteRenderer.flipX == true) // 왼쪽 보는 중
+            {
+                // 히트박스의 로컬 X좌표를 음수(-)로 설정하여 왼쪽으로 이동시킵니다.
+                attackPos.localPosition = new Vector3(-Mathf.Abs(attackPos.localPosition.x), attackPos.localPosition.y, attackPos.localPosition.z);
+            }
+            else // 오른쪽 보는 중
+            {
+                // 히트박스의 로컬 X좌표를 양수(+)로 설정하여 오른쪽으로 이동시킵니다.
+                attackPos.localPosition = new Vector3(Mathf.Abs(attackPos.localPosition.x), attackPos.localPosition.y, attackPos.localPosition.z);
+            }
+        }
+        // -------------------------------------------------------
+
         // 2. Warrior만의 추가 로직: '공격 중' (즉, 딜레이 중)일 때의 행동
         if (currentState == State.Attacking)
         {
