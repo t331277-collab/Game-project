@@ -42,7 +42,7 @@ public class MainMenu : MonoBehaviour
     // "게임 시작" 버튼이 호출할 함수 (기존)
     public void StartGame()
     {
-        SceneManager.LoadScene("tutorial"); // (씬 이름 확인!)
+        SceneManager.LoadScene("CutScene"); // (씬 이름 확인!)
     }
 
     // "게임 종료" 버튼이 호출할 함수 (기존)
