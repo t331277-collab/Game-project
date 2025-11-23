@@ -1235,7 +1235,7 @@ Transform:
   m_GameObject: {fileID: 752880743}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.1, y: 0.17, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1393,7 +1393,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 43.6
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1418,7 +1418,7 @@ Transform:
   m_GameObject: {fileID: 970133813}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.14, y: 10.52, z: -10}
+  m_LocalPosition: {x: -30.14, y: -18.98, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2307,7 +2307,7 @@ MonoBehaviour:
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
-  FollowOffset: {x: 0, y: 25, z: -10}
+  FollowOffset: {x: 0, y: 1, z: -10}
 --- !u!114 &1398436432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2333,7 +2333,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 60
-    OrthographicSize: 43.6
+    OrthographicSize: 10
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -2360,7 +2360,7 @@ Transform:
   m_GameObject: {fileID: 1398436430}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.14, y: 10.52, z: -10}
+  m_LocalPosition: {x: -30.14, y: -18.98, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2901,7 +2901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Player_Attack
   coolTime: 0.1
   pos: {fileID: 752880744}
-  boxSize: {x: 9.75, y: 11.92}
+  boxSize: {x: 1, y: 0.7}
   cilp1: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
   cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
   cilp3: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
@@ -2922,7 +2922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5607e4f065fe53c47bf3aca9c0d2b63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Move
-  fallMultiplier: 2.5
   speed: 30
   jump: 30
   isJump: 0
@@ -2964,17 +2963,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -4.1213493, y: 0.08207893}
+  m_Offset: {x: -0.07874012, y: 0.01629901}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 24.40625, y: 27.71875}
+    oldSize: {x: 1.01, y: 1.13}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 18.518963, y: 27.887009}
+  m_Size: {x: 0.86299706, y: 1.3033624}
   m_EdgeRadius: 0
 --- !u!50 &1714837322
 Rigidbody2D:
@@ -3050,7 +3049,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 5152624094747493518, guid: 401de9a10a8fdbb4f9685300702c2c1c, type: 3}
+  m_Sprite: {fileID: 2324236343598682440, guid: fad5f460feffe144cb4b29db5f3e2dc1, type: 3}
   m_Color: {r: 0.8852795, g: 0.8927049, b: 0.9245283, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -3070,8 +3069,8 @@ Transform:
   m_GameObject: {fileID: 1714837316}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.14, y: -14.48, z: 0}
-  m_LocalScale: {x: 0.42778572, y: 0.42881125, z: 1}
+  m_LocalPosition: {x: -30.14, y: -19.98, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 752880744}
