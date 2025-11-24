@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     // [추가!] 현재 '시간 정지 스킬'이 활성화된 상태인지 확인하는 변수 (외부에서 읽기만 가능)
     public bool IsTimeStopped { get; private set; } = false;
 
+    public bool IsGamePausedForMenu { get; private set; } = false;
+
     public bool Hit = false;
 
     public Slider MusicTimer;
@@ -64,7 +66,10 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update()
-    {
+    {   
+        // [수정] 메뉴 때문에 게임이 멈췄다면 Update 로직을 수행하지 않음
+        if (IsGamePausedForMenu) return;
+
         // 시간이 멈췄고, 아직 소리 재생 대기 중이 아니라면 -> 적 선택 입력 처리
         if (IsTimeStopped && !isWaitingForSoundToFinish)
         {
@@ -313,4 +318,51 @@ public class GameManager : MonoBehaviour
 
         stopTimer = false;
     }
+
+    public void PauseGameForMenu()
+    {
+        if (IsGamePausedForMenu) return; // 이미 멈췄으면 무시
+
+        Debug.Log("메뉴 열림: 게임 일시정지");
+        IsGamePausedForMenu = true;
+        
+        // 1. 시간 멈추기
+        Time.timeScale = 0f; 
+
+        // 2. BGM 일시정지 (기존 함수 활용)
+        // (만약 스킬 사용 중이라 이미 멈췄다면 다시 멈출 필요 없음)
+        if (!stopTimer)
+        {
+            PauseMain_BGM();
+        }
+
+        // 3. 마우스 커서 활성화 (UI 조작을 위해)
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void ResumeGameFromMenu()
+    {
+        if (!IsGamePausedForMenu) return; // 멈춘 상태가 아니면 무시
+
+        Debug.Log("메뉴 닫힘: 게임 재개");
+        IsGamePausedForMenu = false;
+
+        // 1. 시간 다시 흐르게 하기
+        // (주의: 만약 스킬 사용 중에 메뉴를 열었다면, 메뉴를 닫아도 스킬 상태가 유지되어야 함)
+        if (!IsTimeStopped)
+        {
+            Time.timeScale = 1f;
+        }
+
+        // 2. BGM 재개 (기존 함수 활용)
+        // (마찬가지로 스킬 중이 아닐 때만 재개)
+        if (!IsTimeStopped && stopTimer)
+        {
+            ResumeMain_BGM();
+        }
+
+        
+    }
+
 }

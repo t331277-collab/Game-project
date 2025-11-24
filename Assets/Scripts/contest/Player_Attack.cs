@@ -16,7 +16,7 @@ public class Player_Attack : MonoBehaviour
     [Header("Execution Sounds")] // 처형 관련 사운드
     public AudioClip groggySound; // 그로기 상태일 때 재생할 사운드 (Inspector에서 연결)
     public AudioClip executionSound; // 처형 시 재생할 사운드 (예: guitar_performance, Inspector에서 연결)
-
+    private Animator animator;
     private float curTime; // 쿨타임 계산용 변수
     
     // 스프라이트 방향 확인을 위한 컴포넌트
@@ -27,6 +27,8 @@ public class Player_Attack : MonoBehaviour
         // 이 스크립트가 붙은 오브젝트의 SpriteRenderer 컴포넌트를 가져옵니다.
         spriteRenderer = GetComponent<SpriteRenderer>();
         
+        animator = GetComponent<Animator>();
+
         // (혹시 pos가 연결 안 되었을 경우를 대비한 안전장치)
         if (pos == null)
         {
@@ -75,6 +77,10 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.Z);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
+                    }
                 }
                 // X키 공격
                 else if (Input.GetKeyDown(KeyCode.X))
@@ -84,6 +90,10 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.X);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
+                    }
                 }
                 // C키 공격
                 else if (Input.GetKeyDown(KeyCode.C))
@@ -93,6 +103,10 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.C);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+                    if (animator != null)
+                    {
+                        animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
+                    }
                 }
                 // LeftShift키: 시간 정지 스킬 발동
                 else if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -156,6 +170,11 @@ public class Player_Attack : MonoBehaviour
                         SoundManager.instance.SFXPlay("Execution", executionSound);
                     }
 
+                    if (animator != null)
+                    {
+                        // 아까 애니메이터에서 만든 트리거 이름과 똑같이!
+                        animator.SetTrigger("Execution"); 
+                    }
                     enemyScript.Execute(); // 적 처형 (파괴)
                     break; // 한 번에 한 명만 처형하고 루프 종료
                 }
