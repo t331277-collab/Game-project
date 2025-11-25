@@ -1,38 +1,33 @@
 using UnityEngine;
-// [필수!] Audio Mixer를 제어하려면 이 코드를 추가해야 합니다.
 using UnityEngine.Audio;
+using System.Collections; // [필수!] 코루틴(IEnumerator)을 쓰기 위해 추가
 
 public class SoundManager : MonoBehaviour
 {
-    
     public static SoundManager instance;
 
-    // [필수!] 인스펙터에서 "MainMixer" 에셋을 연결할 변수
     public AudioMixer mainMixer;
-    
     private AudioSource bgmSource;
+
+    // [추가!] 실행 중인 페이드 아웃 코루틴을 저장할 변수 (중복 실행 방지용)
+    private Coroutine fadeCoroutine;
+
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
-            // [수정!] MainScene에만 있다면 DontDestroyOnLoad는 필요 없습니다.
-            // (만약 MainMenu 씬으로 돌아갈 때 BGM이 끊겨도 된다면)
-            // (일단 지금 문제 해결을 위해 이 코드는 그대로 둡니다.)
-            DontDestroyOnLoad(instance); 
+            //DontDestroyOnLoad(instance);
 
-            // BGM 전용 오디오 소스 생성
             bgmSource = gameObject.AddComponent<AudioSource>();
             bgmSource.loop = true;
 
-            // [핵심 1] BGM 소스의 '출력(Output)'을 "BGM" 그룹으로 설정
             if (mainMixer != null)
             {
                 bgmSource.outputAudioMixerGroup = mainMixer.FindMatchingGroups("BGM")[0];
             }
             else
             {
-                // MainScene에만 있는 SoundManager라면 이 로그는 뜨면 안됩니다!
                 Debug.LogError("SoundManager에 MainMixer가 연결되지 않았습니다!");
             }
         }
@@ -42,50 +37,76 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    // [추가!] Start 함수 추가
     private void Start()
     {
-        // 씬이 시작될 때 (Awake 다음), PlayerPrefs에 저장된 볼륨 값을 불러옵니다.
-        // GetFloat("이름", 기본값): "이름"으로 저장된 값을 가져오고, 없으면 1f(최대볼륨)를 씀
         float masterVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
         float bgmVol = PlayerPrefs.GetFloat("BGMVolume", 1f);
         float sfxVol = PlayerPrefs.GetFloat("SFXVolume", 1f);
 
-        // [핵심 2] 불러온 값을 '즉시' 오디오 믹서에 적용합니다.
-        // (슬라이더 값(0~1)을 데시벨(-80~0)로 바꿔야 함: Log10(volume) * 20)
-        // (슬라이더 값이 0이 될 경우를 대비해 0.0001f를 더해 -Infinity 오류 방지)
         if (mainMixer != null)
         {
             mainMixer.SetFloat("MasterVolume", Mathf.Log10(masterVol > 0 ? masterVol : 0.0001f) * 20);
             mainMixer.SetFloat("BGMVolume", Mathf.Log10(bgmVol > 0 ? bgmVol : 0.0001f) * 20);
             mainMixer.SetFloat("SFXVolume", Mathf.Log10(sfxVol > 0 ? sfxVol : 0.0001f) * 20);
-            
-            Debug.Log("저장된 볼륨 값을 믹서에 적용했습니다!");
         }
     }
 
-
-    // (BGM 관련 다른 함수들은 수정할 필요 없음)
-    public void OnPlayerConnected(AudioClip clip, float volume = 1f, bool loop = true)
-    {
-        if (clip == null) { return; }
-        bgmSource.clip = clip;
-        bgmSource.volume = volume;
-        bgmSource.loop = loop;
-        bgmSource.Play();
-    }
+    // =================================================================
+    // [수정 및 추가된 BGM 관련 함수들]
+    // =================================================================
 
     public void PlayBGM(AudioClip clip, float volume = 1f, bool loop = true)
     {
         if (clip == null) return;
+
+        // [안전장치] 혹시 페이드 아웃 중이었다면 강제로 멈춥니다.
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+            fadeCoroutine = null;
+        }
+
         bgmSource.clip = clip;
+        // [중요] 페이드 아웃 후 볼륨이 0이 되어 있을 수 있으므로, 원래대로 복구하고 재생합니다.
         bgmSource.volume = volume;
         bgmSource.loop = loop;
         bgmSource.Play();
     }
 
+    // [기능 추가] BGM 페이드 아웃 함수 (외부에서 호출)
+    // duration: 몇 초 동안 줄어들지 설정 (기본 1초)
+    public void FadeOutBGM(float duration = 1.0f)
+    {
+        // 이미 페이드 아웃 중이라면 중복 실행하지 않음
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+
+        // 코루틴 시작
+        fadeCoroutine = StartCoroutine(CoFadeOut(duration));
+    }
+
+    // [기능 추가] 실제 페이드 아웃 로직 (코루틴)
+    private IEnumerator CoFadeOut(float duration)
+    {
+        float startVolume = bgmSource.volume; // 현재 볼륨에서 시작
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            // Lerp를 이용해 현재 볼륨 -> 0으로 부드럽게 줄임
+            bgmSource.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
+            yield return null; // 한 프레임 대기
+        }
+
+        bgmSource.Stop();     // 소리가 다 줄어들면 정지
+        bgmSource.volume = startVolume; // [중요] 다음 재생을 위해 볼륨 원상복구
+        fadeCoroutine = null; // 코루틴 상태 초기화
+    }
+
+    // 즉시 멈추고 싶을 때
     public void StopBGM()
     {
+        if (fadeCoroutine != null) StopCoroutine(fadeCoroutine); // 페이드 중이었다면 취소
         if (bgmSource != null && bgmSource.isPlaying)
         {
             bgmSource.Stop();
@@ -97,25 +118,25 @@ public class SoundManager : MonoBehaviour
         if (bgmSource != null) bgmSource.Pause();
     }
 
-    // [수정!] 실수로 코드가 끊겼던 부분
     public void ResumeBGM()
     {
         if (bgmSource != null) bgmSource.UnPause();
     }
 
-    // (SFX 재생 함수)
+    // =================================================================
+    // SFX 부분 (기존과 동일)
+    // =================================================================
     public void SFXPlay(string sfxName, AudioClip clip)
     {
         GameObject go = new GameObject(sfxName + "Sound");
         AudioSource audioSource = go.AddComponent<AudioSource>();
         audioSource.clip = clip;
 
-        // [핵심 3] SFX 소리의 '출력(Output)'을 "SFX" 그룹으로 설정
         if (mainMixer != null)
         {
             audioSource.outputAudioMixerGroup = mainMixer.FindMatchingGroups("SFX")[0];
         }
-        
+
         audioSource.Play();
         Destroy(go, clip.length);
     }
@@ -128,12 +149,8 @@ public class SoundManager : MonoBehaviour
         if (sfxObj != null)
         {
             AudioSource src = sfxObj.GetComponent<AudioSource>();
-            if (src != null)
-            {
-                src.Stop();          // 소리 멈추고
-            }
-
-            Destroy(sfxObj);         // GameObject 삭제
+            if (src != null) src.Stop();
+            Destroy(sfxObj);
         }
     }
 }

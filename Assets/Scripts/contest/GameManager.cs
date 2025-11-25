@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
     // [추가!] 게임이 종료되었는지 확인하는 스위치 변수
     private bool isGameEnded = false;
 
+    [Header("UI Settings")]
+    [SerializeField] private GameObject scoreUIPanel; // 띄울 UI 패널
+
+    private int enemyCount = 0; //enemy 변수
+
     [Header("Judge Window (seconds)")]
     public float Perfect = 0.03f;  // 30ms
     public float Good = 0.07f;  // 70ms
@@ -51,7 +56,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -63,6 +68,15 @@ public class GameManager : MonoBehaviour
             MusicTimer.maxValue = Main_BGM.length;
             MusicTimer.value = 0f;
         }
+
+        // 게임 시작 시 씬에 있는 "Enemy" 태그 오브젝트 수를 셈
+        enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+
+        // 시작할 때 UI는 꺼둠
+        if (scoreUIPanel != null)
+            scoreUIPanel.SetActive(false);
+
+        Debug.Log($"게임 시작! 적의 수: {enemyCount}");
     }
 
     private void Update()
@@ -105,6 +119,32 @@ public class GameManager : MonoBehaviour
         Hit = false;       // 한 번만 판정하고 초기화
 
         JudgeHit(SongTime);
+
+
+    }
+
+    public void OnEnemyDestroyed()
+    {
+        enemyCount--;
+
+        // 남은 적이 0 이하가 되면 UI 활성화
+        if (enemyCount <= 0)
+        {
+            GameClear();
+        }
+    }
+
+    private void GameClear()
+    {
+        Debug.Log("모든 적 처치 완료!");
+        if (scoreUIPanel != null)
+        {
+            stopTimer = true;
+            scoreUIPanel.SetActive(true);
+            // 필요하다면 여기서 게임 일시정지 등을 추가
+            Time.timeScale = 0f;
+            SoundManager.instance.StopBGM();
+        }
     }
 
 

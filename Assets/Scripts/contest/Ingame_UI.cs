@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;   // ★ 버튼 제어용
+using UnityEngine.SceneManagement;
 
 public class Ingame_UI : MonoBehaviour
 {
@@ -9,11 +10,28 @@ public class Ingame_UI : MonoBehaviour
     [Header("UI")]
     [SerializeField] private Button listenMusicButton; // 음악 버튼 (인스펙터에 연결)
 
+    [SerializeField] private GameObject startUIPanel; // 띄울 UI 패널
+
     private bool isMusicPlaying = false; // 지금 음악 재생 중인지?
 
     private void Awake()
     {
         Time.timeScale = 0f;
+    }
+
+    public void OnClickNextStage()
+    {
+        SceneManager.LoadScene("Stage_CutScene"); // 메인 컷씬씬으로 넘어가는 버튼
+    }
+
+    public void OnClickNextStage2()
+    {
+        SceneManager.LoadScene("Stage2"); // Stage2로 넘어가는 버튼
+    }
+
+    public void OnClickNextBoss()
+    {
+        SceneManager.LoadScene("Boss_Stage"); // Stage2로 넘어가는 버튼
     }
 
     public void OnClickStopListenMusic()
@@ -36,7 +54,7 @@ public class Ingame_UI : MonoBehaviour
 
         GameManager.Instance.StartGame();
 
-        gameObject.SetActive(false);
+        startUIPanel.SetActive(false);
     }
 
     public void OnClickListen_Music()

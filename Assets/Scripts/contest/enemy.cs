@@ -40,6 +40,11 @@ public class Enemy : MonoBehaviour
         {
             VisibleEnemies.Remove(this);
         }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnEnemyDestroyed();
+        }
     }
     // ------------------------------------
 
@@ -236,6 +241,8 @@ public class Enemy : MonoBehaviour
             }
         }
     }
+
+
 
     public void TakeDamageZ() { Debug.Log("Z키 공격 감지됨!"); HandleCombo(KeyCode.Z); }
     public void TakeDamageX() { Debug.Log("X키 공격 감지됨!"); HandleCombo(KeyCode.X); }

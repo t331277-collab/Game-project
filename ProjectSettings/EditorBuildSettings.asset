@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Boss_Stage.unity
     guid: f4c22e75ca8c8c545935e940003f4488
+  - enabled: 1
+    path: Assets/Scenes/Stage_CutScene.unity
+    guid: 0a7144c8ec780044fb7e7cdb3d40aa6e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
