@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     public bool Hit = false;
 
+    public Sprite Stop_Image;
+
     public Slider MusicTimer;
     public float gameTimer;
 
