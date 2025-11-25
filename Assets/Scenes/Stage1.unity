@@ -2616,7 +2616,7 @@ MonoBehaviour:
   beatInterval: 0.3529
   firstBeatTime: 0
   countThree: {fileID: 8300000, guid: 2191002079598414e9ffd6ba2145b854, type: 3}
-  Main_BGM: {fileID: 8300000, guid: 743b35fb4fc17864ba3f20ee2a8b5215, type: 3}
+  Main_BGM: {fileID: 8300000, guid: 2918bb56ddf6a20468014b449fd6fd41, type: 3}
 --- !u!4 &1074574715
 Transform:
   m_ObjectHideFlags: 0
@@ -3290,6 +3290,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp1
+      value: 
+      objectReference: {fileID: 8300000, guid: 1188f2f20f36abf4c882878560ee7c1c, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp2
+      value: 
+      objectReference: {fileID: 8300000, guid: 597899f1a7395594ca778cda456f6041, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp3
+      value: 
+      objectReference: {fileID: 8300000, guid: f4ab811662f72504e8ca5d015504b46a, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
       propertyPath: chaseSpeed
       value: 3
       objectReference: {fileID: 0}
@@ -3338,7 +3350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df16a989ca3bdb4ab3fb480d51a52ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ingame_UI
-  tutorial_bgm: {fileID: 8300000, guid: 743b35fb4fc17864ba3f20ee2a8b5215, type: 3}
+  tutorial_bgm: {fileID: 8300000, guid: 2918bb56ddf6a20468014b449fd6fd41, type: 3}
   listenMusicButton: {fileID: 538574750}
   startUIPanel: {fileID: 1006699913}
 --- !u!114 &1275117531
@@ -4211,6 +4223,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp1
+      value: 
+      objectReference: {fileID: 8300000, guid: 1188f2f20f36abf4c882878560ee7c1c, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp2
+      value: 
+      objectReference: {fileID: 8300000, guid: 597899f1a7395594ca778cda456f6041, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
+      propertyPath: cilp3
+      value: 
+      objectReference: {fileID: 8300000, guid: f4ab811662f72504e8ca5d015504b46a, type: 3}
+    - target: {fileID: 5378776597298201899, guid: 33290fb263d52be45be1a95a2129909d, type: 3}
       propertyPath: chaseSpeed
       value: 3
       objectReference: {fileID: 0}
@@ -4279,6 +4303,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3512729544311455418, guid: 94d50127ee7ca264fb2a2d263e074dcd, type: 3}
+      propertyPath: cilp1
+      value: 
+      objectReference: {fileID: 8300000, guid: f4ab811662f72504e8ca5d015504b46a, type: 3}
+    - target: {fileID: 3512729544311455418, guid: 94d50127ee7ca264fb2a2d263e074dcd, type: 3}
+      propertyPath: cilp2
+      value: 
+      objectReference: {fileID: 8300000, guid: 597899f1a7395594ca778cda456f6041, type: 3}
+    - target: {fileID: 3512729544311455418, guid: 94d50127ee7ca264fb2a2d263e074dcd, type: 3}
+      propertyPath: cilp3
+      value: 
+      objectReference: {fileID: 8300000, guid: 1188f2f20f36abf4c882878560ee7c1c, type: 3}
     - target: {fileID: 3512729544311455418, guid: 94d50127ee7ca264fb2a2d263e074dcd, type: 3}
       propertyPath: detectionRange
       value: 3
@@ -5138,9 +5174,9 @@ MonoBehaviour:
   coolTime: 0.1
   pos: {fileID: 752880744}
   boxSize: {x: 1.67, y: 1.67}
-  cilp1: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
-  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
-  cilp3: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+  cilp1: {fileID: 8300000, guid: f4ab811662f72504e8ca5d015504b46a, type: 3}
+  cilp2: {fileID: 8300000, guid: 597899f1a7395594ca778cda456f6041, type: 3}
+  cilp3: {fileID: 8300000, guid: 1188f2f20f36abf4c882878560ee7c1c, type: 3}
   groggySound: {fileID: 0}
   executionSound: {fileID: 8300000, guid: 24fa63e280ca5de468e3979feaa8f0be, type: 3}
 --- !u!114 &1714837320
