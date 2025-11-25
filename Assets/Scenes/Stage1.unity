@@ -2607,6 +2607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   Hit: 0
+  Stop_Image: {fileID: 0}
   MusicTimer: {fileID: 526786026}
   gameTimer: 0
   scoreUIPanel: {fileID: 1712454072}
@@ -5817,10 +5818,10 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 970133817}
   - {fileID: 807799759}
   - {fileID: 1074574715}
   - {fileID: 603262193}
-  - {fileID: 970133817}
   - {fileID: 1791888985}
   - {fileID: 1714837324}
   - {fileID: 1673866048}
