@@ -841,7 +841,7 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: -4088885813765475010, guid: 358cc76b19fc70443835f3cc6ba9dd31, type: 3}
-    - time: 9.5
+    - time: 8.633333
       value: {fileID: 6783670416454399068, guid: bbff45764de634742afce2593fdd58d2, type: 3}
     attribute: m_Sprite
     path: 
@@ -1810,7 +1810,7 @@ MonoBehaviour:
   m_Version: 3
   m_AnimClip: {fileID: 0}
   m_Locked: 0
-  m_Muted: 0
+  m_Muted: 1
   m_CustomPlayableFullTypename: 
   m_Curves: {fileID: 0}
   m_Parent: {fileID: 11400000}
