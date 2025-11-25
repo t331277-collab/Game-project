@@ -5230,7 +5230,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 931718721}
         m_TargetAssemblyTypeName: InGameMenuController, Assembly-CSharp
         m_MethodName: CloseSettingsBtnClicked
         m_Mode: 1
