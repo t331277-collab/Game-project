@@ -126,14 +126,14 @@ public class Enemy : MonoBehaviour
 
         if (animator != null)
         {
-            // 조건 1: 현재 상태가 '순찰(Patrolling)' 상태인가?
-            // 조건 2: 실제로 움직이고 있는가? (속도가 0.1보다 큰가?)
-            // 두 조건이 모두 맞을 때만 isPatrolling이 true가 됩니다.
-            bool isPatrolling = (currentState == State.Patrolling) && (rgd.linearVelocity.magnitude > 0.1f);
-            
-            // 애니메이터의 "IsMoving" 파라미터에 이 값을 전달합니다.
-            // (파라미터 이름은 그대로 "IsMoving"을 써도 되고, "IsPatrolling"으로 바꿔도 좋습니다.)
-            animator.SetBool("IsMoving", isPatrolling);
+            // 1. 움직이고 있는가? (속도가 0.1보다 큰가?)
+            bool isMoving = rgd.linearVelocity.magnitude > 0.1f;
+            animator.SetBool("IsMoving", isMoving);
+
+            // 2. 지금 추격 상태인가?
+            bool isChasing = (currentState == State.Chasing);
+            animator.SetBool("IsChasing", isChasing);
+
         }
 
         switch (currentState)

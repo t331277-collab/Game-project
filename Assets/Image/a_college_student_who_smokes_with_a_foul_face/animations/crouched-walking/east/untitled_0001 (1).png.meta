@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 332f7ec92e6ae1a4699a39890eb3ae24
+guid: a3151436b6b06de48b6f60026286e51f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1399413676680894907
-    second: frame_004_0
+      213: -6595049247466667459
+    second: untitled_0001 (1)_0
   - first:
-      213: -1765240197280933245
-    second: frame_004_1
+      213: 658777837789606747
+    second: untitled_0001 (1)_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +103,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: frame_004_0
+      name: untitled_0001 (1)_0
       rect:
         serializedVersion: 2
-        x: 27
-        y: 29
-        width: 71
-        height: 80
+        x: 26
+        y: 24
+        width: 77
+        height: 90
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,20 +118,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bb953641357bb6310800000000000000
-      internalID: 1399413676680894907
+      spriteID: d32ca88c6ada974a0800000000000000
+      internalID: -6595049247466667459
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: frame_004_1
+      name: untitled_0001 (1)_1
       rect:
         serializedVersion: 2
-        x: 92
-        y: 84
+        x: 95
+        y: 73
         width: 9
-        height: 16
+        height: 6
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,8 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 38a54d9a46b9087e0800000000000000
-      internalID: -1765240197280933245
+      spriteID: b53795ff3f2742900800000000000000
+      internalID: 658777837789606747
       vertices: []
       indices: 
       edges: []
@@ -160,8 +160,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      frame_004_0: 1399413676680894907
-      frame_004_1: -1765240197280933245
+      untitled_0001 (1)_0: -6595049247466667459
+      untitled_0001 (1)_1: 658777837789606747
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
