@@ -92,13 +92,19 @@ public class SoundManager : MonoBehaviour
 
         while (timer < duration)
         {
-            timer += Time.deltaTime;
+            // [수정!] Time.deltaTime 대신 unscaledDeltaTime 사용
+            // Time.timeScale이 0이어도(일시정지 상태) 페이드 아웃이 정상 작동하게 함
+            timer += Time.unscaledDeltaTime;
+
             // Lerp를 이용해 현재 볼륨 -> 0으로 부드럽게 줄임
             bgmSource.volume = Mathf.Lerp(startVolume, 0f, timer / duration);
-            yield return null; // 한 프레임 대기
+
+            // [참고] WaitForSecondsRealtime을 쓰지 않고 yield return null을 쓰더라도
+            // unscaledDeltaTime을 누적하면 루프 계산은 정상적으로 됩니다.
+            yield return null;
         }
 
-        bgmSource.Stop();     // 소리가 다 줄어들면 정지
+        bgmSource.Stop();      // 소리가 다 줄어들면 정지
         bgmSource.volume = startVolume; // [중요] 다음 재생을 위해 볼륨 원상복구
         fadeCoroutine = null; // 코루틴 상태 초기화
     }

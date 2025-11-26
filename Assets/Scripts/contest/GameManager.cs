@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
             scoreUIPanel.SetActive(true);
             // 필요하다면 여기서 게임 일시정지 등을 추가
             Time.timeScale = 0f;
-            SoundManager.instance.StopBGM();
+            SoundManager.instance.FadeOutBGM(5f);
         }
     }
 
