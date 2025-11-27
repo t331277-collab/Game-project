@@ -206,6 +206,14 @@ public class Enemy : MonoBehaviour
     {
         if (playerTransform == null) return;
         Debug.Log("넉백!");
+        if (animator != null)
+        {
+            // 방금 애니메이터에서 만든 Trigger 이름 "Hurt"
+            animator.SetTrigger("Hurt");
+            // *팁: 만약 공격 중이었다면 공격이 캔슬되는 느낌을 주기 위해
+            // "Attack" 트리거를 리셋해주는 것도 좋습니다. (선택 사항)
+            animator.ResetTrigger("Attack"); 
+        }
         currentState = State.KnockedBack;
         knockbackTimer = knockbackDuration;
         rgd.linearVelocity = Vector2.zero;

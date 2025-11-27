@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 6303353888895312061}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.25, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 1974558312104585025}
   - component: {fileID: 3096428333482897967}
   - component: {fileID: 5378776597298201899}
+  - component: {fileID: 471234754403351832}
   m_Layer: 0
   m_Name: Warrior
   m_TagString: Enemy
@@ -60,8 +61,8 @@ Transform:
   m_GameObject: {fileID: 7367258260276748968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.36, y: -19.8, z: 0}
-  m_LocalScale: {x: 1.2, y: 2, z: 1}
+  m_LocalPosition: {x: -17.05, y: -19.72, z: 0}
+  m_LocalScale: {x: 1.6497, y: 1.6497, z: 1.6497}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4714652541634103066}
@@ -114,12 +115,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.6876748, g: 0.9150943, b: 0.34100214, a: 1}
+  m_Sprite: {fileID: 2324236343598682440, guid: a086dc3c0cf91da4982b5227b6cdf41c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.33, y: 0.97}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -159,17 +160,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.0000003874302, y: 0.013727292}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 0.33, y: 0.97}
+    newSize: {x: 0.33, y: 0.97}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.34825104, y: 0.9252691}
   m_EdgeRadius: 0
 --- !u!50 &3096428333482897967
 Rigidbody2D:
@@ -210,22 +211,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a37f78ede8568b46a12b4a3877ad578, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy_Attacker
-  cilp1: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
-  cilp2: {fileID: 8300000, guid: 6c366eaf1e2602b4e92ebe57d865f562, type: 3}
-  cilp3: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+  cilp1: {fileID: 8300000, guid: 1188f2f20f36abf4c882878560ee7c1c, type: 3}
+  cilp2: {fileID: 8300000, guid: 597899f1a7395594ca778cda456f6041, type: 3}
+  cilp3: {fileID: 8300000, guid: f4ab811662f72504e8ca5d015504b46a, type: 3}
   cassete_start_end: {fileID: 8300000, guid: 18635f14be9604d4ba4852b692972119, type: 3}
   Sounddelay: 1
   patrolSpeed: 2
   patrolDistance: 3
-  chaseSpeed: 4
+  chaseSpeed: 3.5
   detectionRange: 3
   killSequence: 63000000780000007a000000
   knockbackForce: 100
   knockbackMultiplier: 1
   knockbackDuration: 0.2
   groggyDuration: 3
-  attackRange: 1.5
-  attackDelay: 1
+  attackRange: 1.2
+  attackDelay: 0.3
   attackActiveTime: 0.5
   attackPos: {fileID: 4714652541634103066}
   attackBoxSize: {x: 1, y: 2}
+--- !u!95 &471234754403351832
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367258260276748968}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4f003e05ceb48d41aec6dd36a99bfd6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
