@@ -2175,8 +2175,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 23, y: -8.895142}
-  m_SizeDelta: {x: 806.0645, y: 529.79}
+  m_AnchoredPosition: {x: 41.748413, y: -36.46649}
+  m_SizeDelta: {x: 843.5615, y: 584.9327}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &705783392
 MonoBehaviour:
@@ -2198,7 +2198,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5341062708161954325, guid: acaba773a5306fa4290edd1915501c80, type: 3}
+  m_Sprite: {fileID: -1110439675278324784, guid: c0faac7f001f6e445af88f3249e76e02, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2442,6 +2442,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 812392180}
   m_CullTransparentMesh: 1
+--- !u!1 &872094314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 872094316}
+  - component: {fileID: 872094315}
+  m_Layer: 0
+  m_Name: ScoreManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &872094315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872094314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb032fdbb86680149a2a2741f30efc61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScoreManager
+  Count_Damaged: 0
+--- !u!4 &872094316
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872094314}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1032.4769, y: 406.4328, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &923009002
 GameObject:
   m_ObjectHideFlags: 0
@@ -2985,7 +3030,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -5341062708161954325, guid: acaba773a5306fa4290edd1915501c80, type: 3}
+  m_Sprite: {fileID: 1085281170283664699, guid: 47f60852bd5130b4293daba8ce9ca2fb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4816,6 +4861,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Health
   health: 3
+  invincibilityDuration: 1.5
+  blinkInterval: 0.1
 --- !u!95 &2098346493
 Animator:
   serializedVersion: 7
@@ -5101,3 +5148,4 @@ SceneRoots:
   - {fileID: 960853070}
   - {fileID: 1296554905}
   - {fileID: 2044128237}
+  - {fileID: 872094316}
