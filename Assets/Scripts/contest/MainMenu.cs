@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
+
     // [추가!] 게임이 시작될 때 저장된 볼륨 값을 불러옵니다.
     void Start()
     {
