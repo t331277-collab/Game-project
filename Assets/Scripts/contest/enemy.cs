@@ -134,6 +134,9 @@ public class Enemy : MonoBehaviour
             bool isChasing = (currentState == State.Chasing);
             animator.SetBool("IsChasing", isChasing);
 
+            bool isGroggy = (currentState == State.Groggy);
+            animator.SetBool("IsGroggy", isGroggy);
+
         }
 
         switch (currentState)
