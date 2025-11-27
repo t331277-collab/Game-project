@@ -1,69 +1,94 @@
 using UnityEngine;
+using System.Collections; // [필수!] 코루틴 사용을 위해 추가
 
 public class Player_Health : MonoBehaviour
 {
     [Header("Health")]
-    public float health = 3.0f; 
+    public float health = 3.0f;
 
-    // [삭제!] 이 스크립트는 넉백 '힘'을 직접 관리하지 않습니다.
-    // [SerializeField] float knockbackForce = 2.0f; 
-    // [SerializeField] float knockupForce = 0.5f;   
+    [Header("Invincibility")]
+    public float invincibilityDuration = 1.5f; // 무적 지속 시간 (초)
+    private bool isInvincible = false;         // 현재 무적 상태인지 체크
+    public float blinkInterval = 0.1f;         // 깜빡이는 속도
 
-    Rigidbody2D rgd; 
-
-    // [추가!] Player_Move 스크립트(시스템 A)에 접근하기 위한 변수
+    Rigidbody2D rgd;
     private Player_Move playerMove;
+    private SpriteRenderer spriteRenderer; // [추가] 깜빡임 효과를 위해 필요
 
-    void Awake() 
+    void Awake()
     {
-        rgd = GetComponent<Rigidbody2D>(); 
-        
-        // [추가!] Player_Move 스크립트를 찾아서 변수에 저장
+        rgd = GetComponent<Rigidbody2D>();
         playerMove = GetComponent<Player_Move>();
+
+        // [추가] 스프라이트 렌더러 컴포넌트 가져오기
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // [수정!] 이 함수는 이제 '시스템 A' (KBCounter)를 활성화시킵니다.
-    public void Player_TakeDamaged(Vector2 fromWorldPos) 
+    public void Player_TakeDamaged(Vector2 fromWorldPos)
     {
-        // 1. 체력 1 감소
-        health -= 1f;
+        // [추가!] 무적 상태라면 데미지와 넉백을 모두 무시하고 함수 종료
+        if (isInvincible) return;
 
-        // 2. Player_Move 스크립트가 있는지 확인 (오류 방지)
+        // -------------------------------------------------------
+        // 기존 로직 (데미지 및 넉백 트리거)
+        // -------------------------------------------------------
+
+        // 1. 체력 감소 (ScoreManager 등 외부 로직 연동)
+        ScoreManager.Instance.TakeDamaged(1);
+
+        // 2. Player_Move 스크립트 확인
         if (playerMove == null)
         {
             Debug.LogError("Player_Health가 Player_Move 스크립트를 찾지 못했습니다!");
             return;
         }
 
-        // 3. [핵심!] Player_Move의 넉백 타이머를 활성화
+        // 3. Player_Move의 넉백 타이머 활성화
         playerMove.KBCounter = playerMove.KBToalTime;
 
-        // 4. [핵심!] 넉백 방향 계산 및 'Player_Move' 변수에 저장
-        // (플레이어 X위치 - 공격자 X위치)
+        // 4. 넉백 방향 계산 및 전달
         if (transform.position.x <= fromWorldPos.x)
         {
-            // 공격자가 오른쪽에 있음 -> 왼쪽으로 넉백
-            playerMove.KnockFromRight = true; 
+            playerMove.KnockFromRight = true;
         }
         else
         {
-            // 공격자가 왼쪽에 있음 -> 오른쪽으로 넉백
             playerMove.KnockFromRight = false;
         }
-        
-        // [삭제!] 시스템 B (AddForce) 코드는 모두 삭제합니다.
+
+        // -------------------------------------------------------
+        // [추가!] 무적 및 깜빡임 코루틴 시작
+        // -------------------------------------------------------
+        StartCoroutine(InvincibilityCoroutine());
     }
 
-    // [수정!] 이 함수는 비워둡니다.
-    // 몬스터와의 충돌 처리는 'Enemy_Bumper.cs'가 전담해야 
-    // 넉백이 두 번 중복으로 실행되는 것을 막을 수 있습니다.
+    // [추가!] 무적 시간과 깜빡임 효과를 담당하는 코루틴
+    IEnumerator InvincibilityCoroutine()
+    {
+        isInvincible = true; // 무적 ON
+
+        float timer = 0f;
+
+        while (timer < invincibilityDuration)
+        {
+            // 투명하게 (Alpha값 0.4)
+            spriteRenderer.color = new Color(1, 1, 1, 0.4f);
+            yield return new WaitForSeconds(blinkInterval);
+
+            // 불투명하게 (Alpha값 1.0)
+            spriteRenderer.color = new Color(1, 1, 1, 1f);
+            yield return new WaitForSeconds(blinkInterval);
+
+            timer += (blinkInterval * 2); // 대기한 시간만큼 타이머 증가
+        }
+
+        // 루프가 끝난 후 확실하게 원상복구
+        spriteRenderer.color = new Color(1, 1, 1, 1f);
+        isInvincible = false; // 무적 OFF
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*
-        if (collision.collider.CompareTag("Enemy")) 
-        {
-            // 이 코드는 Enemy_Bumper.cs가 대신 처리함
-        }
-        */
+        // Enemy_Bumper.cs 에서 처리하므로 비워둠
     }
 }

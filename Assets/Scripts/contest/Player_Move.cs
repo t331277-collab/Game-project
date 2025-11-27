@@ -58,6 +58,8 @@ public class Player_Move : MonoBehaviour
             else rgd.linearVelocity = new Vector2(KBForce, KBForce * 0.5f);
 
             KBCounter -= Time.fixedDeltaTime;
+
+            
         }
     }
 
