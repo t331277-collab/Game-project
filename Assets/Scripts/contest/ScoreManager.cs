@@ -49,5 +49,7 @@ public class ScoreManager : MonoBehaviour
         {
             SceneManager.LoadScene("HiddenEnding");
         }
+
+        Time.timeScale = 1f;
     }
 }
