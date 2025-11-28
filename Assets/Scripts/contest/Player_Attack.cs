@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using MoreMountains.Feedbacks;
 
 public class Player_Attack : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class Player_Attack : MonoBehaviour
     
     // 스프라이트 방향 확인을 위한 컴포넌트
     private SpriteRenderer spriteRenderer;
+
+    [Header("Feel VFX (자식 오브젝트 연결)")]
+    // [수정!] 3개의 별도 MMF_Player 변수를 만듭니다.
+    public MMF_Player vfxZ;
+    public MMF_Player vfxX;
+    public MMF_Player vfxC;
 
     void Start()
     {
@@ -77,6 +84,12 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.Z);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+
+                    if (vfxZ != null)
+                {
+                    vfxZ.PlayFeedbacks();
+                }
+
                     if (animator != null)
                     {
                         animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
@@ -90,6 +103,12 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.X);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+
+                    if (vfxX != null)
+                {
+                    vfxX.PlayFeedbacks();
+                }
+
                     if (animator != null)
                     {
                         animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
@@ -103,6 +122,12 @@ public class Player_Attack : MonoBehaviour
                     PerformAttack(KeyCode.C);
                     curTime = coolTime;
                     GameManager.Instance.Hit_ZXC();
+
+                    if (vfxC != null)
+                {
+                    vfxC.PlayFeedbacks();
+                }
+                    
                     if (animator != null)
                     {
                         animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
