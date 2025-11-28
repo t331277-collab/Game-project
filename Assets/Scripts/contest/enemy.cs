@@ -98,6 +98,8 @@ public class Enemy : MonoBehaviour
     // [추가!] 선택 시각 효과를 위해 원래 색상을 기억할 변수
     private Color originalColor;
 
+    private Light selectionLight;
+
     protected virtual void Start()
     {
         rgd = GetComponent<Rigidbody2D>();
@@ -117,6 +119,13 @@ public class Enemy : MonoBehaviour
         if (spriteRenderer != null)
         {
             originalColor = spriteRenderer.color;
+        }
+
+        selectionLight = transform.Find("SelectionLight")?.GetComponent<Light>();
+    
+        if (selectionLight == null)
+        {
+            Debug.LogWarning($"[{gameObject.name}] SelectionLight를 찾을 수 없습니다!");
         }
     }
 
@@ -279,12 +288,26 @@ public class Enemy : MonoBehaviour
     // --- [새로운 기능: 선택 시각 효과 및 소리 트리거] ---
 
     // GameManager가 이 적을 선택했을 때 호출 (시각 효과)
+    public void TurnBlack()
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = Color.black;
+        }
+    }
+    public void RestoreOriginalColor()
+    {
+    if (spriteRenderer != null)
+        {
+            spriteRenderer.color = originalColor;
+        }
+    }
     public void Select()
     {
         if (spriteRenderer != null)
         {
             // 예시: 색상을 빨간색으로 변경하여 선택됨을 표시
-            spriteRenderer.color = Color.red;
+            spriteRenderer.color = Color.black;
         }
     }
 

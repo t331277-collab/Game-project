@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections; // 코루틴 사용을 위해 필수
+using MoreMountains.Feedbacks;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +54,11 @@ public class GameManager : MonoBehaviour
     // 소리가 재생되는 동안 입력을 막기 위한 변수
     private bool isWaitingForSoundToFinish = false;
 
+    [Header("Feel Feedbacks")]
+    // [추가!] 시간 정지 시작 시 재생할 피드백 (흑백 켜기)
+    public MMFeedbacks timeStopStartFeedback;
+    // [추가!] 시간 정지 종료 시 재생할 피드백 (흑백 끄기)
+    public MMFeedbacks timeStopEndFeedback;
 
     private void Awake()
     {
@@ -178,6 +184,25 @@ public class GameManager : MonoBehaviour
         // 첫 번째 적 선택 및 시각 효과 초기화
         selectedEnemyIndex = 0;
         UpdateEnemySelectionVisuals();
+
+        if (timeStopStartFeedback != null)
+        {
+            timeStopStartFeedback.PlayFeedbacks();
+        }
+
+        foreach (var enemy in Enemy.VisibleEnemies)
+        {
+            if (enemy != null)
+            {
+                enemy.TurnBlack();
+            }
+        }
+
+        // 흑백 효과 시작 피드백 재생
+        if (timeStopStartFeedback != null)
+        {
+            timeStopStartFeedback.PlayFeedbacks();
+        }
     }
 
     // [NEW!] 적 선택 및 결정 입력 처리 함수 (Update에서 호출)
@@ -230,23 +255,37 @@ public class GameManager : MonoBehaviour
     // 현재 선택된 적만 강조 표시하는 보조 함수
     private void UpdateEnemySelectionVisuals()
     {
-        // 혹시 모르니 모든 적의 선택 표시를 초기화 (안전장치)
-        foreach (var enemy in Enemy.VisibleEnemies)
-        {
-            if (enemy != null) enemy.Deselect();
-        }
+        if (Enemy.VisibleEnemies.Count == 0) return;
 
-        // 현재 인덱스의 적이 유효하면 선택 표시
-        if (Enemy.VisibleEnemies.Count > 0 && Enemy.VisibleEnemies[selectedEnemyIndex] != null)
+        for (int i = 0; i < Enemy.VisibleEnemies.Count; i++)
         {
-            Enemy.VisibleEnemies[selectedEnemyIndex].Select();
+            Enemy enemy = Enemy.VisibleEnemies[i];
+            if (enemy == null) continue;
+
+            if (i == selectedEnemyIndex)
+            {
+                // [수정] 선택된 적은 원래 색으로 복구!
+                enemy.RestoreOriginalColor();
+                // (기존 OnSelect 호출은 주석 처리하거나 삭제)
+                // enemy.OnSelect(); 
+            }
+            else
+            {
+                // [수정] 선택되지 않은 적은 검은색으로!
+                enemy.TurnBlack();
+                // (기존 Deselect 호출은 주석 처리하거나 삭제)
+                // enemy.Deselect();
+            }
         }
     }
 
 
     // [2] 스킬 종료 및 시간 재개 (Enemy에서 코루틴으로 호출)
     public IEnumerator ResumeTimeAfterDelay(float delay)
-    {
+    {   
+        // [▼▼▼ 이 로그를 추가해주세요! ▼▼▼]
+        Debug.Log($"<color=yellow>[GameManager] ResumeTimeAfterDelay 호출됨! 딜레이: {delay}초 (현재 시간: {Time.unscaledTime})</color>");
+        // ------------------------------------
         Debug.Log($"스킬 종료 대기 중... ({delay}초)");
         
         // [핵심!] 실시간(Realtime)으로 delay만큼 대기합니다.
@@ -256,15 +295,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("시간 재개!");
         Time.timeScale = 1f;     // 시간 정상화
         ResumeMain_BGM();        // BGM 재개 (dspTime 복구)
-
+        
+        if (timeStopEndFeedback != null)
+        {
+            timeStopEndFeedback.PlayFeedbacks();
+        }
+        
         IsTimeStopped = false;   // 상태 해제
         // 입력 잠금 해제
         isWaitingForSoundToFinish = false;
 
-        // 모든 적 선택 표시 해제 (깔끔하게 정리)
+        // [추가!] 스킬 종료 시 모든 적의 색상을 원래대로 복구합니다.
         foreach (var enemy in Enemy.VisibleEnemies)
         {
-             if(enemy != null) enemy.Deselect();
+            if (enemy != null)
+            {
+                enemy.RestoreOriginalColor();
+            }
         }
     }
 
