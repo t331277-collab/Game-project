@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections; // 코루틴 사용을 위해 필수
 
 public class GameManager : MonoBehaviour
@@ -111,7 +112,9 @@ public class GameManager : MonoBehaviour
 
                 Time.timeScale = 0f;           // 시간을 멈춤
                 SoundManager.instance.StopBGM(); // BGM 정지
-                
+
+                SceneManager.LoadScene("BadEnding");
+
                 // (나중에 여기에 게임 오버 UI를 띄우는 코드를 넣으면 됩니다.)
             }
         }

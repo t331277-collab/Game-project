@@ -31,6 +31,11 @@ public class ScoreManager : MonoBehaviour
         Debug.Log("현재 피격횟수 " + Count_Damaged);
     }
 
+    public void ResetScore()
+    {
+        Count_Damaged = 0;
+    }
+
     public void Ending()
     {
         if(Count_Damaged > 30)
