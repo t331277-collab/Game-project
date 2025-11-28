@@ -61,8 +61,8 @@ Transform:
   m_GameObject: {fileID: 1436040704393239992}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.25, y: -19.634, z: 0}
-  m_LocalScale: {x: 1.9880066, y: 1.9880066, z: 1.9880066}
+  m_LocalPosition: {x: -22.795, y: -20.241, z: 0}
+  m_LocalScale: {x: 1.4, y: 1.4, z: 1.4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1336255108015149587}
@@ -225,11 +225,11 @@ MonoBehaviour:
   knockbackMultiplier: 1
   knockbackDuration: 0.2
   groggyDuration: 3
-  attackRange: 1.2
+  attackRange: 1
   attackDelay: 0.3
   attackActiveTime: 0.5
   attackPos: {fileID: 1336255108015149587}
-  attackBoxSize: {x: 1, y: 2}
+  attackBoxSize: {x: 1.2, y: 1.5}
 --- !u!95 &544188852413584598
 Animator:
   serializedVersion: 7
