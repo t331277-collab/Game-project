@@ -693,7 +693,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1640450391}
-        m_TargetAssemblyTypeName: Go_Stage1, Assembly-CSharp
+        m_TargetAssemblyTypeName: Go_MainMenu, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8799659343396507305, guid: c850ba21f1107ac4f980b63ea64e1d9b, type: 3}
+  m_Sprite: {fileID: -3451699440861859892, guid: 10f23da777623fe48b4ad9cfee9f3cac, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -752,9 +752,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1640450390}
   - component: {fileID: 1640450389}
-  - component: {fileID: 1640450391}
   - component: {fileID: 1640450388}
   - component: {fileID: 1640450387}
+  - component: {fileID: 1640450391}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -854,9 +854,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1640450386}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9403660b3731de64b930af36b917f0ca, type: 3}
+  m_Script: {fileID: 11500000, guid: e08db05cfbe73f64295f5f1458f9ad89, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Go_Stage1
+  m_EditorClassIdentifier: Assembly-CSharp::Go_MainMenu
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
