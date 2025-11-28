@@ -334,6 +334,8 @@ public class Enemy : MonoBehaviour
 
         Debug.Log("Skill Info Playing...");
 
+        
+
         // 현재 enemy의 killSequence에 맞는 음악 재생
         if (killSequence.Count > 0) { Debug.Log(killSequence[0]); SoundManager.instance.SFXPlay("Chord_a1", cilp1); yield return new WaitForSecondsRealtime(Sounddelay); }
         if (killSequence.Count > 1) { Debug.Log(killSequence[1]); SoundManager.instance.SFXPlay("Chord_a1", cilp2); yield return new WaitForSecondsRealtime(Sounddelay); }
