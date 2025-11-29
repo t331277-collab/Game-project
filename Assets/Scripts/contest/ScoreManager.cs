@@ -40,7 +40,17 @@ public class ScoreManager : MonoBehaviour
         // [추가] 점수가 바뀌었으니 UI도 갱신
         UpdateScoreUI();
 
-        MainScoreManager.Instance.CountALLDamage();
+        if (MainScoreManager.Instance != null) 
+        {
+            MainScoreManager.Instance.CountALLDamage();
+        }
+        else
+        {
+            return;
+        }
+
+
+        
     }
 
     public void ResetScore()
