@@ -10,6 +10,8 @@ public class Go_Stage1 : MonoBehaviour
     }
     public void StartGame()
     {
+        MainScoreManager.Instance.ClearScore();
+
         ScoreManager.Instance.ResetScore();
         SceneManager.LoadScene("Stage1"); // (æ¿ ¿Ã∏ß »Æ¿Œ!)
 

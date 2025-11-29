@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            
         }
         else
         {
@@ -39,6 +39,8 @@ public class ScoreManager : MonoBehaviour
 
         // [추가] 점수가 바뀌었으니 UI도 갱신
         UpdateScoreUI();
+
+        MainScoreManager.Instance.CountALLDamage();
     }
 
     public void ResetScore()
@@ -62,22 +64,28 @@ public class ScoreManager : MonoBehaviour
             scoreText.SetText("{0}", 100 - Count_Damaged);
         }
 
-        if(Count_Damaged > 30)
+
+        if (scoreString != null) 
         {
-            scoreString.SetText("코멘트 : 형편없군!!!");
+            if (Count_Damaged > 30)
+            {
+                scoreString.SetText("코멘트 : 형편없군!!!");
+            }
+            else if (Count_Damaged > 15)
+            {
+                scoreString.SetText("코멘트 : 나쁘지 않은데!!!!");
+            }
+            else if (Count_Damaged > 1)
+            {
+                scoreString.SetText("코멘트 : 좋아 이대로만!!!!");
+            }
+            else
+            {
+                scoreString.SetText("코멘트 : 너 정체가 뭐야!!!!");
+            }
+
         }
-        else if(Count_Damaged > 15)
-        {
-            scoreString.SetText("코멘트 : 나쁘지 않은데!!!!");
-        }
-        else if(Count_Damaged > 1)
-        {
-            scoreString.SetText("코멘트 : 좋아 이대로만!!!!");
-        }
-        else
-        {
-            scoreString.SetText("코멘트 : 너 정체가 뭐야!!!!");
-        }
+        
     }
 
     public void Ending()
