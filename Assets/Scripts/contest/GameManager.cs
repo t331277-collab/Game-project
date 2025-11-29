@@ -151,9 +151,23 @@ public class GameManager : MonoBehaviour
         if (scoreUIPanel != null)
         {
             stopTimer = true;
+            
+            StartCoroutine(GameClearSequence());
+        }
+    }
+
+    IEnumerator GameClearSequence()
+    {
+        Time.timeScale = 0.5f;
+
+        yield return new WaitForSecondsRealtime(3f);
+
+        Time.timeScale = 0f;
+
+        if (scoreUIPanel != null)
+        {
             scoreUIPanel.SetActive(true);
-            // 필요하다면 여기서 게임 일시정지 등을 추가
-            Time.timeScale = 0f;
+
             SoundManager.instance.FadeOutBGM(5f);
         }
     }
