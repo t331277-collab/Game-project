@@ -160,6 +160,8 @@ MonoBehaviour:
   firstBeatTime: 0
   countThree: {fileID: 8300000, guid: bba51e547d60bfd458986acbb2e3a918, type: 3}
   Main_BGM: {fileID: 8300000, guid: 2430ef06fad2c9e4787a96263c8e93a3, type: 3}
+  timeStopStartFeedback: {fileID: 0}
+  timeStopEndFeedback: {fileID: 0}
 --- !u!4 &9854899
 Transform:
   m_ObjectHideFlags: 0
@@ -2988,6 +2990,9 @@ MonoBehaviour:
   cilp3: {fileID: 8300000, guid: 4849182fa9345ed4aa3c5f2d725501d9, type: 3}
   groggySound: {fileID: 0}
   executionSound: {fileID: 8300000, guid: 148d2d36bae7cef4e81cd3cdfbc9be7d, type: 3}
+  vfxZ: {fileID: 0}
+  vfxX: {fileID: 0}
+  vfxC: {fileID: 0}
 --- !u!114 &1738895474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3549,7 +3554,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineFollow
   TrackerSettings:
     BindingMode: 4
-    PositionDamping: {x: 1, y: 1, z: 1}
+    PositionDamping: {x: 1, y: 20, z: 1}
     AngularDampingMode: 0
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
