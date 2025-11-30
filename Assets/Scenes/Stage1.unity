@@ -940,6 +940,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: chaseSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: killSequence.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -1799,6 +1803,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: cilp4
+      value: 
+      objectReference: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: cilp5
+      value: 
+      objectReference: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: Sounddelay
       value: 0.6
       objectReference: {fileID: 0}
@@ -1820,7 +1832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: killSequence.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: 'killSequence.Array.data[0]'
@@ -1832,6 +1844,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: 'killSequence.Array.data[2]'
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: 'killSequence.Array.data[3]'
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: 'killSequence.Array.data[4]'
       value: 122
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -2057,6 +2077,10 @@ PrefabInstance:
       propertyPath: cilp3
       value: 
       objectReference: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: chaseSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: killSequence.Array.size
       value: 2
@@ -2679,12 +2703,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: cilp4
+      value: 
+      objectReference: {fileID: 8300000, guid: 9232376fc2b22a44d9b91ddeea406523, type: 3}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: chaseSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: patrolSpeed
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: killSequence.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: 'killSequence.Array.data[0]'
@@ -2696,6 +2728,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: 'killSequence.Array.data[2]'
+      value: 122
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: 'killSequence.Array.data[3]'
       value: 122
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -5304,6 +5340,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: chaseSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: killSequence.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -6567,6 +6607,10 @@ PrefabInstance:
       propertyPath: cilp3
       value: 
       objectReference: {fileID: 8300000, guid: 706bf93a98d07bf49ad1fae2734e9311, type: 3}
+    - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
+      propertyPath: chaseSpeed
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5979307544496444575, guid: 8811a8724606fd647a7142c8d182d45c, type: 3}
       propertyPath: patrolSpeed
       value: 3

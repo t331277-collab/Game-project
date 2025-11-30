@@ -57,6 +57,8 @@ public class Enemy : MonoBehaviour
     public AudioClip cilp1; //chord_a1
     public AudioClip cilp2; //chord_a2
     public AudioClip cilp3; //chord_a3
+    public AudioClip cilp4; //chord_a3
+    public AudioClip cilp5; //chord_a3
 
     public AudioClip cassete_start_end; //카세트 딸깍~ 소리
 
@@ -363,6 +365,8 @@ public class Enemy : MonoBehaviour
         if (killSequence.Count > 0) { Debug.Log(killSequence[0]); SoundManager.instance.SFXPlay("Chord_a1", cilp1); yield return new WaitForSecondsRealtime(Sounddelay); }
         if (killSequence.Count > 1) { Debug.Log(killSequence[1]); SoundManager.instance.SFXPlay("Chord_a1", cilp2); yield return new WaitForSecondsRealtime(Sounddelay); }
         if (killSequence.Count > 2) { Debug.Log(killSequence[2]); SoundManager.instance.SFXPlay("Chord_a1", cilp3); yield return new WaitForSecondsRealtime(Sounddelay); }
+        if (killSequence.Count > 3) { Debug.Log(killSequence[3]); SoundManager.instance.SFXPlay("Chord_a1", cilp4); yield return new WaitForSecondsRealtime(Sounddelay); }
+        if (killSequence.Count > 4) { Debug.Log(killSequence[4]); SoundManager.instance.SFXPlay("Chord_a1", cilp5); yield return new WaitForSecondsRealtime(Sounddelay); }
 
         SoundManager.instance.SFXPlay("cassete_end", cassete_start_end);
         yield return new WaitForSecondsRealtime(Sounddelay);
