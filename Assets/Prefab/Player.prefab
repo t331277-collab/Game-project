@@ -360,7 +360,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 2324236343598682440, guid: 73800ed7127ea404285606eae6817c0b, type: 3}
   m_Color: {r: 0.8852795, g: 0.8927049, b: 0.9245283, a: 1}
   m_FlipX: 0
@@ -388,7 +388,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 8
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 55f4136f2b7ec3c41bfa4c7f5a681fe8, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -409,7 +409,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 55f4136f2b7ec3c41bfa4c7f5a681fe8, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
