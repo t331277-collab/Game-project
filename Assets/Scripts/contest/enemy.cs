@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour
 
 
     // --- AI 상태 변수 ---
-    protected enum State { Patrolling, Chasing, KnockedBack, Groggy, Attacking }
+    protected enum State { Patrolling, Chasing, KnockedBack, Groggy, Attacking, Executed }
     protected State currentState;
 
     [Header("Sound")]
@@ -86,10 +86,10 @@ public class Enemy : MonoBehaviour
     [Header("Combat")]
     public float groggyDuration = 3.0f;
 
-    private int currentSequenceIndex = 0;
+    protected int currentSequenceIndex = 0;
     private float knockbackTimer;
     private float groggyTimer;
-
+    
     // --- 컴포넌트 참조 ---
     protected Rigidbody2D rgd;
     protected SpriteRenderer spriteRenderer;
@@ -233,7 +233,7 @@ public class Enemy : MonoBehaviour
         rgd.AddForce(new Vector2(direction * knockbackForce * knockbackMultiplier, 2f), ForceMode2D.Impulse);
     }
 
-    private void HandleCombo(KeyCode pressedKey)
+    public virtual void HandleCombo(KeyCode pressedKey)
     {
         if (currentState == State.Groggy) return;
 

@@ -1,70 +1,153 @@
 using UnityEngine;
 using System.Collections;
 
-// 보스 패턴 종류 열거형
 public enum BossPatternType { Floor, Charge, Normal }
 
 public class Enemy_Boss : Enemy
 {
     [Header("=== Boss General Settings ===")]
-    public float attackTriggerRange = 7.0f; // 이 거리 안에 들어오면 공격 루프 시스템 시작
-    public float delayBetweenPatterns = 1.5f; // 패턴이 끝나고 다음 패턴까지의 휴식 시간
-    public float patternMoveSpeed = 3.5f; // 패턴 사용을 위해 접근할 때의 이동 속도
-    private bool isBossAttackingLoop = false; // 현재 공격 루프 시스템이 돌아가는 중인가?
+    public float attackTriggerRange = 7.0f;
+    public float delayBetweenPatterns = 1.5f;
+    public float patternMoveSpeed = 3.5f;
+    private bool isBossAttackingLoop = false;
 
-    [Header("--- Pattern 1: Floor Attack (바닥 장판) ---")]
+    [Header("=== Boss Groggy Settings ===")]
+    public float bossGroggyDuration = 5.0f;
+    private bool isRecoveringFromGroggy = false; 
+
+    [Header("=== Boss Hit Feedback ===")]
+    public float hitBlinkDuration = 0.5f;
+    public float hitBlinkInterval = 0.05f;
+    private Coroutine blinkCoroutine;
+
+    [Header("--- Pattern 1: Floor Attack ---")]
     public GameObject floorAttackPrefab;
-    public float floorAttackRange = 5.0f; // 바닥 공격 시전 사거리
-    public float floorAttackDelay = 0.5f; // 애니메이션 선딜레이
+    public float floorAttackRange = 5.0f;
+    public float floorAttackDelay = 0.5f;
 
-    [Header("--- Pattern 2: Charge Attack (돌진 - Bumper 방식) ---")]
-    public float chargeWaitTime = 3.0f; // 기 모으는 시간
-    public float chargeDistance = 12.0f; // 돌진 거리
-    public float chargeSpeed = 20f; // 돌진 속도
-    // public int chargeDamage = 25; // [제거] 돌진 데미지 변수 제거 (Player_TakeDamaged는 고정 데미지 사용)
-    private bool isCharging = false; // 현재 돌진 중인지 체크하는 플래그
+    [Header("--- Pattern 2: Charge Attack ---")]
+    public float chargeWaitTime = 3.0f;
+    public float chargeDistance = 12.0f;
+    public float chargeSpeed = 20f;
+    private bool isCharging = false;
 
-    [Header("--- Pattern 3: Normal Attack (일반 근접 - Warrior 방식) ---")]
-    public Transform normalAttackPos; // 공격 히트박스 중심점 (자식 오브젝트)
-    public float normalAttackRange = 2.5f; // 일반 공격 시전 사거리
+    [Header("--- Pattern 3: Normal Attack ---")]
+    public Transform normalAttackPos;
+    public float normalAttackRange = 2.5f;
     public Vector2 normalAttackBoxSize = new Vector2(2.5f, 2f);
-    public float normalAttackDelay = 0.4f; // 선딜레이
-    // public int normalDamage = 20; // [제거] 일반 공격 데미지 변수 제거
+    public float normalAttackDelay = 0.4f;
 
+    // 콤보 처리 재정의 (깜빡임 효과)
+    public override void HandleCombo(KeyCode pressedKey)
+    {
+        int previousIndex = currentSequenceIndex;
+        base.HandleCombo(pressedKey);
+        bool isComboSuccess = (currentSequenceIndex > previousIndex) || (currentState == State.Groggy && previousIndex == killSequence.Count - 1);
+        
+        if (isComboSuccess && currentState != State.Executed)
+        {
+            if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
+            blinkCoroutine = StartCoroutine(Co_BossHitBlink());
+        }
+    }
 
+    private IEnumerator Co_BossHitBlink()
+    {
+        float timer = 0f;
+        while (timer < hitBlinkDuration)
+        {
+            spriteRenderer.enabled = !spriteRenderer.enabled;
+            yield return new WaitForSeconds(hitBlinkInterval);
+            timer += hitBlinkInterval;
+        }
+        spriteRenderer.enabled = true;
+        blinkCoroutine = null;
+    }
+
+    // ==================================================================================
+    // FixedUpdate 재정의 (피격 문제 해결 버전)
+    // ==================================================================================
     protected override void FixedUpdate()
     {
-        // 1. 그로기/넉백 상태면 아무것도 안 함
-        if (currentState == State.Groggy || currentState == State.KnockedBack)
+        // 1. 상태 꼬임 방지
+        if (currentState == State.Attacking && !isBossAttackingLoop)
         {
-            rgd.linearVelocity = Vector2.zero;
-            isCharging = false; // 넉백되면 돌진도 취소
-            return;
+            currentState = State.Chasing;
+            isCharging = false;
+            if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         }
 
-        // 2. 공격 루프 시스템이 작동 중이면 기본 추격 AI는 정지
-        if (isBossAttackingLoop)
+        // 2. 행동 불가 상태 처리
+        if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
         {
-            // 돌진 중이 아닐 때만 속도 제어
-            if (!isCharging)
+            // [수정 1] 넉백 상태(KnockedBack)일 때는 속도를 0으로 만들지 않습니다! (부모의 넉백 힘 적용을 위해)
+            if (currentState != State.KnockedBack)
             {
-                 // 접근 중이 아닐 때(대기 시간 등)는 정지
+                rgd.linearVelocity = Vector2.zero;
             }
-            return;
+            
+            isCharging = false;
+            // 행동 불가 상태에서는 이동 애니메이션 신호 끄기
+            if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
+
+            if (currentState == State.Groggy && !isRecoveringFromGroggy)
+            {
+                Debug.Log($"<color=yellow>[보스] 그로기 상태 감지! {bossGroggyDuration}초 후 회복.</color>");
+                if (animator != null) animator.SetBool("IsGroggy", true);
+                StartCoroutine(Co_BossRecoverFromGroggy());
+                isRecoveringFromGroggy = true;
+            }
+            return; // 부모 로직 실행 안 함
         }
 
-        // 3. 기본 순찰/추격 AI 실행
-        base.FixedUpdate();
+        // 3. 공격 루프 실행 중이면 리턴
+        if (isBossAttackingLoop) return;
 
-        // 4. 공격 루프 시스템 시작 조건 체크
+        // 4. 추격 및 사거리 체크
         if (playerTransform != null && currentState == State.Chasing)
         {
             float distanceToPlayer = Vector2.Distance(transform.position, playerTransform.position);
             if (distanceToPlayer <= attackTriggerRange)
             {
+                rgd.linearVelocity = Vector2.zero;
+                if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
                 StartCoroutine(BossAttackLoop());
+                return; // 공격 시작
             }
         }
+
+        // 5. 기본 추격 AI 실행 (사거리 밖일 때)
+        // [수정 2] 핵심! 넉백 후 추격 상태로 돌아왔을 때 이동 애니메이션이 꺼져있다면 강제로 켭니다.
+        if (currentState == State.Chasing && animator != null)
+        {
+            // 애니메이터 파라미터가 꺼져있을 경우를 대비해 강제로 true로 설정
+            animator.SetBool("IsMoving", true);
+            animator.SetBool("IsChasing", true);
+        }
+        
+        base.FixedUpdate(); // 부모의 실제 이동 로직 실행
+    }
+
+    // ... (이하 코루틴 및 유틸리티 함수들은 기존과 완전히 동일합니다) ...
+    // (코드가 길어 생략하지만, 이전에 사용하시던 코드의 뒷부분을 그대로 유지해주세요.)
+    // Co_BossRecoverFromGroggy, BossAttackLoop, Co_FloorAttack, Co_ChargeAttack, Co_NormalAttack,
+    // OnCollisionEnter2D, MoveTowardsPlayer, LookAtPlayer, OnDrawGizmos
+
+    // ==================================================================================
+    // 보스 전용 그로기 회복 코루틴
+    // ==================================================================================
+    private IEnumerator Co_BossRecoverFromGroggy()
+    {
+        yield return new WaitForSeconds(bossGroggyDuration);
+
+        if (currentState == State.Groggy)
+        {
+            Debug.Log("<color=cyan>[보스] 그로기 상태에서 자동으로 회복했습니다!</color>");
+            currentState = State.Chasing;
+            // 그로기 신호 끄기
+            if (animator != null) animator.SetBool("IsGroggy", false);
+        }
+        isRecoveringFromGroggy = false;
     }
 
     // ==================================================================================
@@ -76,10 +159,9 @@ public class Enemy_Boss : Enemy
         currentState = State.Attacking;
         Debug.Log("보스: 공격 패턴 루프 시스템 가동!");
 
-        while (playerTransform != null && currentState != State.Groggy)
+        while (playerTransform != null && currentState != State.Groggy && currentState != State.Executed)
         {
             BossPatternType pattern = (BossPatternType)Random.Range(0, 3);
-            Debug.Log($"<color=orange>[보스] 선택된 패턴: {pattern}</color>");
             
             switch (pattern)
             {
@@ -90,26 +172,34 @@ public class Enemy_Boss : Enemy
 
             if (currentState == State.Groggy) break;
 
+            // --- [패턴 사이 휴식 시작] ---
             rgd.linearVelocity = Vector2.zero;
             isCharging = false;
             LookAtPlayer();
-            animator.SetBool("IsMoving", false);
-            animator.SetBool("IsChasing", false);
-            yield return new WaitForSeconds(delayBetweenPatterns);
+
+            // 휴식 중에는 이동 관련 애니메이션 파라미터를 모두 끕니다.
+            if(animator != null)
+            {
+                animator.SetBool("IsMoving", false);
+                animator.SetBool("IsChasing", false);
+            }
+
+            yield return new WaitForSeconds(delayBetweenPatterns); // 대기
+            // --- [휴식 끝] ---
         }
 
         Debug.Log("보스: 공격 루프 종료");
         isBossAttackingLoop = false;
         isCharging = false;
-        if (currentState != State.Groggy) currentState = State.Chasing;
+        
+        if (currentState != State.Groggy && currentState != State.Executed)
+        {
+             // 루프가 정상 종료되면 다시 추격 상태로 복귀
+             currentState = State.Chasing;
+        }
     }
 
-
-    // ==================================================================================
-    // 각 패턴별 세부 코루틴
-    // ==================================================================================
-
-    // --- 패턴 1: 바닥 공격 (유지) ---
+    // --- 패턴 1: 바닥 공격 ---
     private IEnumerator Co_FloorAttack()
     {
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > floorAttackRange)
@@ -119,21 +209,17 @@ public class Enemy_Boss : Enemy
             yield return new WaitForFixedUpdate();
         }
         rgd.linearVelocity = Vector2.zero;
+        if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
         if (playerTransform == null) yield break;
 
         Vector3 targetPos = playerTransform.position;
-        Debug.Log($"보스: 바닥 공격 시전! 1초 뒤 타격 예정");
-
         LookAtPlayer();
         animator.SetTrigger("TriggerFloor");
-
         yield return new WaitForSeconds(1.0f);
 
-        if (floorAttackPrefab != null)
-        {
+        if (floorAttackPrefab != null && currentState != State.Groggy)
              Instantiate(floorAttackPrefab, targetPos, Quaternion.identity);
-        }
 
         yield return new WaitForSeconds(0.5f);
     }
@@ -143,14 +229,13 @@ public class Enemy_Boss : Enemy
     {
         rgd.linearVelocity = Vector2.zero;
         LookAtPlayer();
-        Debug.Log($"보스: 돌진 준비 ({chargeWaitTime}초)");
+        if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         animator.SetTrigger("TriggerChargeReady"); 
         yield return new WaitForSeconds(chargeWaitTime);
+        if (currentState == State.Groggy) yield break;
 
-        Debug.Log("보스: 돌진 시작!");
         animator.SetTrigger("TriggerChargeRun");
         LookAtPlayer();
-
         isCharging = true;
 
         float dir = spriteRenderer.flipX ? -1f : 1f;
@@ -161,11 +246,7 @@ public class Enemy_Boss : Enemy
 
         while (distanceCovered < chargeDistance && timeElapsed < maxDuration)
         {
-            if (currentState == State.Groggy)
-            {
-                isCharging = false;
-                yield break;
-            }
+            if (currentState == State.Groggy) { isCharging = false; yield break; }
             rgd.linearVelocity = new Vector2(dir * chargeSpeed, rgd.linearVelocity.y);
             distanceCovered = Vector2.Distance(startPos, transform.position);
             timeElapsed += Time.fixedDeltaTime;
@@ -180,7 +261,6 @@ public class Enemy_Boss : Enemy
     // --- 패턴 3: 일반 공격 ---
     private IEnumerator Co_NormalAttack()
     {
-        // [접근]
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > normalAttackRange)
         {
             if (currentState == State.Groggy) yield break;
@@ -188,69 +268,38 @@ public class Enemy_Boss : Enemy
             yield return new WaitForFixedUpdate();
         }
         rgd.linearVelocity = Vector2.zero;
+        if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
-        // [공격 시작]
-        Debug.Log("보스: 일반 공격 시전! (애니메이션 시작)");
         LookAtPlayer();
         animator.SetTrigger("TriggerNormal");
-        
-        // 선딜레이 대기
         yield return new WaitForSeconds(normalAttackDelay);
+        if (currentState == State.Groggy) yield break;
 
-        // [히트박스 판정 & 탐정 로그]
         if (normalAttackPos != null)
         {
-            // 1. 판정 시도 정보 출력
-            Debug.Log($"[탐정] 히트박스 판정 시도. 위치:{normalAttackPos.position}, 크기:{normalAttackBoxSize}, 찾는 레이어: Player");
-
-            // 핵심: Player 레이어만 감지
             Collider2D[] hits = Physics2D.OverlapBoxAll(normalAttackPos.position, normalAttackBoxSize, 0, LayerMask.GetMask("Player"));
-            
-            // 2. 감지된 개수 출력
-            Debug.Log($"[탐정] 감지된 'Player' 레이어 콜라이더 수: {hits.Length}개");
-
             foreach (Collider2D hit in hits)
-            {
-                 // 3. 감지된 녀석의 정체 출력
-                 Debug.Log($"[탐정] 감지된 오브젝트 이름: {hit.gameObject.name} -> Player_Health 찾기 시도");
-                 
                  hit.GetComponent<Player_Health>()?.Player_TakeDamaged(transform.position);
-                 Debug.Log("<color=red>보스 일반 공격 적중! (데미지 적용 완료)</color>");
-            }
         }
-        else
-        {
-             Debug.LogError("보스 에러: Normal Attack Pos가 연결되지 않았습니다!");
-        }
-        yield return new WaitForSeconds(0.5f); // 후딜레이
+        yield return new WaitForSeconds(0.5f);
     }
 
-    // ==================================================================================
-    // 물리 충돌 이벤트 (Bumper 방식)
-    // ==================================================================================
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (isCharging && collision.gameObject.CompareTag("Player"))
         {
             Player_Health playerHealth = collision.gameObject.GetComponent<Player_Health>();
-            if (playerHealth != null)
-            {
-                // [수정됨] Player_TakeDamaged 함수 사용
-                playerHealth.Player_TakeDamaged(transform.position);
-                Debug.Log("<color=red>보스 돌진 몸통 박치기 성공! (넉백 적용)</color>");
-            }
+            if (playerHealth != null) playerHealth.Player_TakeDamaged(transform.position);
         }
     }
 
-
-    // 유틸리티 함수들 (MoveTowardsPlayer, LookAtPlayer, OnDrawGizmos)은 기존과 동일합니다.
     private void MoveTowardsPlayer(float speed)
     {
         if (playerTransform == null) return;
         LookAtPlayer();
         float dir = playerTransform.position.x > transform.position.x ? 1f : -1f;
         rgd.linearVelocity = new Vector2(dir * speed, rgd.linearVelocity.y);
-        animator.SetBool("IsMoving", true);
+        if (animator != null) { animator.SetBool("IsMoving", true); animator.SetBool("IsChasing", true); }
     }
 
     private void LookAtPlayer()
@@ -259,14 +308,12 @@ public class Enemy_Boss : Enemy
         if (playerTransform.position.x > transform.position.x)
         {
             spriteRenderer.flipX = false;
-            if (normalAttackPos != null)
-                normalAttackPos.localPosition = new Vector3(Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
+            if (normalAttackPos != null) normalAttackPos.localPosition = new Vector3(Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
         }
         else
         {
             spriteRenderer.flipX = true;
-            if (normalAttackPos != null)
-                normalAttackPos.localPosition = new Vector3(-Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
+            if (normalAttackPos != null) normalAttackPos.localPosition = new Vector3(-Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
         }
     }
 
@@ -276,8 +323,7 @@ public class Enemy_Boss : Enemy
         Gizmos.color = Color.green; Gizmos.DrawWireSphere(transform.position, floorAttackRange);
         Gizmos.color = Color.blue; Gizmos.DrawWireSphere(transform.position, normalAttackRange);
         if (normalAttackPos != null) {
-             Gizmos.color = Color.yellow;
-             Gizmos.DrawWireCube(normalAttackPos.position, normalAttackBoxSize);
+             Gizmos.color = Color.yellow; Gizmos.DrawWireCube(normalAttackPos.position, normalAttackBoxSize);
         }
     }
 }
