@@ -656,7 +656,7 @@ Transform:
   m_GameObject: {fileID: 80077016}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.36, y: -16.42, z: -10}
+  m_LocalPosition: {x: -21.99, y: -18.29, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -966,7 +966,7 @@ GameObject:
   - component: {fileID: 107987691}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -992,7 +992,7 @@ MonoBehaviour:
   patrolDistance: 5
   chaseSpeed: 4
   detectionRange: 10
-  killSequence: 
+  killSequence: 7a0000007800000063000000
   knockbackForce: 150
   knockbackMultiplier: 1
   knockbackDuration: 0.2
@@ -1247,7 +1247,7 @@ Transform:
   m_GameObject: {fileID: 107987683}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -16.96, y: -18.77, z: 0}
+  m_LocalPosition: {x: -14.12, y: -20.07, z: 0}
   m_LocalScale: {x: 1.6014, y: 1.6014, z: 1.6014}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1582,7 +1582,7 @@ Transform:
   m_GameObject: {fileID: 164961326}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.36, y: -16.42, z: -10}
+  m_LocalPosition: {x: -21.99, y: -18.29, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5700,11 +5700,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8854721839293980332, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.36
+      value: -21.99
       objectReference: {fileID: 0}
     - target: {fileID: 8854721839293980332, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -18.42
+      value: -20.29
       objectReference: {fileID: 0}
     - target: {fileID: 8854721839293980332, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
       propertyPath: m_LocalPosition.z
