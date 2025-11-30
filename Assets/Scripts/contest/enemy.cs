@@ -368,7 +368,7 @@ public class Enemy : MonoBehaviour
         if (killSequence.Count > 2) { Debug.Log(killSequence[2]); SoundManager.instance.SFXPlay("Chord_a1", cilp3); yield return new WaitForSecondsRealtime(Sounddelay); }
         if (killSequence.Count > 3) { Debug.Log(killSequence[3]); SoundManager.instance.SFXPlay("Chord_a1", cilp4); yield return new WaitForSecondsRealtime(Sounddelay); }
         if (killSequence.Count > 4) { Debug.Log(killSequence[4]); SoundManager.instance.SFXPlay("Chord_a1", cilp5); yield return new WaitForSecondsRealtime(Sounddelay); }
-        if (killSequence.Count > 5) { Debug.Log(killSequence[5]); SoundManager.instance.SFXPlay("Chord_a1", cilp5); yield return new WaitForSecondsRealtime(Sounddelay); }
+        if (killSequence.Count > 5) { Debug.Log(killSequence[5]); SoundManager.instance.SFXPlay("Chord_a1", cilp6); yield return new WaitForSecondsRealtime(Sounddelay); }
 
         SoundManager.instance.SFXPlay("cassete_end", cassete_start_end);
         yield return new WaitForSecondsRealtime(Sounddelay);
