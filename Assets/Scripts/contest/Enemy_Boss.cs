@@ -65,7 +65,7 @@ public class Enemy_Boss : Enemy
     }
 
     // ==================================================================================
-    // FixedUpdate 재정의 (피격 문제 해결 버전)
+    // FixedUpdate 재정의
     // ==================================================================================
     protected override void FixedUpdate()
     {
@@ -80,13 +80,15 @@ public class Enemy_Boss : Enemy
         // 2. 행동 불가 상태 처리
         if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
         {
-            // [수정 1] 넉백 상태(KnockedBack)일 때는 속도를 0으로 만들지 않습니다! (부모의 넉백 힘 적용을 위해)
+            // 넉백 상태일 때는 부모의 넉백 힘 적용을 위해 속도를 0으로 만들지 않음
             if (currentState != State.KnockedBack)
             {
                 rgd.linearVelocity = Vector2.zero;
             }
             
+            // [중요] 행동 불가 상태가 되면 돌진 플래그를 무조건 끕니다.
             isCharging = false;
+
             // 행동 불가 상태에서는 이동 애니메이션 신호 끄기
             if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
@@ -117,21 +119,18 @@ public class Enemy_Boss : Enemy
         }
 
         // 5. 기본 추격 AI 실행 (사거리 밖일 때)
-        // [수정 2] 핵심! 넉백 후 추격 상태로 돌아왔을 때 이동 애니메이션이 꺼져있다면 강제로 켭니다.
+        // 넉백 후 추격 상태로 돌아왔을 때 이동 애니메이션 강제 켜기
         if (currentState == State.Chasing && animator != null)
         {
-            // 애니메이터 파라미터가 꺼져있을 경우를 대비해 강제로 true로 설정
             animator.SetBool("IsMoving", true);
             animator.SetBool("IsChasing", true);
         }
         
-        base.FixedUpdate(); // 부모의 실제 이동 로직 실행
+        base.FixedUpdate();
     }
 
-    // ... (이하 코루틴 및 유틸리티 함수들은 기존과 완전히 동일합니다) ...
-    // (코드가 길어 생략하지만, 이전에 사용하시던 코드의 뒷부분을 그대로 유지해주세요.)
-    // Co_BossRecoverFromGroggy, BossAttackLoop, Co_FloorAttack, Co_ChargeAttack, Co_NormalAttack,
-    // OnCollisionEnter2D, MoveTowardsPlayer, LookAtPlayer, OnDrawGizmos
+    // ... (유틸리티 함수들: MoveTowardsPlayer, LookAtPlayer, OnDrawGizmos, OnCollisionEnter2D 등은 기존과 동일) ...
+    // (아래 코루틴들 외의 나머지 함수들은 이전 코드 그대로 유지해주세요)
 
     // ==================================================================================
     // 보스 전용 그로기 회복 코루틴
@@ -144,7 +143,6 @@ public class Enemy_Boss : Enemy
         {
             Debug.Log("<color=cyan>[보스] 그로기 상태에서 자동으로 회복했습니다!</color>");
             currentState = State.Chasing;
-            // 그로기 신호 끄기
             if (animator != null) animator.SetBool("IsGroggy", false);
         }
         isRecoveringFromGroggy = false;
@@ -170,22 +168,17 @@ public class Enemy_Boss : Enemy
                 case BossPatternType.Normal: yield return StartCoroutine(Co_NormalAttack()); break;
             }
 
-            if (currentState == State.Groggy) break;
+            // [수정] 넉백 상태도 체크하여 루프 탈출
+            if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) break;
 
-            // --- [패턴 사이 휴식 시작] ---
+            // --- [패턴 사이 휴식] ---
             rgd.linearVelocity = Vector2.zero;
             isCharging = false;
             LookAtPlayer();
 
-            // 휴식 중에는 이동 관련 애니메이션 파라미터를 모두 끕니다.
-            if(animator != null)
-            {
-                animator.SetBool("IsMoving", false);
-                animator.SetBool("IsChasing", false);
-            }
+            if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
-            yield return new WaitForSeconds(delayBetweenPatterns); // 대기
-            // --- [휴식 끝] ---
+            yield return new WaitForSeconds(delayBetweenPatterns);
         }
 
         Debug.Log("보스: 공격 루프 종료");
@@ -194,7 +187,6 @@ public class Enemy_Boss : Enemy
         
         if (currentState != State.Groggy && currentState != State.Executed)
         {
-             // 루프가 정상 종료되면 다시 추격 상태로 복귀
              currentState = State.Chasing;
         }
     }
@@ -204,7 +196,8 @@ public class Enemy_Boss : Enemy
     {
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > floorAttackRange)
         {
-            if (currentState == State.Groggy) yield break;
+            // [수정] 넉백/처형 상태 체크 추가
+            if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
             MoveTowardsPlayer(patternMoveSpeed);
             yield return new WaitForFixedUpdate();
         }
@@ -218,13 +211,14 @@ public class Enemy_Boss : Enemy
         animator.SetTrigger("TriggerFloor");
         yield return new WaitForSeconds(1.0f);
 
-        if (floorAttackPrefab != null && currentState != State.Groggy)
+        // [수정] 발동 직전에도 상태 체크
+        if (floorAttackPrefab != null && currentState != State.Groggy && currentState != State.KnockedBack && currentState != State.Executed)
              Instantiate(floorAttackPrefab, targetPos, Quaternion.identity);
 
         yield return new WaitForSeconds(0.5f);
     }
 
-    // --- 패턴 2: 돌진 공격 ---
+    // --- 패턴 2: 돌진 공격 (핵심 수정 부분!) ---
     private IEnumerator Co_ChargeAttack()
     {
         rgd.linearVelocity = Vector2.zero;
@@ -232,11 +226,13 @@ public class Enemy_Boss : Enemy
         if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         animator.SetTrigger("TriggerChargeReady"); 
         yield return new WaitForSeconds(chargeWaitTime);
-        if (currentState == State.Groggy) yield break;
+
+        // [핵심 수정] 대기 후 돌진 시작 전에 넉백/처형 상태라면 즉시 취소!
+        if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
 
         animator.SetTrigger("TriggerChargeRun");
         LookAtPlayer();
-        isCharging = true;
+        isCharging = true; // 돌진 플래그 ON
 
         float dir = spriteRenderer.flipX ? -1f : 1f;
         Vector3 startPos = transform.position;
@@ -246,7 +242,12 @@ public class Enemy_Boss : Enemy
 
         while (distanceCovered < chargeDistance && timeElapsed < maxDuration)
         {
-            if (currentState == State.Groggy) { isCharging = false; yield break; }
+            // [핵심 수정] 돌진 중에도 넉백/처형 상태가 되면 즉시 돌진 취소하고 플래그 끄기!
+            if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
+            { 
+                isCharging = false; // 플래그 OFF
+                yield break; 
+            }
             rgd.linearVelocity = new Vector2(dir * chargeSpeed, rgd.linearVelocity.y);
             distanceCovered = Vector2.Distance(startPos, transform.position);
             timeElapsed += Time.fixedDeltaTime;
@@ -254,7 +255,7 @@ public class Enemy_Boss : Enemy
         }
 
         rgd.linearVelocity = Vector2.zero;
-        isCharging = false;
+        isCharging = false; // 플래그 OFF
         yield return new WaitForSeconds(0.7f);
     }
 
@@ -263,7 +264,8 @@ public class Enemy_Boss : Enemy
     {
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > normalAttackRange)
         {
-            if (currentState == State.Groggy) yield break;
+            // [수정] 넉백/처형 상태 체크 추가
+            if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
             MoveTowardsPlayer(patternMoveSpeed);
             yield return new WaitForFixedUpdate();
         }
@@ -273,7 +275,9 @@ public class Enemy_Boss : Enemy
         LookAtPlayer();
         animator.SetTrigger("TriggerNormal");
         yield return new WaitForSeconds(normalAttackDelay);
-        if (currentState == State.Groggy) yield break;
+
+        // [수정] 공격 판정 직전에도 상태 체크
+        if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
 
         if (normalAttackPos != null)
         {
