@@ -59,7 +59,7 @@ public class MainScoreManager : MonoBehaviour
         {
             SceneManager.LoadScene("NormalEnding");
         }
-        else if (Count_All_Damaged > 0)
+        else if (Count_All_Damaged > 5)
         {
             SceneManager.LoadScene("GoodEnding");
         }
