@@ -26,6 +26,12 @@ public class Enemy_Boss : Enemy
     public float floorAttackDelay = 0.5f;
 
     [Header("--- Pattern 2: Charge Attack ---")]
+    public GameObject chargeIndicatorBox;
+    public float indicatorBlinkInterval = 0.1f;
+    private Coroutine indicatorCoroutine;
+    // ▼▼▼ [추가] 경고 표시의 스프라이트 렌더러 저장용 변수 ▼▼▼
+    private SpriteRenderer indicatorRenderer; 
+    // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     public float chargeWaitTime = 3.0f;
     public float chargeDistance = 12.0f;
     public float chargeSpeed = 20f;
@@ -38,58 +44,33 @@ public class Enemy_Boss : Enemy
     public float normalAttackDelay = 0.4f;
 
     // ==================================================================================
-    // [핵심 수정] 콤보 처리 재정의 - 넉백 완전 제거 버전
+    // [추가] Start 함수 재정의 (초기화 작업)
     // ==================================================================================
+    protected override void Start()
+    {
+        base.Start(); // 부모의 Start 먼저 실행
+
+        // 경고 표시 오브젝트에서 SpriteRenderer 컴포넌트를 미리 찾아둡니다.
+        if (chargeIndicatorBox != null)
+        {
+            indicatorRenderer = chargeIndicatorBox.GetComponent<SpriteRenderer>();
+            // 시작 시 경고 표시는 꺼둡니다.
+            chargeIndicatorBox.SetActive(false);
+        }
+    }
+
+    // 콤보 처리 재정의 (깜빡임 효과)
     public override void HandleCombo(KeyCode pressedKey)
     {
-        // 1. 이미 그로기거나 처형 상태면 무시
-        if (currentState == State.Groggy || currentState == State.Executed) return;
-
-        // 2. 킬 시퀀스가 비어있으면 리턴 (안전장치)
-        if (killSequence.Count == 0) return;
-
-        // 3. 입력한 키가 현재 순서와 맞는지 확인
-        if (pressedKey == killSequence[currentSequenceIndex])
+        int previousIndex = currentSequenceIndex;
+        base.HandleCombo(pressedKey);
+        bool isComboSuccess = (currentSequenceIndex > previousIndex) || (currentState == State.Groggy && previousIndex == killSequence.Count - 1);
+        
+        if (isComboSuccess && currentState != State.Executed)
         {
-            // --- [성공] ---
-            Debug.Log($"<color=cyan>[보스] 콤보 성공! ({currentSequenceIndex + 1}/{killSequence.Count}) - 넉백 없음</color>");
-            currentSequenceIndex++;
-
-            // 깜빡임 효과 코루틴 시작
             if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
             blinkCoroutine = StartCoroutine(Co_BossHitBlink());
-
-            // 마지막 콤보였다면 그로기 상태로 진입
-            if (currentSequenceIndex >= killSequence.Count)
-            {
-                Debug.Log("<color=yellow>[보스] 모든 콤보 달성! 그로기 상태 돌입!</color>");
-                currentState = State.Groggy;
-                // 부모의 groggyTimer를 protected로 바꿨으므로 접근 가능
-                groggyTimer = bossGroggyDuration; // 보스 전용 지속시간 사용
-                rgd.linearVelocity = Vector2.zero;
-                currentSequenceIndex = 0;
-
-                if (animator != null) animator.SetBool("IsGroggy", true);
-                
-                // 회복 코루틴 시작
-                if (!isRecoveringFromGroggy)
-                {
-                    StartCoroutine(Co_BossRecoverFromGroggy());
-                    isRecoveringFromGroggy = true;
-                }
-            }
-            // 중요: 여기서는 넉백 함수(PerformKnockback)를 절대 호출하지 않습니다.
         }
-        else
-        {
-            // --- [실패] ---
-            Debug.Log("[보스] 콤보 실패! 순서 초기화. - 넉백 없음");
-            currentSequenceIndex = 0;
-            // 실패 시에도 넉백 함수를 호출하지 않습니다.
-        }
-
-        // 중요: base.HandleCombo(pressedKey); 를 절대 호출하지 않습니다!
-        // 호출하는 순간 부모의 넉백 로직이 실행됩니다.
     }
 
     private IEnumerator Co_BossHitBlink()
@@ -106,7 +87,7 @@ public class Enemy_Boss : Enemy
     }
 
     // ==================================================================================
-    // FixedUpdate 재정의
+    // FixedUpdate 재정의 (슈퍼아머 및 상태 관리)
     // ==================================================================================
     protected override void FixedUpdate()
     {
@@ -118,22 +99,28 @@ public class Enemy_Boss : Enemy
             if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         }
 
-        // 2. 행동 불가 상태 처리 (그로기, 처형만 체크)
-        // 보스는 KnockedBack 상태가 될 수 없지만, 혹시 모르니 방어 코드를 남겨둡니다.
+        // 2. 행동 불가 상태 처리
         if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
         {
-            rgd.linearVelocity = Vector2.zero;
+            if (currentState != State.KnockedBack) rgd.linearVelocity = Vector2.zero;
+            
             isCharging = false;
             if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
-            // 혹시라도 KnockedBack 상태가 되었다면 즉시 추격 상태로 복구 (안전장치)
-            if (currentState == State.KnockedBack)
+            if (currentState == State.Groggy && !isRecoveringFromGroggy)
             {
-                currentState = State.Chasing;
-                return;
+                Debug.Log($"<color=yellow>[보스] 그로기 상태 감지! {bossGroggyDuration}초 후 회복.</color>");
+                if (animator != null) animator.SetBool("IsGroggy", true);
+                StartCoroutine(Co_BossRecoverFromGroggy());
+                isRecoveringFromGroggy = true;
             }
-
-            return; // 부모 로직 실행 안 함
+            // [중요] 행동 불가 상태가 되면 경고 표시도 끕니다.
+            if (chargeIndicatorBox != null && chargeIndicatorBox.activeSelf)
+            {
+                 if (indicatorCoroutine != null) StopCoroutine(indicatorCoroutine);
+                 chargeIndicatorBox.SetActive(false);
+            }
+            return;
         }
 
         // 3. 공격 루프 실행 중이면 리턴
@@ -148,12 +135,11 @@ public class Enemy_Boss : Enemy
                 rgd.linearVelocity = Vector2.zero;
                 if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
                 StartCoroutine(BossAttackLoop());
-                return; // 공격 시작
+                return;
             }
         }
 
-        // 5. 기본 추격 AI 실행 (사거리 밖일 때)
-        // 넉백 후 추격 상태로 돌아왔을 때 이동 애니메이션 강제 켜기
+        // 5. 기본 추격 AI 실행
         if (currentState == State.Chasing && animator != null)
         {
             animator.SetBool("IsMoving", true);
@@ -162,9 +148,9 @@ public class Enemy_Boss : Enemy
         
         base.FixedUpdate();
     }
-
-    // ... (유틸리티 함수들: MoveTowardsPlayer, LookAtPlayer, OnDrawGizmos, OnCollisionEnter2D 등은 기존과 동일) ...
-    // (아래 코루틴들 외의 나머지 함수들은 이전 코드 그대로 유지해주세요)
+    
+    // ... (Co_BossRecoverFromGroggy, BossAttackLoop, Co_FloorAttack 코루틴은 기존과 동일합니다) ...
+    // (코드가 너무 길어 이 부분은 생략합니다. 이전 코드의 중간 부분을 그대로 유지해주세요.)
 
     // ==================================================================================
     // 보스 전용 그로기 회복 코루틴
@@ -202,7 +188,6 @@ public class Enemy_Boss : Enemy
                 case BossPatternType.Normal: yield return StartCoroutine(Co_NormalAttack()); break;
             }
 
-            // [수정] 넉백 상태도 체크하여 루프 탈출
             if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) break;
 
             // --- [패턴 사이 휴식] ---
@@ -230,7 +215,6 @@ public class Enemy_Boss : Enemy
     {
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > floorAttackRange)
         {
-            // [수정] 넉백/처형 상태 체크 추가
             if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
             MoveTowardsPlayer(patternMoveSpeed);
             yield return new WaitForFixedUpdate();
@@ -245,28 +229,41 @@ public class Enemy_Boss : Enemy
         animator.SetTrigger("TriggerFloor");
         yield return new WaitForSeconds(1.0f);
 
-        // [수정] 발동 직전에도 상태 체크
         if (floorAttackPrefab != null && currentState != State.Groggy && currentState != State.KnockedBack && currentState != State.Executed)
              Instantiate(floorAttackPrefab, targetPos, Quaternion.identity);
 
         yield return new WaitForSeconds(0.5f);
     }
 
-    // --- 패턴 2: 돌진 공격 (핵심 수정 부분!) ---
+
+    // --- 패턴 2: 돌진 공격 ---
     private IEnumerator Co_ChargeAttack()
     {
         rgd.linearVelocity = Vector2.zero;
         LookAtPlayer();
+
         if(animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         animator.SetTrigger("TriggerChargeReady"); 
+
+        // 경고 표시 시작
+        if (chargeIndicatorBox != null)
+        {
+            chargeIndicatorBox.SetActive(true);
+            if (indicatorCoroutine != null) StopCoroutine(indicatorCoroutine);
+            indicatorCoroutine = StartCoroutine(Co_FlashIndicator());
+        }
+
         yield return new WaitForSeconds(chargeWaitTime);
 
-        // [핵심 수정] 대기 후 돌진 시작 전에 넉백/처형 상태라면 즉시 취소!
+        // 경고 표시 종료
+        if (indicatorCoroutine != null) StopCoroutine(indicatorCoroutine);
+        if (chargeIndicatorBox != null) chargeIndicatorBox.SetActive(false);
+
         if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
 
         animator.SetTrigger("TriggerChargeRun");
         LookAtPlayer();
-        isCharging = true; // 돌진 플래그 ON
+        isCharging = true;
 
         float dir = spriteRenderer.flipX ? -1f : 1f;
         Vector3 startPos = transform.position;
@@ -276,10 +273,9 @@ public class Enemy_Boss : Enemy
 
         while (distanceCovered < chargeDistance && timeElapsed < maxDuration)
         {
-            // [핵심 수정] 돌진 중에도 넉백/처형 상태가 되면 즉시 돌진 취소하고 플래그 끄기!
             if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
             { 
-                isCharging = false; // 플래그 OFF
+                isCharging = false;
                 yield break; 
             }
             rgd.linearVelocity = new Vector2(dir * chargeSpeed, rgd.linearVelocity.y);
@@ -289,16 +285,29 @@ public class Enemy_Boss : Enemy
         }
 
         rgd.linearVelocity = Vector2.zero;
-        isCharging = false; // 플래그 OFF
+        isCharging = false;
         yield return new WaitForSeconds(0.7f);
     }
 
-    // --- 패턴 3: 일반 공격 ---
+    // 경고 표시 깜빡임 코루틴
+    private IEnumerator Co_FlashIndicator()
+    {
+        if (indicatorRenderer == null) yield break;
+
+        while (true)
+        {
+            indicatorRenderer.enabled = !indicatorRenderer.enabled;
+            yield return new WaitForSeconds(indicatorBlinkInterval);
+        }
+    }
+
+    // --- 패턴 3: Normal Attack, OnCollision, MoveTowards... 등은 기존과 동일하므로 생략합니다 ---
+    // (이전 코드의 뒷부분을 그대로 사용해주세요)
+    
     private IEnumerator Co_NormalAttack()
     {
         while (playerTransform != null && Vector2.Distance(transform.position, playerTransform.position) > normalAttackRange)
         {
-            // [수정] 넉백/처형 상태 체크 추가
             if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
             MoveTowardsPlayer(patternMoveSpeed);
             yield return new WaitForFixedUpdate();
@@ -310,7 +319,6 @@ public class Enemy_Boss : Enemy
         animator.SetTrigger("TriggerNormal");
         yield return new WaitForSeconds(normalAttackDelay);
 
-        // [수정] 공격 판정 직전에도 상태 체크
         if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed) yield break;
 
         if (normalAttackPos != null)
@@ -340,18 +348,30 @@ public class Enemy_Boss : Enemy
         if (animator != null) { animator.SetBool("IsMoving", true); animator.SetBool("IsChasing", true); }
     }
 
+    // ==================================================================================
+    // [수정] 플레이어 방향 보기 (경고 표시 스프라이트 반전 추가)
+    // ==================================================================================
     private void LookAtPlayer()
     {
         if (playerTransform == null) return;
+
         if (playerTransform.position.x > transform.position.x)
         {
-            spriteRenderer.flipX = false;
+            spriteRenderer.flipX = false; // 보스 정방향
             if (normalAttackPos != null) normalAttackPos.localPosition = new Vector3(Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
+            if (chargeIndicatorBox != null) chargeIndicatorBox.transform.localPosition = new Vector3(Mathf.Abs(chargeIndicatorBox.transform.localPosition.x), chargeIndicatorBox.transform.localPosition.y, chargeIndicatorBox.transform.localPosition.z);
+
+            // ▼▼▼ [추가] 경고 표시 스프라이트 정방향 ▼▼▼
+            if (indicatorRenderer != null) indicatorRenderer.flipX = false;
         }
         else
         {
-            spriteRenderer.flipX = true;
+            spriteRenderer.flipX = true; // 보스 반전
             if (normalAttackPos != null) normalAttackPos.localPosition = new Vector3(-Mathf.Abs(normalAttackPos.localPosition.x), normalAttackPos.localPosition.y, 0);
+            if (chargeIndicatorBox != null) chargeIndicatorBox.transform.localPosition = new Vector3(-Mathf.Abs(chargeIndicatorBox.transform.localPosition.x), chargeIndicatorBox.transform.localPosition.y, chargeIndicatorBox.transform.localPosition.z);
+
+            // ▼▼▼ [추가] 경고 표시 스프라이트 반전 ▼▼▼
+            if (indicatorRenderer != null) indicatorRenderer.flipX = true;
         }
     }
 
