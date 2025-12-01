@@ -489,6 +489,14 @@ PrefabInstance:
       propertyPath: executionSound
       value: 
       objectReference: {fileID: 8300000, guid: a086024d8d4e7dd489a0ca3e339acb1f, type: 3}
+    - target: {fileID: 273759446287700545, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
+      propertyPath: hitStopDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 273759446287700545, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
+      propertyPath: hitStopTimeScale
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7963619509538797928, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
       propertyPath: m_Name
       value: Player

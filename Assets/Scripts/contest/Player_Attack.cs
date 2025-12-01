@@ -17,9 +17,10 @@ public class Player_Attack : MonoBehaviour
     [Header("Execution Sounds")] // 처형 관련 사운드
     public AudioClip groggySound; // 그로기 상태일 때 재생할 사운드 (Inspector에서 연결)
     public AudioClip executionSound; // 처형 시 재생할 사운드 (예: guitar_performance, Inspector에서 연결)
+
     private Animator animator;
     private float curTime; // 쿨타임 계산용 변수
-    
+
     // 스프라이트 방향 확인을 위한 컴포넌트
     private SpriteRenderer spriteRenderer;
 
@@ -29,11 +30,21 @@ public class Player_Attack : MonoBehaviour
     public MMF_Player vfxX;
     public MMF_Player vfxC;
 
+    // ★ HitStop 설정
+    [Header("Hit Stop Settings")]
+    [Tooltip("히트 시 멈춰있는 시간 (초 단위, 실제 시간 기준)")]
+    public float hitStopDuration = 0.06f;
+    [Tooltip("히트 스탑 중의 Time.timeScale 값 (0이면 완전 정지)")]
+    [Range(0f, 1f)]
+    public float hitStopTimeScale = 0f;
+
+    private bool isHitStopping = false; // 중복 HitStop 방지용
+
     void Start()
     {
         // 이 스크립트가 붙은 오브젝트의 SpriteRenderer 컴포넌트를 가져옵니다.
         spriteRenderer = GetComponent<SpriteRenderer>();
-        
+
         animator = GetComponent<Animator>();
 
         // (혹시 pos가 연결 안 되었을 경우를 대비한 안전장치)
@@ -86,9 +97,9 @@ public class Player_Attack : MonoBehaviour
                     GameManager.Instance.Hit_ZXC();
 
                     if (vfxZ != null)
-                {
-                    vfxZ.PlayFeedbacks();
-                }
+                    {
+                        vfxZ.PlayFeedbacks();
+                    }
 
                     if (animator != null)
                     {
@@ -105,9 +116,9 @@ public class Player_Attack : MonoBehaviour
                     GameManager.Instance.Hit_ZXC();
 
                     if (vfxX != null)
-                {
-                    vfxX.PlayFeedbacks();
-                }
+                    {
+                        vfxX.PlayFeedbacks();
+                    }
 
                     if (animator != null)
                     {
@@ -124,10 +135,10 @@ public class Player_Attack : MonoBehaviour
                     GameManager.Instance.Hit_ZXC();
 
                     if (vfxC != null)
-                {
-                    vfxC.PlayFeedbacks();
-                }
-                    
+                    {
+                        vfxC.PlayFeedbacks();
+                    }
+
                     if (animator != null)
                     {
                         animator.SetTrigger("Attack"); // "Attack" 하나만 사용!
@@ -153,6 +164,9 @@ public class Player_Attack : MonoBehaviour
     {
         // 설정된 위치(pos)와 크기(boxSize)로 사각형 범위를 만들어 충돌하는 모든 콜라이더 감지
         Collider2D[] collider2Ds = Physics2D.OverlapBoxAll(pos.position, boxSize, 0);
+
+        bool hitSomething = false; // ★ 맞췄는지 체크용
+
         foreach (Collider2D collider in collider2Ds)
         {
             if (collider.CompareTag("Enemy"))
@@ -164,8 +178,16 @@ public class Player_Attack : MonoBehaviour
                     if (key == KeyCode.Z) enemyScript.TakeDamageZ();
                     else if (key == KeyCode.X) enemyScript.TakeDamageX();
                     else if (key == KeyCode.C) enemyScript.TakeDamageC();
+
+                    hitSomething = true; // ★ 실제로 적을 맞춤
                 }
             }
+        }
+
+        // ★ 적을 한 번이라도 맞췄으면 히트스탑 발동
+        if (hitSomething)
+        {
+            TriggerHitStop();
         }
     }
 
@@ -198,8 +220,12 @@ public class Player_Attack : MonoBehaviour
                     if (animator != null)
                     {
                         // 아까 애니메이터에서 만든 트리거 이름과 똑같이!
-                        animator.SetTrigger("Execution"); 
+                        animator.SetTrigger("Execution");
                     }
+
+                    // ★ 처형에도 히트스탑 추가
+                    TriggerHitStop();
+
                     enemyScript.Execute(); // 적 처형 (파괴)
                     break; // 한 번에 한 명만 처형하고 루프 종료
                 }
@@ -209,6 +235,38 @@ public class Player_Attack : MonoBehaviour
                 }
             }
         }
+    }
+
+    // ★ 실제 히트스탑을 점화하는 함수
+    void TriggerHitStop()
+    {
+        // 이미 히트스탑 중이거나, 게임이 스킬로 인해 시간 정지 중이면 패스
+        if (isHitStopping) return;
+        if (GameManager.Instance != null && GameManager.Instance.IsTimeStopped) return;
+
+        StartCoroutine(HitStopCoroutine());
+    }
+
+    // ★ Time.timeScale을 잠깐 0으로 만드는 코루틴
+    IEnumerator HitStopCoroutine()
+    {
+        isHitStopping = true;
+
+        float originalTimeScale = Time.timeScale;
+        float originalFixedDeltaTime = Time.fixedDeltaTime;
+
+        // 시간 정지
+        Time.timeScale = hitStopTimeScale;
+        Time.fixedDeltaTime = originalFixedDeltaTime * Time.timeScale;
+
+        // 실제 시간 기준으로 대기 (timeScale에 영향 안 받음)
+        yield return new WaitForSecondsRealtime(hitStopDuration);
+
+        // 원래 값 복구
+        Time.timeScale = originalTimeScale;
+        Time.fixedDeltaTime = originalFixedDeltaTime;
+
+        isHitStopping = false;
     }
 
     // 에디터에서 공격 범위를 시각적으로 보여주는 함수

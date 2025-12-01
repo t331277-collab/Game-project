@@ -487,6 +487,8 @@ MonoBehaviour:
   vfxZ: {fileID: 7250718904589786284}
   vfxX: {fileID: 5743107507757191845}
   vfxC: {fileID: 3139933804084364619}
+  hitStopDuration: 0.3
+  hitStopTimeScale: 0.1
 --- !u!95 &7437126200172699410
 Animator:
   serializedVersion: 7
