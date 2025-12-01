@@ -37,18 +37,59 @@ public class Enemy_Boss : Enemy
     public Vector2 normalAttackBoxSize = new Vector2(2.5f, 2f);
     public float normalAttackDelay = 0.4f;
 
-    // 콤보 처리 재정의 (깜빡임 효과)
+    // ==================================================================================
+    // [핵심 수정] 콤보 처리 재정의 - 넉백 완전 제거 버전
+    // ==================================================================================
     public override void HandleCombo(KeyCode pressedKey)
     {
-        int previousIndex = currentSequenceIndex;
-        base.HandleCombo(pressedKey);
-        bool isComboSuccess = (currentSequenceIndex > previousIndex) || (currentState == State.Groggy && previousIndex == killSequence.Count - 1);
-        
-        if (isComboSuccess && currentState != State.Executed)
+        // 1. 이미 그로기거나 처형 상태면 무시
+        if (currentState == State.Groggy || currentState == State.Executed) return;
+
+        // 2. 킬 시퀀스가 비어있으면 리턴 (안전장치)
+        if (killSequence.Count == 0) return;
+
+        // 3. 입력한 키가 현재 순서와 맞는지 확인
+        if (pressedKey == killSequence[currentSequenceIndex])
         {
+            // --- [성공] ---
+            Debug.Log($"<color=cyan>[보스] 콤보 성공! ({currentSequenceIndex + 1}/{killSequence.Count}) - 넉백 없음</color>");
+            currentSequenceIndex++;
+
+            // 깜빡임 효과 코루틴 시작
             if (blinkCoroutine != null) StopCoroutine(blinkCoroutine);
             blinkCoroutine = StartCoroutine(Co_BossHitBlink());
+
+            // 마지막 콤보였다면 그로기 상태로 진입
+            if (currentSequenceIndex >= killSequence.Count)
+            {
+                Debug.Log("<color=yellow>[보스] 모든 콤보 달성! 그로기 상태 돌입!</color>");
+                currentState = State.Groggy;
+                // 부모의 groggyTimer를 protected로 바꿨으므로 접근 가능
+                groggyTimer = bossGroggyDuration; // 보스 전용 지속시간 사용
+                rgd.linearVelocity = Vector2.zero;
+                currentSequenceIndex = 0;
+
+                if (animator != null) animator.SetBool("IsGroggy", true);
+                
+                // 회복 코루틴 시작
+                if (!isRecoveringFromGroggy)
+                {
+                    StartCoroutine(Co_BossRecoverFromGroggy());
+                    isRecoveringFromGroggy = true;
+                }
+            }
+            // 중요: 여기서는 넉백 함수(PerformKnockback)를 절대 호출하지 않습니다.
         }
+        else
+        {
+            // --- [실패] ---
+            Debug.Log("[보스] 콤보 실패! 순서 초기화. - 넉백 없음");
+            currentSequenceIndex = 0;
+            // 실패 시에도 넉백 함수를 호출하지 않습니다.
+        }
+
+        // 중요: base.HandleCombo(pressedKey); 를 절대 호출하지 않습니다!
+        // 호출하는 순간 부모의 넉백 로직이 실행됩니다.
     }
 
     private IEnumerator Co_BossHitBlink()
@@ -77,28 +118,21 @@ public class Enemy_Boss : Enemy
             if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
         }
 
-        // 2. 행동 불가 상태 처리
+        // 2. 행동 불가 상태 처리 (그로기, 처형만 체크)
+        // 보스는 KnockedBack 상태가 될 수 없지만, 혹시 모르니 방어 코드를 남겨둡니다.
         if (currentState == State.Groggy || currentState == State.KnockedBack || currentState == State.Executed)
         {
-            // 넉백 상태일 때는 부모의 넉백 힘 적용을 위해 속도를 0으로 만들지 않음
-            if (currentState != State.KnockedBack)
-            {
-                rgd.linearVelocity = Vector2.zero;
-            }
-            
-            // [중요] 행동 불가 상태가 되면 돌진 플래그를 무조건 끕니다.
+            rgd.linearVelocity = Vector2.zero;
             isCharging = false;
-
-            // 행동 불가 상태에서는 이동 애니메이션 신호 끄기
             if (animator != null) { animator.SetBool("IsMoving", false); animator.SetBool("IsChasing", false); }
 
-            if (currentState == State.Groggy && !isRecoveringFromGroggy)
+            // 혹시라도 KnockedBack 상태가 되었다면 즉시 추격 상태로 복구 (안전장치)
+            if (currentState == State.KnockedBack)
             {
-                Debug.Log($"<color=yellow>[보스] 그로기 상태 감지! {bossGroggyDuration}초 후 회복.</color>");
-                if (animator != null) animator.SetBool("IsGroggy", true);
-                StartCoroutine(Co_BossRecoverFromGroggy());
-                isRecoveringFromGroggy = true;
+                currentState = State.Chasing;
+                return;
             }
+
             return; // 부모 로직 실행 안 함
         }
 

@@ -91,7 +91,7 @@ public class Enemy : MonoBehaviour
 
     protected int currentSequenceIndex = 0;
     private float knockbackTimer;
-    private float groggyTimer;
+    protected float groggyTimer;
     
     // --- 컴포넌트 참조 ---
     protected Rigidbody2D rgd;
