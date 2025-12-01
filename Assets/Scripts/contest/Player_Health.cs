@@ -3,6 +3,9 @@ using System.Collections; // [필수!] 코루틴 사용을 위해 추가
 
 public class Player_Health : MonoBehaviour
 {
+    [Header("Damaged Sounds")] // 기본 공격 Z, X, C 사운드
+    public AudioClip Damaged; // Chord_a1 (Z키)
+
     [Header("Health")]
     public float health = 3.0f;
 
@@ -28,6 +31,8 @@ public class Player_Health : MonoBehaviour
     {
         // [추가!] 무적 상태라면 데미지와 넉백을 모두 무시하고 함수 종료
         if (isInvincible) return;
+
+        SoundManager.instance.SFXPlay("Damaged", Damaged);
 
         // -------------------------------------------------------
         // 기존 로직 (데미지 및 넉백 트리거)

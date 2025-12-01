@@ -523,6 +523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c8eee31d51e9d541ac8fa7fee0874b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Health
+  Damaged: {fileID: 8300000, guid: e95182b5cbfa7944bafa2001dac74d7e, type: 3}
   health: 3
   invincibilityDuration: 1.5
   blinkInterval: 0.1
