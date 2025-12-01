@@ -26,11 +26,13 @@ public class Ingame_UI : MonoBehaviour
 
     public void OnClickNextStage2()
     {
+        MainScoreManager.Instance.CurrentScore();
         SceneManager.LoadScene("Stage2"); // Stage2로 넘어가는 버튼
     }
 
     public void OnClickNextBoss()
     {
+        MainScoreManager.Instance.CurrentScore();
         SceneManager.LoadScene("Boss_Stage"); // Stage2로 넘어가는 버튼
     }
 

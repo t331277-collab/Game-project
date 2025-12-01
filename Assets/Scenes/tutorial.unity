@@ -4524,6 +4524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainScoreManager
   Count_All_Damaged: 0
+  Current_Score: 0
 --- !u!4 &957316058
 Transform:
   m_ObjectHideFlags: 0

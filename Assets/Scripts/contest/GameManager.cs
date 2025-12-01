@@ -400,6 +400,7 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         StartCoroutine(StartGameRoutine());
+        
     }
 
     private System.Collections.IEnumerator StartGameRoutine()

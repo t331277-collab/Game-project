@@ -77,4 +77,17 @@ public class InGameMenuController : MonoBehaviour
             PlayerPrefs.SetFloat("SFXVolume", volume);
         }
     }
+
+    public void OnClickRetryStage1()
+    {
+        MainScoreManager.Instance.ReTry(1);
+    }
+    public void OnClickRetryStage2()
+    {
+        MainScoreManager.Instance.ReTry(2);
+    }
+    public void OnClickRetryBoss()
+    {
+        MainScoreManager.Instance.ReTry(3);
+    }
 }
