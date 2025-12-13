@@ -9,7 +9,18 @@ public class Enemy_Bumper : Enemy
     // protected override void Start() { ... }
 
     // [수정!] Bumper 전용 충돌 기능
+
     private void OnCollisionEnter2D(Collision2D collision)
+    {
+        CheckCoillsion(collision);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckCoillsion(collision);
+    }
+
+    private void CheckCoillsion(Collision2D collision)
     {
         // 1. 만약 충돌한게 Player 라면
         if(collision.gameObject.CompareTag("Player"))
