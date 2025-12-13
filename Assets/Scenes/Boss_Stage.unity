@@ -1213,8 +1213,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.5919495, y: 1.07829}
-  m_SizeDelta: {x: 36.6189, y: 11.87534}
+  m_AnchoredPosition: {x: 1.5919495, y: -1.23324}
+  m_SizeDelta: {x: 36.6189, y: 10.33432}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &121054997
 MonoBehaviour:
@@ -1236,8 +1236,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Tip : \uC18C\uB9AC\uAC00 \uC798 \uB4E4\uB9AC\uC9C0\n        \uC54A\uB294\uB2E4\uBA74
-    \uC74C\uC744 \uB530\uB77C\n        \uBD88\uB7EC\uBCF4\uC138\uC694!!"
+  m_text: "Tip : \uC74C\uC774 \uD5F7\uAC08\uB9AC\uBA74\n        \uB530\uB77C \uBD88\uB7EC\uBCF4\uC138\uC694!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1f46e3384dbda442b773f90d6d903ed, type: 2}
   m_sharedMaterial: {fileID: 8966204725826311224, guid: d1f46e3384dbda442b773f90d6d903ed, type: 2}

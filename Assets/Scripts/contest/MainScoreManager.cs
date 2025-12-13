@@ -48,18 +48,12 @@ public class MainScoreManager : MonoBehaviour
     public void Ending()
     {
        
-
-        if (Count_All_Damaged > 30)
-        {
-            SceneManager.LoadScene("BadEnding");
-
-            
-        }
-        else if (Count_All_Damaged > 15)
+        
+        if (Count_All_Damaged > 20)
         {
             SceneManager.LoadScene("NormalEnding");
         }
-        else if (Count_All_Damaged > 5)
+        else if (Count_All_Damaged > 10)
         {
             SceneManager.LoadScene("GoodEnding");
         }
