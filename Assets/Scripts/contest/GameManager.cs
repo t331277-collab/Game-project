@@ -89,7 +89,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update()
-    {   
+    {
+        
+
         // [수정] 메뉴 때문에 게임이 멈췄다면 Update 로직을 수행하지 않음
         if (IsGamePausedForMenu) return;
 
@@ -187,7 +189,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("시간 정지! 적 선택 모드 시작.");
+        
+
+            Debug.Log("시간 정지! 적 선택 모드 시작.");
         IsTimeStopped = true;    // 상태 변경
         PauseMain_BGM();         // BGM 일시정지 (dspTime 저장)
         Time.timeScale = 0f;     // 시간 완전 정지
@@ -219,11 +223,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+
     // [NEW!] 적 선택 및 결정 입력 처리 함수 (Update에서 호출)
     private void HandleEnemySelectionInput()
     {
         // 화면에 보이는 적이 없거나 리스트가 비었으면 아무것도 안 함 (안전장치)
         if (Enemy.VisibleEnemies == null || Enemy.VisibleEnemies.Count == 0) return;
+
+        
 
         // [오른쪽 방향키] 다음 적으로 이동
         if (Input.GetKeyDown(KeyCode.RightArrow))

@@ -4,7 +4,6 @@ public class Player_Move : MonoBehaviour
 {
     private Rigidbody2D rgd;
     private SpriteRenderer spriteRenderer;
-    // [추가!] 애니메이터 컴포넌트를 담을 변수 선언
     private Animator animator;
 
     [Header("Movement")]
@@ -12,97 +11,107 @@ public class Player_Move : MonoBehaviour
     public float jump = 7.0f;
     public bool isJump = false;
 
-    // --- 넉백 관련 변수들 (기존 유지) ---
+    // [수정] 점프 입력을 저장해둘 변수
+    private bool jumpRequest = false;
+
     [Header("Knockback")]
     public float KBForce;
     public float KBCounter;
     public float KBToalTime;
     public bool KnockFromRight;
 
-    // [임시 변수] 입력을 받아두는 변수
     private float inputX;
 
     void Awake()
     {
         rgd = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        // [추가!] 내 오브젝트에 붙어있는 Animator 컴포넌트를 찾아 연결
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // 1. 입력은 Update에서 받아서 변수에 저장만 해둡니다.
+        // 1. 이동 입력 (기존과 동일)
         inputX = Input.GetAxisRaw("Horizontal");
-        
-        // (flipX 로직이 여기 있었는데 LateUpdate로 이사 갔습니다!)
+
+        // [중요!] 점프 입력은 Update에서 받아서 '요청' 상태로 만들어둡니다.
+        // 이미 점프 중이 아닐 때만 입력을 받음
+        if (Input.GetKeyDown(KeyCode.Space) && !isJump)
+        {
+            jumpRequest = true;
+        }
     }
 
     void FixedUpdate()
     {
-        if(KBCounter <= 0)
+        if (KBCounter <= 0)
         {
-            // 2. 물리 이동 계산 (저장해둔 입력값 사용)
-            Vector2 v = rgd.linearVelocity;
+            Vector2 v = rgd.linearVelocity; // Unity 6버전 기준 linearVelocity, 구버전은 velocity
             v.x = inputX * speed;
             rgd.linearVelocity = v;
 
-            // (애니메이션 파라미터 전달 로직이 여기 있었는데 LateUpdate로 이사 갔습니다!)
+            // [중요!] 물리 업데이트 타이밍에 요청된 점프가 있다면 실행
+            if (jumpRequest)
+            {
+                rgd.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
+                Debug.Log("jump");
+                isJump = true;
 
-            Jump();
+                // 점프를 수행했으니 요청을 초기화합니다.
+                jumpRequest = false;
+            }
         }
         else
         {
-            // 넉백 중일 때 로직 (기존 유지)
+            // 넉백 로직 (기존 유지)
             if (KnockFromRight == true) rgd.linearVelocity = new Vector2(-KBForce, KBForce * 0.5f);
             else rgd.linearVelocity = new Vector2(KBForce, KBForce * 0.5f);
-
             KBCounter -= Time.fixedDeltaTime;
-
-            
         }
     }
 
-    // [새로 추가!] 모든 계산이 끝난 후 비주얼을 처리하는 함수
     void LateUpdate()
     {
-        // 넉백 중이 아닐 때만 방향/애니메이션 업데이트
         if (KBCounter <= 0)
         {
-            // --- 1. 스프라이트 방향 (flipX) ---
-            // 입력(inputX)이 아니라 '실제 물리 속도(rgd.linearVelocity.x)'를 기준으로 합니다.
-            // (벽에 막히면 속도가 0이 되어 방향이 안 바뀝니다. 더 자연스러움!)
+            // 비주얼 처리 (기존 유지)
             if (rgd.linearVelocity.x > 0.1f) spriteRenderer.flipX = false;
             else if (rgd.linearVelocity.x < -0.1f) spriteRenderer.flipX = true;
 
-            // --- 2. 애니메이션 속도 (Speed) ---
             if (animator != null)
             {
-                // 역시 '실제 물리 속도'의 절대값을 전달합니다.
-                // (미끄러지거나 밀려날 때도 자연스럽게 걷는 모션이 나옵니다.)
                 animator.SetFloat("Speed", Mathf.Abs(rgd.linearVelocity.x));
             }
         }
     }
 
-    // Jump 함수 및 OnCollisionEnter2D (기존 유지)
-    void Jump()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isJump)
-            {
-                Debug.Log("jump");
-                isJump = true;
-                rgd.AddForce(Vector2.up * jump, ForceMode2D.Impulse);
-            }
-        }
-    }
+    // [추가 팁] 바닥 체크 개선
+    // OnCollisionEnter는 '부딪히는 순간'만 체크하므로, 바닥에 계속 서있을 때 불안정할 수 있습니다.
+    // OnCollisionStay2D를 쓰거나, 레이캐스트를 쓰는 것이 훨씬 좋습니다.
+    // 일단 간단한 수정을 위해 Enter와 Stay를 같이 사용합니다.
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Ground") || collision.gameObject.tag.Equals("Enemy"))
+        CheckGround(collision);
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        CheckGround(collision);
+    }
+
+    private void CheckGround(Collision2D collision)
+    {
+        // 태그 체크
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Enemy"))
         {
-            isJump = false;
+            // [중요] 떨어지는 중일 때만 착지 판정을 하는 것이 자연스럽습니다.
+            // 점프해서 올라가는 도중에 벽에 닿았다고 착지 처리되면 안되니까요.
+            if (rgd.linearVelocity.y <= 0.1f)
+            {
+                isJump = false;
+                // 만약 점프했다가 착지했는데 jumpRequest가 남아있다면 제거 (버그 방지)
+                jumpRequest = false;
+            }
         }
     }
 }
