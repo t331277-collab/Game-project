@@ -74,10 +74,14 @@ public class Player_Move : MonoBehaviour
     {
         if (KBCounter <= 0)
         {
-            // 비주얼 처리 (기존 유지)
-            if (rgd.linearVelocity.x > 0.1f) spriteRenderer.flipX = false;
-            else if (rgd.linearVelocity.x < -0.1f) spriteRenderer.flipX = true;
+            // [수정] 물리 속도(rgd.linearVelocity)가 아닌 입력값(inputX) 기준으로 방향 전환
+            if (inputX > 0) spriteRenderer.flipX = false;      // 오른쪽 키 입력 시
+            else if (inputX < 0) spriteRenderer.flipX = true;  // 왼쪽 키 입력 시
+            // inputX가 0일 때(키를 안 누를 때)는 방향을 유지합니다.
 
+            // [참고] 애니메이션 재생 속도(걷는 모션)는 
+            // 여전히 '실제 이동 속도'를 따르는 것이 자연스럽습니다.
+            // (벽에 막혔을 때 제자리걸음 하는 것을 방지하기 위함)
             if (animator != null)
             {
                 animator.SetFloat("Speed", Mathf.Abs(rgd.linearVelocity.x));
