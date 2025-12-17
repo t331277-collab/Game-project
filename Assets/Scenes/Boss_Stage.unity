@@ -847,10 +847,10 @@ MonoBehaviour:
   patrolDistance: 5
   chaseSpeed: 4
   detectionRange: 10
-  killSequence: 7a0000006300000078000000630000006300000078000000
-  knockbackForce: 250
+  killSequence: 7a00000063000000780000006300000063000000
+  knockbackForce: 0
   knockbackMultiplier: 1
-  knockbackDuration: 0.2
+  knockbackDuration: 0
   groggyDuration: 3
   attackTriggerRange: 3
   delayBetweenPatterns: 1.5
@@ -860,16 +860,16 @@ MonoBehaviour:
   hitBlinkInterval: 0.05
   floorAttackPrefab: {fileID: 1405519289890549621, guid: 0a22b32ab5cfe394daafb3563655cd73, type: 3}
   floorAttackRange: 5
-  floorAttackDelay: 1
+  floorAttackDelay: 0.5
   chargeIndicatorBox: {fileID: 1529534941}
   indicatorBlinkInterval: 0.1
-  chargeWaitTime: 3
+  chargeWaitTime: 0.7
   chargeDistance: 10
   chargeSpeed: 18
   normalAttackPos: {fileID: 389761995}
   normalAttackRange: 1.5
-  normalAttackBoxSize: {x: 2, y: 2}
-  normalAttackDelay: 1
+  normalAttackBoxSize: {x: 2.11, y: 2.66}
+  normalAttackDelay: 0.3
 --- !u!82 &107987685
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1544,7 +1544,7 @@ MonoBehaviour:
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 2.5, z: 0}
-  Damping: {x: 1, y: 1, z: 1}
+  Damping: {x: 1, y: 100, z: 1}
   Lookahead:
     Enabled: 0
     Time: 0
@@ -2724,8 +2724,8 @@ Transform:
   m_GameObject: {fileID: 719478442}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -53.41, y: -17.98, z: 0}
-  m_LocalScale: {x: 0.01, y: 13.030975, z: 1}
+  m_LocalPosition: {x: -55.0933, y: -17.98, z: 0}
+  m_LocalScale: {x: 3.3758469, y: 13.030975, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1778042896}
@@ -2824,7 +2824,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2861,8 +2861,8 @@ Transform:
   m_GameObject: {fileID: 725907939}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.63, y: -17.98, z: 0}
-  m_LocalScale: {x: 0.01, y: 13.030975, z: 1}
+  m_LocalPosition: {x: -2.3445, y: -17.98, z: 0}
+  m_LocalScale: {x: -2.560885, y: 13.030975, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1778042896}
@@ -2961,7 +2961,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -6817,7 +6817,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
       propertyPath: attackRange
-      value: 1.66
+      value: 1.92
       objectReference: {fileID: 0}
     - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
       propertyPath: attackBoxSize.x
@@ -7388,6 +7388,10 @@ PrefabInstance:
       propertyPath: boxSize.y
       value: 2.47
       objectReference: {fileID: 0}
+    - target: {fileID: 273759446287700545, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
+      propertyPath: executionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 148d2d36bae7cef4e81cd3cdfbc9be7d, type: 3}
     - target: {fileID: 2558661072212487184, guid: 43cb39d73a65e564fa8f13609254eb25, type: 3}
       propertyPath: m_Material
       value: 

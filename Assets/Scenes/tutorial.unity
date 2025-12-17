@@ -226,6 +226,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 0f0c58d94840e8742ace10646554c0be, type: 3}
     - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackRange
+      value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackBoxSize.x
+      value: 1.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackBoxSize.y
+      value: 2.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
       propertyPath: killSequence.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -8563,6 +8575,18 @@ PrefabInstance:
     - target: {fileID: 1436040704393239992, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
       propertyPath: m_Name
       value: Warrior (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackRange
+      value: 1.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackBoxSize.x
+      value: 1.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
+      propertyPath: attackBoxSize.y
+      value: 2.43
       objectReference: {fileID: 0}
     - target: {fileID: 2845157697799432599, guid: 2da0aa57d3e73b34f8d6ea89a6d8d2dc, type: 3}
       propertyPath: killSequence.Array.size

@@ -236,7 +236,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator StopSkill()
     {
-        yield return new WaitForSecondsRealtime(5.0f);
+        
         SoundManager.instance.SFXPlay("count", countThree);
         yield return new WaitForSecondsRealtime(countThree.length);
         StartCoroutine(ResumeTimeAfterDelay(0f));
