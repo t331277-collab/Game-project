@@ -31,6 +31,8 @@ public class Player_Move : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsTimeStopped == true) return;
+
         // 1. 이동 입력 (기존과 동일)
         inputX = Input.GetAxisRaw("Horizontal");
 
@@ -44,6 +46,8 @@ public class Player_Move : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (GameManager.Instance.IsTimeStopped == true) return;
+
         if (KBCounter <= 0)
         {
             Vector2 v = rgd.linearVelocity; // Unity 6버전 기준 linearVelocity, 구버전은 velocity

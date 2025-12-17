@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     private bool stopTimer = true;
 
+    private Coroutine runningAutoStopCoroutine;
+
+
     // [추가!] 게임이 종료되었는지 확인하는 스위치 변수
     private bool isGameEnded = false;
 
@@ -182,6 +185,14 @@ public class GameManager : MonoBehaviour
     {
         if (IsTimeStopped) return; // 이미 스킬 중이면 무시
 
+        if (runningAutoStopCoroutine != null)
+        {
+            StopCoroutine(runningAutoStopCoroutine);
+        }
+
+        // StartCoroutine의 리턴값을 변수에 저장
+        runningAutoStopCoroutine = StartCoroutine(StopSkill());
+
         // [예외 처리] 화면에 보이는 적이 한 명도 없으면 스킬 발동 실패
         if (Enemy.VisibleEnemies.Count == 0)
         {
@@ -223,6 +234,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    IEnumerator StopSkill()
+    {
+        yield return new WaitForSecondsRealtime(5.0f);
+        SoundManager.instance.SFXPlay("count", countThree);
+        yield return new WaitForSecondsRealtime(countThree.length);
+        StartCoroutine(ResumeTimeAfterDelay(0f));
+
+        Debug.Log("강제종료!");
+    }
+
     
 
     // [NEW!] 적 선택 및 결정 입력 처리 함수 (Update에서 호출)
@@ -261,6 +282,14 @@ public class GameManager : MonoBehaviour
         // [스페이스바] 선택 확정 및 소리 재생
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            // [수정] 저장해둔 코루틴 변수를 사용하여 멈춥니다.
+            if (runningAutoStopCoroutine != null)
+            {
+                StopCoroutine(runningAutoStopCoroutine);
+                runningAutoStopCoroutine = null; // 다 썼으면 비워줍니다.
+                Debug.Log("자동 종료 타이머 해제됨!");
+            }
+
             Debug.Log($"적 선택 확정! (인덱스: {selectedEnemyIndex})");
             
             // 선택된 적이 유효한지 확인
